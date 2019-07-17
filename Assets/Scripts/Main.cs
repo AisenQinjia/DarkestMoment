@@ -17,6 +17,7 @@ public class Main : MonoBehaviour
 
         hasCreated = true;
         DontDestroyOnLoad(this.gameObject);
+
     }
 
 }
