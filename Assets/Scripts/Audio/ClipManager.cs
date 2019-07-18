@@ -27,7 +27,7 @@ public class ClipManager
         {
             AudioClip clip = Resources.Load<AudioClip>(GameDefine.audioPath + clipNames[i]);
             audioClips.Add(clip);
-
+            
         }
     }
 
