@@ -28,7 +28,7 @@ public class StartPanel : BasePanel
         Application.Quit();
     }
 
-    private void OnDestroy()
+    public override void OnDestroy()
     {
         StartBtn.onClick.RemoveAllListeners();
         QuitBtn.onClick.RemoveAllListeners();
