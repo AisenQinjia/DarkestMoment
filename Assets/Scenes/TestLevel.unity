@@ -120,7 +120,7 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
---- !u!1 &105836622
+--- !u!1 &150235944
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -128,9 +128,9 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 105836623}
-  - component: {fileID: 105836624}
-  - component: {fileID: 105836625}
+  - component: {fileID: 150235945}
+  - component: {fileID: 150235947}
+  - component: {fileID: 150235946}
   m_Layer: 0
   m_Name: stickState
   m_TagString: Untagged
@@ -138,13 +138,13 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &105836623
+--- !u!4 &150235945
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 105836622}
+  m_GameObject: {fileID: 150235944}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
@@ -152,13 +152,32 @@ Transform:
   m_Father: {fileID: 1823221601}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!212 &105836624
+--- !u!95 &150235946
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 150235944}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 258568fba93188f4f8c04fb5b41e938c, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!212 &150235947
 SpriteRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 105836622}
+  m_GameObject: {fileID: 150235944}
   m_Enabled: 1
   m_CastShadows: 0
   m_ReceiveShadows: 0
@@ -189,7 +208,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: d3b272a1cc419be498a1277d80ae61cb, type: 3}
+  m_Sprite: {fileID: 21300000, guid: c8354de5de35d5b45abd4dff7d0173bd, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -200,25 +219,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!95 &105836625
-Animator:
-  serializedVersion: 3
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 105836622}
-  m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 258568fba93188f4f8c04fb5b41e938c, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &163218029 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1176478367882520124, guid: df605b2c225f92742827cd9451707568,
@@ -1162,7 +1162,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1823221601}
   - component: {fileID: 1823221602}
-  - component: {fileID: 1823221603}
   - component: {fileID: 1823221604}
   - component: {fileID: 1823221605}
   m_Layer: 0
@@ -1183,7 +1182,7 @@ Transform:
   m_LocalPosition: {x: 0.51, y: 0.08, z: 0}
   m_LocalScale: {x: 2, y: 2, z: 1}
   m_Children:
-  - {fileID: 105836623}
+  - {fileID: 150235945}
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1199,25 +1198,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b6b8eeebe75bd9c4e95b898aa63f0510, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!95 &1823221603
-Animator:
-  serializedVersion: 3
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1823221600}
-  m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 258568fba93188f4f8c04fb5b41e938c, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!61 &1823221604
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -1552,6 +1532,41 @@ PrefabInstance:
       propertyPath: m_Name
       value: JoyStick
       objectReference: {fileID: 0}
+    - target: {fileID: 1176478367882520124, guid: df605b2c225f92742827cd9451707568,
+        type: 3}
+      propertyPath: m_Name
+      value: stickStateBtn
+      objectReference: {fileID: 0}
+    - target: {fileID: 1176478368234807268, guid: df605b2c225f92742827cd9451707568,
+        type: 3}
+      propertyPath: m_Name
+      value: interativeBtn
+      objectReference: {fileID: 0}
+    - target: {fileID: 1176478368206819263, guid: df605b2c225f92742827cd9451707568,
+        type: 3}
+      propertyPath: m_Name
+      value: flowStateBtn
+      objectReference: {fileID: 0}
+    - target: {fileID: 1176478367310953251, guid: df605b2c225f92742827cd9451707568,
+        type: 3}
+      propertyPath: m_Name
+      value: powerStateBtn
+      objectReference: {fileID: 0}
+    - target: {fileID: 1176478367388912759, guid: df605b2c225f92742827cd9451707568,
+        type: 3}
+      propertyPath: m_Name
+      value: rightBtn
+      objectReference: {fileID: 0}
+    - target: {fileID: 1176478369331868469, guid: df605b2c225f92742827cd9451707568,
+        type: 3}
+      propertyPath: m_Name
+      value: leftBtn
+      objectReference: {fileID: 0}
+    - target: {fileID: 1176478368492731789, guid: df605b2c225f92742827cd9451707568,
+        type: 3}
+      propertyPath: m_Name
+      value: killBtn
+      objectReference: {fileID: 0}
     - target: {fileID: 1176478368673813965, guid: df605b2c225f92742827cd9451707568,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -1657,25 +1672,10 @@ PrefabInstance:
       propertyPath: m_Pivot.y
       value: 0.5
       objectReference: {fileID: 0}
-    - target: {fileID: 1176478369331868469, guid: df605b2c225f92742827cd9451707568,
-        type: 3}
-      propertyPath: m_Name
-      value: leftBtn
-      objectReference: {fileID: 0}
-    - target: {fileID: 1176478367388912759, guid: df605b2c225f92742827cd9451707568,
-        type: 3}
-      propertyPath: m_Name
-      value: rightBtn
-      objectReference: {fileID: 0}
     - target: {fileID: 1176478368719575858, guid: df605b2c225f92742827cd9451707568,
         type: 3}
       propertyPath: m_Name
       value: jumpBtn
-      objectReference: {fileID: 0}
-    - target: {fileID: 1176478368234807268, guid: df605b2c225f92742827cd9451707568,
-        type: 3}
-      propertyPath: m_Name
-      value: interativeBtn
       objectReference: {fileID: 0}
     - target: {fileID: 1176478368234807271, guid: df605b2c225f92742827cd9451707568,
         type: 3}
@@ -1687,11 +1687,6 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.x
       value: -55
       objectReference: {fileID: 0}
-    - target: {fileID: 1176478368492731789, guid: df605b2c225f92742827cd9451707568,
-        type: 3}
-      propertyPath: m_Name
-      value: killBtn
-      objectReference: {fileID: 0}
     - target: {fileID: 1176478368492731788, guid: df605b2c225f92742827cd9451707568,
         type: 3}
       propertyPath: m_AnchoredPosition.x
@@ -1701,11 +1696,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 55
-      objectReference: {fileID: 0}
-    - target: {fileID: 1176478367310953251, guid: df605b2c225f92742827cd9451707568,
-        type: 3}
-      propertyPath: m_Name
-      value: powerStateBtn
       objectReference: {fileID: 0}
     - target: {fileID: 1176478367310953250, guid: df605b2c225f92742827cd9451707568,
         type: 3}
@@ -1722,11 +1712,6 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.x
       value: 39
       objectReference: {fileID: 0}
-    - target: {fileID: 1176478368206819263, guid: df605b2c225f92742827cd9451707568,
-        type: 3}
-      propertyPath: m_Name
-      value: flowStateBtn
-      objectReference: {fileID: 0}
     - target: {fileID: 1176478368206819262, guid: df605b2c225f92742827cd9451707568,
         type: 3}
       propertyPath: m_AnchorMin.x
@@ -1741,11 +1726,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_AnchoredPosition.x
       value: 102
-      objectReference: {fileID: 0}
-    - target: {fileID: 1176478367882520124, guid: df605b2c225f92742827cd9451707568,
-        type: 3}
-      propertyPath: m_Name
-      value: stickStateBtn
       objectReference: {fileID: 0}
     - target: {fileID: 1176478367882520127, guid: df605b2c225f92742827cd9451707568,
         type: 3}

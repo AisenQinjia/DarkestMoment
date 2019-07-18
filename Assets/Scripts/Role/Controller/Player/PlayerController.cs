@@ -85,6 +85,7 @@ public class PlayerController : BaseRoleController
     private void StopWalk()
     {
         this.velocity.x = 0;
+        this.stickAnim.SetBool("walk", false);
     }
     private void MoveLeft()
     {
@@ -92,6 +93,7 @@ public class PlayerController : BaseRoleController
         this.transform.rotation = Quaternion.Euler(new Vector3(0, 0, 0));
 
         this.velocity.x = -1;
+        this.stickAnim.SetBool("walk", true);
 
     }
 
@@ -101,6 +103,7 @@ public class PlayerController : BaseRoleController
         this.transform.rotation = Quaternion.Euler(new Vector3(0, 180, 0));
 
         this.velocity.x = 1;
+        this.stickAnim.SetBool("walk", true);
     }
 
     private void Jump()
@@ -116,7 +119,7 @@ public class PlayerController : BaseRoleController
     private void Eat()
     {
         this.stickAnim.SetTrigger("eat");
-        Debug.Log("eat");
+ 
     }
 
     private void Interactive()
