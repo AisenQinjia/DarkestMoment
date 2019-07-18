@@ -21,13 +21,13 @@ public class LongPressBtn : MonoBehaviour, IPointerDownHandler, IPointerUpHandle
     public void OnPointerUp(PointerEventData eventData)
     {
         this.pressed = false;
-        Debug.Log(this.type + "btn up");
+
     }
 
     public void OnPointerExit(PointerEventData eventData)
     {
         this.pressed = false;
-        Debug.Log(this.type + "btn up");
+        EventCenter.Broadcast(EventType.PlayerStopWalk);
     }
 
     public bool GetPressedState()
@@ -40,7 +40,9 @@ public class LongPressBtn : MonoBehaviour, IPointerDownHandler, IPointerUpHandle
         if (this.pressed)
         {
             //  Debug.Log(this.type + "btn pressed");
+            SendPressedEvent();
         }
+
     }
 
     private void SendPressedEvent()

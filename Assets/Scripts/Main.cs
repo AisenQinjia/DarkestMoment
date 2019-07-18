@@ -14,6 +14,7 @@ public class Main : MonoBehaviour
             return;
 
         gameObject.AddComponent<AudioManager>();
+        gameObject.AddComponent<RoleManager>();
 
         hasCreated = true;
         DontDestroyOnLoad(this.gameObject);

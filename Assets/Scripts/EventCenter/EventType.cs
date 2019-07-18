@@ -5,8 +5,10 @@
     OnJumpBtnClick,
     OnKillBtnClick,
     OnPowerStateBtnClick,
+    OnInterativeBtnClick,
     OnFlowStateBtnClick,
     OnStickStateBtnClick,
     OnSkillOneBtnClick,
     OnSkillTwoBtnClick,
+    PlayerStopWalk,
 }

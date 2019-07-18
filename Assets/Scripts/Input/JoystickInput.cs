@@ -15,7 +15,6 @@ public class JoystickInput : MonoBehaviour
     private Button skillOneBtn;
     private Button skillTwoBtn;
 
-    public GameObject go;
 
     private void Awake()
     {
@@ -54,56 +53,62 @@ public class JoystickInput : MonoBehaviour
     }
 
 
-    //private void ScaleBtn(Transform t)
-    //{
-    //    t.DOScale(new Vector2(1.2f, 1.2f), 0.1f).OnComplete<t>(ScaleComplete);
-    //}
+    private void ScaleBtn(Transform t)
+    {
+        t.DOScale(new Vector2(1.2f, 1.2f), 0.1f).OnComplete(() =>
+        {
+            t.DOScale(new Vector2(1, 1), 0.1f);
+        });
+    }
 
-    //private TweenCallback<Transform> ScaleComplete(Transform t)
-    //{
-    //      t.DOScale(new Vector2(1, 1), 0.1f);
-    //}
-    //}
+
+
     private void OnJumpBtnClick()
     {
-        Debug.Log("jump");
-
+        EventCenter.Broadcast(EventType.OnJumpBtnClick);
+        ScaleBtn(this.jumpBtn.transform);
     }
 
     private void OnKillBtnClick()
     {
-        Debug.Log("kill");
+        EventCenter.Broadcast(EventType.OnKillBtnClick);
+        ScaleBtn(this.killBtn.transform);
     }
 
     private void OnInteractiveBtnClick()
     {
-        Debug.Log("interactive");
-        go.GetComponent<BaseInteractive>().InteractiveLogic(this.transform);
+        EventCenter.Broadcast(EventType.OnInterativeBtnClick);
+        ScaleBtn(this.interativeBtn.transform);
     }
 
     private void OnPowerStateBtnClick()
     {
-        Debug.Log("powerstate");
+        EventCenter.Broadcast(EventType.OnPowerStateBtnClick);
+        ScaleBtn(this.powerStateBtn.transform);
     }
 
     private void OnFlowStateBtnClick()
     {
-        Debug.Log("flowstate");
+        EventCenter.Broadcast(EventType.OnFlowStateBtnClick);
+        ScaleBtn(this.flowStateBtn.transform);
     }
 
     private void OnStickStateBtnClick()
     {
-        Debug.Log("stickstate");
+        EventCenter.Broadcast(EventType.OnStickStateBtnClick);
+        ScaleBtn(this.stickStateBtn.transform);
     }
 
     private void OnSkillOneBtnClick()
     {
-        Debug.Log("skillone");
+        EventCenter.Broadcast(EventType.OnSkillOneBtnClick);
+        ScaleBtn(this.skillOneBtn.transform);
     }
 
     private void OnSkillTwoBtnClick()
     {
-        Debug.Log("skilltwo");
+        EventCenter.Broadcast(EventType.OnSkillTwoBtnClick);
+        ScaleBtn(this.skillTwoBtn.transform);
     }
 
 }

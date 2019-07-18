@@ -6,5 +6,11 @@ public class RoleData
 {
     [SerializeField]
     public int walkSpeed;
-    public int jumpSpeed;
+    public int jumpForce;
+
+    public RoleData()
+    {
+        this.walkSpeed = 1;
+        this.jumpForce = 300;
+    }
 }

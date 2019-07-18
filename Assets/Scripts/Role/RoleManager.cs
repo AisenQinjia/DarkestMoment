@@ -12,11 +12,19 @@ public class RoleManager : MonoBehaviour
 
         get
         {
+            if (instance == null)
+            {
+                GameObject go = new GameObject();
+                go.name = "Rolemanager";
+                instance = go.AddComponent<RoleManager>();
+
+            }
             return instance;
         }
     }
 
 
+    private List<Transform> roles = new List<Transform>();
 
     private void Awake()
     {
@@ -49,13 +57,21 @@ public class RoleManager : MonoBehaviour
     }
 
 
-    public void AddRole()
+    public void AddRole(Transform t)
     {
-
+        if (this.roles.Contains(t))
+        {
+            return;
+        }
+        this.roles.Add(t);
     }
 
-    public void RemoveRole()
+    public void RemoveRole(Transform t)
     {
-
+        if (this.roles.Contains(t))
+        {
+            this.roles.Remove(t);
+            return;
+        }
     }
 }
