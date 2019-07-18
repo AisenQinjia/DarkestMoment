@@ -204,7 +204,7 @@ public  class WalkStateForPatrol : FSMState
 }
 
 
-//只有转向敌人行走状态
+//只能转向敌人行走状态
 public class WalkStateForTurn : FSMState
 {
 

@@ -21,6 +21,7 @@ public class PatrolEnemyController : MonoBehaviour
         Statemanager.currentState.ReState(player, gameObject);
         Statemanager.currentState.Update(player, gameObject);
     }
+
     void CreateFSM()
     {
 
@@ -35,8 +36,24 @@ public class PatrolEnemyController : MonoBehaviour
         
     }
 
+    //进入视野
     private void OnTriggerEnter(Collider other)
     {
-        
+        if(other.gameObject.tag == "Player")
+        {
+
+        }
+    }
+
+    //死亡接口
+    public void Dead()
+    {
+
+    }
+
+    //吸引敌人注意力接口
+    public void ComeToMe(Transform trans)
+    {
+
     }
 }
