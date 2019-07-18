@@ -1,5 +1,12 @@
 ﻿public enum EventType
 {
-    OnBossDie,
-   
+    OnLeftBtnPressed,
+    OnRightBtnPressed,
+    OnJumpBtnClick,
+    OnKillBtnClick,
+    OnPowerStateBtnClick,
+    OnFlowStateBtnClick,
+    OnStickStateBtnClick,
+    OnSkillOneBtnClick,
+    OnSkillTwoBtnClick,
 }
