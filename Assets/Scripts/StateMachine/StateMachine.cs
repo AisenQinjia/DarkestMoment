@@ -19,6 +19,8 @@ public enum StateID
 public enum Transition
 {
     NullTransition,
+    ShouldTurn,
+    ShouldWalk,
     SawPlayer,
     LostPlayer,
     HeardNoise
@@ -30,7 +32,7 @@ public class EnemyStateManager
     private StateID realCurrentStateID;
     public StateID currentStateID {
         set { realCurrentStateID = value; }
-        get { return currentStateID; }
+        get { return realCurrentStateID; }
     }
     private FSMState realCurrentState;
     public FSMState currentState {
@@ -79,18 +81,18 @@ public class EnemyStateManager
             Debug.LogError("trans is null!");
             return;
         }
-
+        
         StateID id = currentState.GetState(trans);
-
-        if(id == StateID.NullState)
+        if (id == StateID.NullState)
         {
             Debug.Log("不存在目标状态");
             return;
         }
+
         currentStateID = id;
         foreach(FSMState st in states)
         {
-            if(st.stateID == currentStateID)
+            if (st.stateID == currentStateID)
             {
                 currentState.DoBeforeLeaving();
                 currentState = st;
@@ -175,9 +177,8 @@ public  class WalkStateForPatrol : FSMState
 
     public override void Update(GameObject player, GameObject enemy)
     {
-        Vector3 vel = enemy.GetComponent<Rigidbody>().velocity;
         Vector3 moveDir = pathPoints[currentPointIndex].position - enemy.transform.position;
-        moveDir = new Vector3(moveDir.x, 0, moveDir.z);
+        moveDir = new Vector3(moveDir.x, 0, 0);
         if (moveDir.magnitude < 1)
         {
             currentPointIndex++;
@@ -185,21 +186,16 @@ public  class WalkStateForPatrol : FSMState
             {
                 currentPointIndex = 0;
             }
+            enemy.GetComponent<PatrolEnemyController>().PerformTransition(Transition.ShouldTurn);
         }
         else
         {
-            vel = moveDir.normalized * enemy.GetComponent<PatrolEnemyController>().walkSpeed;
+            Vector3 vel = moveDir.normalized * enemy.GetComponent<PatrolEnemyController>().walkSpeed;
 
             // Rotate towards the waypoint
-            enemy.transform.rotation = Quaternion.Slerp(enemy.transform.rotation,
-                                                      Quaternion.LookRotation(moveDir),
-                                                      5 * Time.deltaTime);
-            enemy.transform.eulerAngles = new Vector3(0, enemy.transform.eulerAngles.y, 0);
-
+            //enemy.transform
+            enemy.GetComponent<Rigidbody2D>().velocity = new Vector2(vel.x, 0);
         }
-
-        // Apply the Velocity
-        enemy.GetComponent<Rigidbody>().velocity = vel;
     }
 }
 
@@ -219,7 +215,17 @@ public class WalkStateForTrigger : FSMState
 //转向
 public class TurnState : FSMState
 {
+    public TurnState()
+    {
+        stateID = StateID.Turn;
+    }
+    public override void ReState(GameObject player, GameObject enemy) { }
 
+    public override void Update(GameObject player, GameObject enemy)
+    {
+        enemy.transform.Rotate(new Vector3(0, 180, 0));
+        enemy.GetComponent<PatrolEnemyController>().PerformTransition(Transition.ShouldWalk);
+    }
 }
 
 //追击

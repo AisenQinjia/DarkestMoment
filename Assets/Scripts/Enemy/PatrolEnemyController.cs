@@ -27,13 +27,18 @@ public class PatrolEnemyController : MonoBehaviour
 
         Statemanager = new EnemyStateManager();
         WalkStateForPatrol walk = new WalkStateForPatrol(path, walkSpeed);
+        walk.AddTransition(Transition.ShouldTurn, StateID.Turn);
+
+        TurnState turn = new TurnState();
+        turn.AddTransition(Transition.ShouldWalk, StateID.Walk);
 
         Statemanager.AddState(walk);
+        Statemanager.AddState(turn);
     }
 
     public void PerformTransition(Transition trans)
     {
-        
+        Statemanager.PerformTransition(trans);
     }
 
     //进入视野
