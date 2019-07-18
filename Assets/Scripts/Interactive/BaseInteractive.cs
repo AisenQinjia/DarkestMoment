@@ -5,8 +5,8 @@ using UnityEngine;
 public class BaseInteractive : MonoBehaviour
 {
 
-    public virtual void InteractiveLogic()
+    public virtual void InteractiveLogic(Transform player)
     {
-
+        
     }
 }

@@ -15,6 +15,8 @@ public class JoystickInput : MonoBehaviour
     private Button skillOneBtn;
     private Button skillTwoBtn;
 
+    public GameObject go;
+
     private void Awake()
     {
 
@@ -57,9 +59,10 @@ public class JoystickInput : MonoBehaviour
     //    t.DOScale(new Vector2(1.2f, 1.2f), 0.1f).OnComplete<t>(ScaleComplete);
     //}
 
-    //private TweenCallback<T> ScaleComplete(Transform t)
+    //private TweenCallback<Transform> ScaleComplete(Transform t)
     //{
-
+    //      t.DOScale(new Vector2(1, 1), 0.1f);
+    //}
     //}
     private void OnJumpBtnClick()
     {
@@ -75,6 +78,7 @@ public class JoystickInput : MonoBehaviour
     private void OnInteractiveBtnClick()
     {
         Debug.Log("interactive");
+        go.GetComponent<BaseInteractive>().InteractiveLogic(this.transform);
     }
 
     private void OnPowerStateBtnClick()
