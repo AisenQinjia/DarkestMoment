@@ -16,6 +16,10 @@ public class PlayerController : BaseRoleController
     private bool grounded = true;
     private Vector3 velocity = new Vector3(0, 0, 0);
     private Rigidbody2D rb;
+
+    private Vector2 attackBoxCenter;
+    private Vector2 attackBoxSize;
+    private Vector2 attackBoxDir;
     public override void Awake()
     {
         base.Awake();
@@ -23,6 +27,9 @@ public class PlayerController : BaseRoleController
         stickState = transform.Find("stickState").gameObject;
         this.stickAnim = this.stickState.GetComponent<Animator>();
         this.rb = GetComponent<Rigidbody2D>();
+
+        this.attackBoxSize = new Vector2(this.roleData.eatLong, this.roleData.eatWidth);
+        this.attackBoxDir = new Vector2(0, 0);
 
         EventCenter.AddListener(EventType.OnLeftBtnPressed, MoveLeft);
         EventCenter.AddListener(EventType.OnRightBtnPressed, MoveRight);
@@ -69,11 +76,9 @@ public class PlayerController : BaseRoleController
 
     private void OnCollisionEnter2D(Collision2D col)
     {
-        Debug.Log(col);
         if (col.transform.CompareTag("Ground"))
         {
             this.grounded = true;
-            Debug.Log(this.grounded);
         }
     }
 
@@ -119,7 +124,47 @@ public class PlayerController : BaseRoleController
     private void Eat()
     {
         this.stickAnim.SetTrigger("eat");
- 
+
+        Debug.Log(this.transform.position);
+        Debug.Log(this.transform.forward);
+        Vector2 center = Vector2.zero;
+        if (this.transform.rotation.y == 180)
+        {
+            center.x = this.transform.position.x + this.roleData.eatLong;
+        }
+        else
+        {
+            center.x = this.transform.position.x - this.roleData.eatWidth;
+        }
+        center.y = this.transform.position.y;
+
+        Debug.Log(center);
+
+        RaycastHit2D hitInfo = Physics2D.BoxCast(center, this.attackBoxSize, 0, this.transform.forward, 1, LayerMask.GetMask("Enemy"));
+
+        if (hitInfo)
+        {
+            if (hitInfo.transform.CompareTag("Enemy"))
+            {
+                Debug.Log("eat enemy");
+            }
+        }
+    }
+
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.white;
+        Vector2 center = Vector2.zero;
+        if (this.transform.rotation.y == 180)
+        {
+            center.x = this.transform.position.x + this.transform.forward.z;
+        }
+        else
+        {
+            center.x = this.transform.position.x - this.transform.forward.z;
+        }
+        center.y = this.transform.position.y;
+        Gizmos.DrawCube(center, this.attackBoxSize);
     }
 
     private void Interactive()
@@ -131,4 +176,6 @@ public class PlayerController : BaseRoleController
     {
 
     }
+
+
 }

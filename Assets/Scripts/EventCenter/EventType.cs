@@ -11,4 +11,5 @@
     OnSkillOneBtnClick,
     OnSkillTwoBtnClick,
     PlayerStopWalk,
+    PlayerEatBoxDisable,
 }
