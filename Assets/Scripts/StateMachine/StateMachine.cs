@@ -11,7 +11,8 @@ public enum StateID
     Turn,
     Chase,
     Attack,
-    Retreat
+    Retreat,
+    CheckPoint
 }
 
 //过渡
@@ -19,7 +20,8 @@ public enum Transition
 {
     NullTransition,
     SawPlayer,
-    LostPlayer
+    LostPlayer,
+    HeardNoise
 }
 
 public class EnemyStateManager
@@ -43,6 +45,7 @@ public class EnemyStateManager
 
     public void AddState(FSMState state)
     {
+        Debug.Log("AddState");
         if (state == null)
         {
             Debug.LogError("添加的状态机不存在");
@@ -50,6 +53,7 @@ public class EnemyStateManager
         }
         if(states.Count == 0)
         {
+            Debug.Log("states.Count == 0");
             states.Add(state);
             currentState = state;
             currentStateID = state.stateID;
@@ -59,11 +63,41 @@ public class EnemyStateManager
         {
             if (st.stateID == state.stateID)
             {
-                Debug.LogError("FSM ERROR: 无法添加状态 " + state.stateID.ToString() + " 因为该状态已存在");
+                Debug.LogError("FSM ERROR: 无法添加状态 " + state.stateID.ToString() + ", 因为该状态已存在");
                 return;
             }
         }
         states.Add(state);
+    }
+
+    public void DeleteState(StateID id) { }
+
+    public void PerformTransition(Transition trans)
+    {
+        if(trans == Transition.NullTransition)
+        {
+            Debug.LogError("trans is null!");
+            return;
+        }
+
+        StateID id = currentState.GetState(trans);
+
+        if(id == StateID.NullState)
+        {
+            Debug.Log("不存在目标状态");
+            return;
+        }
+        currentStateID = id;
+        foreach(FSMState st in states)
+        {
+            if(st.stateID == currentStateID)
+            {
+                currentState.DoBeforeLeaving();
+                currentState = st;
+                currentState.DoBeforeLeaving();
+                break;
+            }
+        }
     }
 }
 //抽象基类
@@ -113,19 +147,21 @@ public abstract class FSMState
 
         return StateID.NullState;
     }
+
 }
 
 //巡逻敌人行走状态
 public  class WalkStateForPatrol : FSMState
 {
     private float speed;
-    private float startPoint;
+    private Transform[] pathPoints;
+    private int currentPointIndex;
     private float endPoint;
 
-    public WalkStateForPatrol(float startp, float endp)
+    public WalkStateForPatrol(Transform[] path, float vel)
     {
-        startPoint = startp;
-        endPoint   = endp;
+        speed = vel;
+        pathPoints = path;
         stateID = StateID.Walk;
     }
     public override void DoBeforeEntering() { }
@@ -139,7 +175,31 @@ public  class WalkStateForPatrol : FSMState
 
     public override void Update(GameObject player, GameObject enemy)
     {
+        Vector3 vel = enemy.GetComponent<Rigidbody>().velocity;
+        Vector3 moveDir = pathPoints[currentPointIndex].position - enemy.transform.position;
+        moveDir = new Vector3(moveDir.x, 0, moveDir.z);
+        if (moveDir.magnitude < 1)
+        {
+            currentPointIndex++;
+            if (currentPointIndex >= pathPoints.Length)
+            {
+                currentPointIndex = 0;
+            }
+        }
+        else
+        {
+            vel = moveDir.normalized * enemy.GetComponent<PatrolEnemyController>().walkSpeed;
 
+            // Rotate towards the waypoint
+            enemy.transform.rotation = Quaternion.Slerp(enemy.transform.rotation,
+                                                      Quaternion.LookRotation(moveDir),
+                                                      5 * Time.deltaTime);
+            enemy.transform.eulerAngles = new Vector3(0, enemy.transform.eulerAngles.y, 0);
+
+        }
+
+        // Apply the Velocity
+        enemy.GetComponent<Rigidbody>().velocity = vel;
     }
 }
 
