@@ -231,7 +231,22 @@ public class TurnState : FSMState
 //追击
 public class ChaseState : FSMState
 {
+    private float speed;
+    public ChaseState(float vel)
+    {
+        stateID = StateID.Chase;
+        speed = vel;
+    }
 
+    public override void ReState(GameObject player, GameObject enemy)
+    {
+        
+    }
+
+    public override void Update(GameObject player, GameObject enemy)
+    {
+        
+    }
 }
 
 //攻击
