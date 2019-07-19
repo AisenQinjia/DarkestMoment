@@ -21,7 +21,7 @@ public class JoystickInput : MonoBehaviour
 
         this.jumpBtn = transform.Find("jumpBtn").GetComponent<Button>();
         this.killBtn = transform.Find("killBtn").GetComponent<Button>();
-        this.interativeBtn = transform.Find("interativeBtn").GetComponent<Button>();
+        //    this.interativeBtn = transform.Find("interativeBtn").GetComponent<Button>();
         this.powerStateBtn = transform.Find("powerStateBtn").GetComponent<Button>();
         this.flowStateBtn = transform.Find("flowStateBtn").GetComponent<Button>();
         this.stickStateBtn = transform.Find("stickStateBtn").GetComponent<Button>();
@@ -30,10 +30,11 @@ public class JoystickInput : MonoBehaviour
 
         this.jumpBtn.onClick.AddListener(OnJumpBtnClick);
         this.killBtn.onClick.AddListener(OnKillBtnClick);
-        this.interativeBtn.onClick.AddListener(OnInteractiveBtnClick);
+        //   this.interativeBtn.onClick.AddListener(OnInteractiveBtnClick);
         this.powerStateBtn.onClick.AddListener(OnPowerStateBtnClick);
         this.flowStateBtn.onClick.AddListener(OnFlowStateBtnClick);
         this.stickStateBtn.onClick.AddListener(OnStickStateBtnClick);
+
         this.skillOneBtn.onClick.AddListener(OnSkillOneBtnClick);
         this.skillTwoBtn.onClick.AddListener(OnSkillTwoBtnClick);
 
@@ -43,10 +44,11 @@ public class JoystickInput : MonoBehaviour
     {
         this.jumpBtn.onClick.RemoveListener(OnJumpBtnClick);
         this.killBtn.onClick.RemoveListener(OnKillBtnClick);
-        this.interativeBtn.onClick.RemoveListener(OnInteractiveBtnClick);
+        // this.interativeBtn.onClick.RemoveListener(OnInteractiveBtnClick);
         this.powerStateBtn.onClick.RemoveListener(OnPowerStateBtnClick);
         this.flowStateBtn.onClick.RemoveListener(OnFlowStateBtnClick);
         this.stickStateBtn.onClick.RemoveListener(OnStickStateBtnClick);
+
         this.skillOneBtn.onClick.RemoveListener(OnSkillOneBtnClick);
         this.skillTwoBtn.onClick.RemoveListener(OnSkillTwoBtnClick);
 
@@ -81,23 +83,29 @@ public class JoystickInput : MonoBehaviour
         ScaleBtn(this.interativeBtn.transform);
     }
 
-    private void OnPowerStateBtnClick()
+    private void OnStickStateBtnClick()
     {
-        EventCenter.Broadcast(EventType.OnPowerStateBtnClick);
-        ScaleBtn(this.powerStateBtn.transform);
+        Debug.Log("click " + (int)PlayerState.Stick);
+        EventCenter.Broadcast<int>(EventType.OnStickStateBtnClick, (int)PlayerState.Stick);
+        ScaleBtn(this.stickStateBtn.transform);
     }
 
     private void OnFlowStateBtnClick()
     {
-        EventCenter.Broadcast(EventType.OnFlowStateBtnClick);
+        Debug.Log("click " + (int)PlayerState.Flow);
+        EventCenter.Broadcast<int>(EventType.OnFlowStateBtnClick, (int)PlayerState.Flow);
         ScaleBtn(this.flowStateBtn.transform);
     }
 
-    private void OnStickStateBtnClick()
+    private void OnPowerStateBtnClick()
     {
-        EventCenter.Broadcast(EventType.OnStickStateBtnClick);
-        ScaleBtn(this.stickStateBtn.transform);
+        Debug.Log("click " + (int)PlayerState.Power);
+        EventCenter.Broadcast<int>(EventType.OnPowerStateBtnClick, (int)PlayerState.Power);
+        ScaleBtn(this.powerStateBtn.transform);
     }
+
+
+
 
     private void OnSkillOneBtnClick()
     {

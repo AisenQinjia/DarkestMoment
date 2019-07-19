@@ -59,7 +59,7 @@ public class ConfigManager
 
     public ConfigManager()
     {
-        LoadJson<RoleData>(roleDict, "Role");
         instance = this;
+        LoadJson<RoleData>(roleDict, "Role");
     }
 }

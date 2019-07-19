@@ -13,12 +13,13 @@ public class RoleData : IcfgId
     public int jumpForce;
     public int eatLong;
     public int eatWidth;
-
+    public int interativeRange;
     public RoleData()
     {
         this.walkSpeed = 1;
         this.jumpForce = 300;
         this.eatLong = 1;
         this.eatWidth = 1;
+        this.interativeRange = 1;
     }
 }
