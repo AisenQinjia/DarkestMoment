@@ -6,7 +6,8 @@ using UnityEngine;
 
 public class BaseRoleController : MonoBehaviour
 {
-
+    public EnemyStateManager Statemanager;
+    public Rigidbody2D rigidbody;
     protected CharacterController cc;
     protected Animator anim;
 

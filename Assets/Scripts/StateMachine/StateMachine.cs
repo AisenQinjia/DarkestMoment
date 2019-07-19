@@ -12,7 +12,8 @@ public enum StateID
     Chase,
     Attack,
     Retreat,
-    CheckPoint
+    CheckPoint,
+    StareAtPlayer
 }
 
 //过渡
@@ -25,7 +26,8 @@ public enum Transition
     CanChase,
     CanAttack,
     LostPlayer,
-    HeardNoise
+    HeardNoise,
+    TouchedBarrier
 }
 
 public class EnemyStateManager
@@ -170,9 +172,17 @@ public abstract class FSMState
         }
     }
 
+    //执行过渡
     public void PerformTransition(Transition trans, GameObject enemy)
     {
-        enemy.GetComponent<PatrolEnemyController>().PerformTransition(trans);
+        enemy.GetComponent<BaseRoleController>().Statemanager.PerformTransition(trans);
+    }
+
+    //计算是否在目标视野范围
+    public bool IsInRange(GameObject player, GameObject enemy, float angle, float range)
+    {
+        Vector3 dir = player.transform.position - enemy.transform.position;
+        return Mathf.Abs(Vector3.Angle(enemy.transform.right, dir)) < angle && dir.magnitude < range;
     }
 }
 
@@ -210,7 +220,7 @@ public  class WalkStateForPatrol : FSMState
             {
                 currentPointIndex = 0;
             }
-            enemy.GetComponent<PatrolEnemyController>().PerformTransition(Transition.ShouldTurn);
+            enemy.GetComponent<BaseRoleController>().Statemanager.PerformTransition(Transition.ShouldTurn);
         }
         else
         {
@@ -247,7 +257,7 @@ public class TurnState : FSMState
     public override void Update(GameObject player, GameObject enemy)
     {
         enemy.transform.Rotate(new Vector3(0, 180, 0));
-        enemy.GetComponent<PatrolEnemyController>().PerformTransition(Transition.ShouldWalk);
+        enemy.GetComponent<BaseRoleController>().Statemanager.PerformTransition(Transition.ShouldWalk);
     }
 }
 
@@ -278,11 +288,11 @@ public class ChaseState : FSMState
         LookAtDirection(enemy, moveDir);
         if (moveDir.magnitude > chaseRange)
         {
-            enemy.GetComponent<PatrolEnemyController>().PerformTransition(Transition.LostPlayer);
+            enemy.GetComponent<BaseRoleController>().Statemanager.PerformTransition(Transition.LostPlayer);
         }
         else if(moveDir.magnitude < attackRange)
         {
-            enemy.GetComponent<PatrolEnemyController>().PerformTransition(Transition.CanAttack);
+            enemy.GetComponent<BaseRoleController>().Statemanager.PerformTransition(Transition.CanAttack);
         }
         else
         {
@@ -317,7 +327,7 @@ public class AttackState : FSMState
     public override void Update(GameObject player, GameObject enemy)
     {
         Debug.LogError("Die !");
-        enemy.GetComponent<PatrolEnemyController>().PerformTransition(Transition.LostPlayer);
+        enemy.GetComponent<BaseRoleController>().Statemanager.PerformTransition(Transition.LostPlayer);
     }
 }
 
@@ -380,4 +390,52 @@ public class RetreatState : FSMState
         }
 
     }
+}
+
+//目视敌人状态
+public class StareAtPlayerState : FSMState
+{
+    float validTime;
+    float validRange;
+    float validAngle;
+    float timer;
+
+    public StareAtPlayerState(float vlidtime, float starerange, float validangle)
+    {
+        stateID = StateID.StareAtPlayer;
+        validTime = vlidtime;
+        validRange = starerange;
+        validAngle = validangle;
+    }
+
+    public override void DoBeforeEntering()
+    {
+        timer = 0;
+    }
+
+    public override void DoBeforeLeaving()
+    {
+        timer = 0;
+    }
+
+    public override void ReState(GameObject player, GameObject enemy)
+    {
+        if (IsInRange(player, enemy, validAngle, validRange))
+        {
+            timer = 0;
+        }
+        else
+        {
+            if (timer > validTime)
+            {
+                PerformTransition(Transition.LostPlayer, enemy);
+            }
+        }
+    }
+    public override void Update(GameObject player, GameObject enemy)
+    {
+        timer = timer + Time.deltaTime;
+        enemy.GetComponent<BaseRoleController>().rigidbody.velocity = new Vector2(0, 0);
+    }
+
 }
