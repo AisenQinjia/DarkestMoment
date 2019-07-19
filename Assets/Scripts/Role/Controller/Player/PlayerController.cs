@@ -11,7 +11,7 @@ public class PlayerController : BaseRoleController
     private Animator curAnim;
     private Animator stickAnim;
 
-    private RoleData roleData = new RoleData();
+    private RoleData roleData;
 
     private bool grounded = true;
     private Vector3 velocity = new Vector3(0, 0, 0);
@@ -27,6 +27,7 @@ public class PlayerController : BaseRoleController
         stickState = transform.Find("stickState").gameObject;
         this.stickAnim = this.stickState.GetComponent<Animator>();
         this.rb = GetComponent<Rigidbody2D>();
+        this.roleData = ConfigManager.Instance.GetRoleData(1);
 
         this.attackBoxSize = new Vector2(this.roleData.eatLong, this.roleData.eatWidth);
         this.attackBoxDir = new Vector2(0, 0);
@@ -97,7 +98,7 @@ public class PlayerController : BaseRoleController
 
         this.transform.rotation = Quaternion.Euler(new Vector3(0, 0, 0));
 
-        this.velocity.x = -1;
+        this.velocity.x = -1 * this.roleData.walkSpeed;
         this.stickAnim.SetBool("walk", true);
 
     }
@@ -107,7 +108,7 @@ public class PlayerController : BaseRoleController
 
         this.transform.rotation = Quaternion.Euler(new Vector3(0, 180, 0));
 
-        this.velocity.x = 1;
+        this.velocity.x = 1*this.roleData.walkSpeed;
         this.stickAnim.SetBool("walk", true);
     }
 
@@ -138,9 +139,9 @@ public class PlayerController : BaseRoleController
         }
         center.y = this.transform.position.y;
 
-        Debug.Log(center);
+        // Debug.Log(center);
 
-        RaycastHit2D hitInfo = Physics2D.BoxCast(center, this.attackBoxSize, 0, this.transform.forward, 1, LayerMask.GetMask("Enemy"));
+        RaycastHit2D hitInfo = Physics2D.BoxCast(center, this.attackBoxSize, 0, this.transform.forward, 10, LayerMask.GetMask("Enemy"));
 
         if (hitInfo)
         {
@@ -169,7 +170,28 @@ public class PlayerController : BaseRoleController
 
     private void Interactive()
     {
+        Vector2 center = Vector2.zero;
+        if (this.transform.rotation.y == 180)
+        {
+            center.x = this.transform.position.x + this.roleData.eatLong;
+        }
+        else
+        {
+            center.x = this.transform.position.x - this.roleData.eatWidth;
+        }
+        center.y = this.transform.position.y;
 
+        //Debug.Log(center);
+
+        RaycastHit2D hitInfo = Physics2D.BoxCast(center, this.attackBoxSize, 0, this.transform.forward, 10, LayerMask.GetMask("Interative"));
+
+        if (hitInfo)
+        {
+            if (hitInfo.transform.CompareTag("Enemy"))
+            {
+                Debug.Log("interactive obj");
+            }
+        }
     }
 
     public void Dead()

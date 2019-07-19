@@ -1,10 +1,14 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Newtonsoft.Json;
+using System;
 
-public class RoleData
+[Serializable]
+public class RoleData : IcfgId
 {
-    [SerializeField]
+    public int cfgId { get; set; }
+    public string name;
     public int walkSpeed;
     public int jumpForce;
     public int eatLong;

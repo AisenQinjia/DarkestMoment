@@ -13,6 +13,8 @@ public class Main : MonoBehaviour
         if (hasCreated)
             return;
 
+        ConfigManager configMgr = new ConfigManager();
+
         gameObject.AddComponent<AudioManager>();
         gameObject.AddComponent<RoleManager>();
 

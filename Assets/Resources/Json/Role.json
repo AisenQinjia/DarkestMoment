@@ -1,0 +1,10 @@
+[
+    {
+        "cfgId": 1,
+        "name": "史莱姆",
+        "walkSpeed": 5,
+        "jumpForce": 300,
+        "eatLong": 1,
+        "eatWidth": 1
+    }
+]
