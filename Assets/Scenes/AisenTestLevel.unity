@@ -1409,7 +1409,7 @@ BoxCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
+  m_Offset: {x: -0.033242583, y: 0.09972763}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
@@ -1420,7 +1420,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 1.5318804, y: 0.80054474}
   m_EdgeRadius: 0
 --- !u!1 &1277020336
 GameObject:
@@ -2086,7 +2086,7 @@ BoxCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 2.19, y: 0.36}
+  m_Offset: {x: 1.109618, y: 0.36}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -2097,7 +2097,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 5.167324, y: 1.8898997}
+  m_Size: {x: 5.6392355, y: 1.8898997}
   m_EdgeRadius: 0
 --- !u!50 &1775649529
 Rigidbody2D:
@@ -2133,6 +2133,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rigidbody: {fileID: 0}
+  frontAlarmTime: 0.5
+  backKillTime: 1
+  redAlarmLastTime: 1
   player: {fileID: 1823221600}
   walkSpeed: 1
   chaseSpeed: 5
@@ -2142,8 +2145,6 @@ MonoBehaviour:
   chaseAngle: 30
   stareTime: 5
   stareRange: 25
-  alarmTimer: 0
-  backKillTimer: 0
   barrierValidDistance: 10
   path:
   - {fileID: 1059856720}
@@ -2172,7 +2173,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1823221600}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 16, y: 1.6, z: 0}
+  m_LocalPosition: {x: 17.19, y: 0.49, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1221330805}

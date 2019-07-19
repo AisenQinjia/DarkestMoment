@@ -4,6 +4,20 @@ using UnityEngine;
 //巡逻型敌人
 public class PatrolEnemyController : BaseRoleController
 {
+    //协程
+    IEnumerator coroutine;
+
+    GameObject redAlarm;
+    GameObject yellowAlarm;
+    //预警计时
+    float alarmTimer = 0;
+    //正面预警时间
+    public float frontAlarmTime;
+    //背面预警时间
+    public float backKillTime;
+    //发现感叹号持续时间
+    public float redAlarmLastTime;
+
     public GameObject player;
     public float walkSpeed;
     public float chaseSpeed;
@@ -13,8 +27,7 @@ public class PatrolEnemyController : BaseRoleController
     public float chaseAngle;
     public float stareTime;
     public float stareRange;
-    public float alarmTimer;
-    public float backKillTimer;
+
     //暂时都用一个collider吧，用距离判断生效与否
     public float barrierValidDistance;
     public Transform[] path;
@@ -24,14 +37,12 @@ public class PatrolEnemyController : BaseRoleController
     {
         GetResource();
         CreateFSM();
-        rigidbody = gameObject.GetComponent<Rigidbody2D>();
-        alarmTimer = 0;
-        backKillTimer = 0;
     }
 
     // Update is called once per frame
     void Update()
     {
+        UpdateTimer();
         Statemanager.currentState.ReState(player, gameObject);
         Statemanager.currentState.Update(player, gameObject);
     }
@@ -75,20 +86,32 @@ public class PatrolEnemyController : BaseRoleController
 
     void GetResource()
     {
-
+        rigidbody = gameObject.GetComponent<Rigidbody2D>();
+        yellowAlarm = gameObject.transform.Find("YellowAlarm").gameObject;
+        redAlarm = gameObject.transform.Find("RedAlarm").gameObject;
+        if (yellowAlarm == null || redAlarm == null) Debug.LogError("no alarm!");
     }
     public void PerformTransition(Transition trans)
     {
         Statemanager.PerformTransition(trans);
     }
 
+    void UpdateTimer()
+    {
+        if(alarmTimer != 0)
+        {
+            alarmTimer += Time.deltaTime;
+        }
+    }
     //进入视野
     void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.gameObject.tag == "Player")
+        if (other.gameObject.tag == "Player" && Statemanager.currentStateID == StateID.Walk)
         {
-
-            Statemanager.PerformTransition(Transition.SawPlayer);
+            yellowAlarm.SetActive(true);
+            redAlarm.SetActive(false);
+            //相当于触发器，让timer开始计时
+            alarmTimer = 0.01f;
         }
     }
 
@@ -99,11 +122,49 @@ public class PatrolEnemyController : BaseRoleController
         {
             Statemanager.PerformTransition(Transition.TouchedBarrier);
         }
+        else if(other.gameObject.tag == "Player")
+        {
+            if(alarmTimer > frontAlarmTime)
+            {
+                if(IsInForntOfEnemy(player, gameObject))
+                {
+                    RedAlarmBegin();
+                    Statemanager.PerformTransition(Transition.SawPlayer);
+                }
+                else if(alarmTimer > backKillTime)
+                {
+                    RedAlarmBegin();
+                    //转个方向
+                    gameObject.transform.Rotate(new Vector3(0, 180, 0));
+                    yellowAlarm.transform.Rotate(new Vector3(0, 180, 0));//让yellow再转回来，不然画面翻转了
+                    Statemanager.PerformTransition(Transition.SawPlayer);
+                }
+            }
+        }
     }
 
+    void RedAlarmBegin()
+    {
+        alarmTimer = 0;
+        yellowAlarm.SetActive(false);
+        redAlarm.SetActive(true);
+        coroutine = WaitAndDeactive(redAlarmLastTime);
+        StartCoroutine(coroutine);
+    }
+    //为了保证预警图片不被翻转，在这里补一下，turn的时候调用
+    public override void EnemyTurn()
+    {
+        if (yellowAlarm) yellowAlarm.transform.Rotate(new Vector3(0, 180, 0));
+        if (redAlarm) redAlarm.transform.Rotate(new Vector3(0, 180, 0));
+    }
     void OnTriggerExit2D(Collider2D other)
     {
-
+        if(other.gameObject.tag == "Player")
+        {
+            yellowAlarm.SetActive(false);
+            redAlarm.SetActive(false);
+            alarmTimer = 0;
+        }
     }
 
     //死亡接口
@@ -117,5 +178,12 @@ public class PatrolEnemyController : BaseRoleController
     {
         //if()
         Statemanager.PerformTransition(Transition.HeardNoise);
+    }
+
+    //黄色延时消失
+    private IEnumerator WaitAndDeactive(float waitTime)
+    {
+        yield return new WaitForSeconds(waitTime);
+        redAlarm.SetActive(false);
     }
 }
