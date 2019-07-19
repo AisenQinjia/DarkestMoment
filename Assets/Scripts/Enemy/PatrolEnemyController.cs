@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 //巡逻型敌人
-public class PatrolEnemyController : MonoBehaviour
+public class PatrolEnemyController : BaseRoleController
 {
     public GameObject player;
     public float walkSpeed;
@@ -72,13 +72,13 @@ public class PatrolEnemyController : MonoBehaviour
     }
 
     //死亡接口
-    public void Dead()
+    public override void OnDead()
     {
         Debug.LogError(" I am Dead!");
     }
 
     //吸引敌人注意力接口
-    public void ComeToMe(Transform trans)
+    public override void ComeToMe(Transform trans)
     {
         Statemanager.PerformTransition(Transition.HeardNoise);
     }
