@@ -10,12 +10,18 @@ public class PatrolEnemyController : BaseRoleController
     public float chaseRange;
     public float attackRange;
     public float retreatSpeed;
+    public float viewAngle;
+    public float stareTime;
+    public float stareRange;
+    //暂时都用一个collider吧，用距离判断生效与否
+    public float barrierValidDistance;
     public Transform[] path;
-    private EnemyStateManager Statemanager;
+
     // Start is called before the first frame update
     void Start()
     {
         CreateFSM();
+        rigidbody = gameObject.GetComponent<Rigidbody2D>();
     }
 
     // Update is called once per frame
@@ -38,6 +44,7 @@ public class PatrolEnemyController : BaseRoleController
         ChaseState chase = new ChaseState(chaseSpeed, chaseRange, attackRange);
         chase.AddTransition(Transition.CanAttack, StateID.Attack);
         chase.AddTransition(Transition.LostPlayer, StateID.Retreat);
+        chase.AddTransition(Transition.TouchedBarrier, StateID.StareAtPlayer);
 
         AttackState attack = new AttackState();
         attack.AddTransition(Transition.LostPlayer, StateID.Retreat);
@@ -46,13 +53,18 @@ public class PatrolEnemyController : BaseRoleController
         retreat.AddTransition(Transition.ShouldWalk, StateID.Walk);
         retreat.AddTransition(Transition.SawPlayer, StateID.Chase);
 
+        StareAtPlayerState stareAtPlayer = new StareAtPlayerState(stareTime, stareRange, viewAngle);
+        stareAtPlayer.AddTransition(Transition.LostPlayer, StateID.Retreat);
+        stareAtPlayer.AddTransition(Transition.CanAttack, StateID.Attack);
+        stareAtPlayer.AddTransition(Transition.CanChase, StateID.Chase);
+
 
         Statemanager.AddState(walk);
         Statemanager.AddState(turn);
         Statemanager.AddState(chase);
         Statemanager.AddState(attack);
         Statemanager.AddState(retreat);
-
+        Statemanager.AddState(stareAtPlayer);
     }
 
     public void PerformTransition(Transition trans)
@@ -61,15 +73,23 @@ public class PatrolEnemyController : BaseRoleController
     }
 
     //进入视野
-    private void OnTriggerEnter2D(Collider2D other)
+    void OnTriggerEnter2D(Collider2D other)
     {
-        Debug.Log("OnTriggerEnter");
         if (other.gameObject.tag == "Player")
         {
-            Debug.Log("Player detected!");
             Statemanager.PerformTransition(Transition.SawPlayer);
         }
     }
+
+    void OnTriggerStay2D(Collider2D other)
+    {
+        //这令人绝望的判断...
+        if (other.gameObject.tag == "Barrier" && Statemanager.currentStateID == StateID.Chase && (transform.position - other.gameObject.transform.position).magnitude < barrierValidDistance)
+        {
+            Statemanager.PerformTransition(Transition.TouchedBarrier);
+        }
+    }
+
 
     //死亡接口
     public override void OnDead()
