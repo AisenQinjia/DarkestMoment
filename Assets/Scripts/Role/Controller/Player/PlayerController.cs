@@ -53,13 +53,13 @@ public class PlayerController : BaseRoleController
         {
 
             this.transform.rotation = Quaternion.Euler(new Vector3(0, 0, 0));
-            this.transform.position += new Vector3(-1, 0, 0) * Time.deltaTime;
+            this.transform.position += new Vector3(-1 * this.roleData.walkSpeed, 0, 0) * Time.deltaTime;
         }
         if (Input.GetKey(KeyCode.D))
         {
 
             this.transform.rotation = Quaternion.Euler(new Vector3(0, 180, 0));
-            this.transform.position += new Vector3(1, 0, 0) * Time.deltaTime;
+            this.transform.position += new Vector3(1 * this.roleData.walkSpeed, 0, 0) * Time.deltaTime;
         }
         if (Input.GetKey(KeyCode.Space))
         {
@@ -108,7 +108,7 @@ public class PlayerController : BaseRoleController
 
         this.transform.rotation = Quaternion.Euler(new Vector3(0, 180, 0));
 
-        this.velocity.x = 1*this.roleData.walkSpeed;
+        this.velocity.x = 1 * this.roleData.walkSpeed;
         this.stickAnim.SetBool("walk", true);
     }
 
