@@ -10,9 +10,11 @@ public class PatrolEnemyController : BaseRoleController
     public float chaseRange;
     public float attackRange;
     public float retreatSpeed;
-    public float viewAngle;
+    public float chaseAngle;
     public float stareTime;
     public float stareRange;
+    public float alarmTimer;
+    public float backKillTimer;
     //暂时都用一个collider吧，用距离判断生效与否
     public float barrierValidDistance;
     public Transform[] path;
@@ -20,12 +22,15 @@ public class PatrolEnemyController : BaseRoleController
     // Start is called before the first frame update
     void Start()
     {
+        GetResource();
         CreateFSM();
         rigidbody = gameObject.GetComponent<Rigidbody2D>();
+        alarmTimer = 0;
+        backKillTimer = 0;
     }
 
     // Update is called once per frame
-    void FixedUpdate()
+    void Update()
     {
         Statemanager.currentState.ReState(player, gameObject);
         Statemanager.currentState.Update(player, gameObject);
@@ -34,6 +39,7 @@ public class PatrolEnemyController : BaseRoleController
     void CreateFSM()
     {
         Statemanager = new EnemyStateManager();
+
         WalkStateForPatrol walk = new WalkStateForPatrol(path, walkSpeed);
         walk.AddTransition(Transition.ShouldTurn, StateID.Turn);
         walk.AddTransition(Transition.SawPlayer, StateID.Chase);
@@ -41,7 +47,7 @@ public class PatrolEnemyController : BaseRoleController
         TurnState turn = new TurnState();
         turn.AddTransition(Transition.ShouldWalk, StateID.Walk);
 
-        ChaseState chase = new ChaseState(chaseSpeed, chaseRange, attackRange);
+        ChaseState chase = new ChaseState(chaseSpeed, chaseRange, attackRange, chaseAngle);
         chase.AddTransition(Transition.CanAttack, StateID.Attack);
         chase.AddTransition(Transition.LostPlayer, StateID.Retreat);
         chase.AddTransition(Transition.TouchedBarrier, StateID.StareAtPlayer);
@@ -53,7 +59,7 @@ public class PatrolEnemyController : BaseRoleController
         retreat.AddTransition(Transition.ShouldWalk, StateID.Walk);
         retreat.AddTransition(Transition.SawPlayer, StateID.Chase);
 
-        StareAtPlayerState stareAtPlayer = new StareAtPlayerState(stareTime, stareRange, viewAngle);
+        StareAtPlayerState stareAtPlayer = new StareAtPlayerState(stareTime, stareRange, chaseAngle);
         stareAtPlayer.AddTransition(Transition.LostPlayer, StateID.Retreat);
         stareAtPlayer.AddTransition(Transition.CanAttack, StateID.Attack);
         stareAtPlayer.AddTransition(Transition.CanChase, StateID.Chase);
@@ -67,6 +73,10 @@ public class PatrolEnemyController : BaseRoleController
         Statemanager.AddState(stareAtPlayer);
     }
 
+    void GetResource()
+    {
+
+    }
     public void PerformTransition(Transition trans)
     {
         Statemanager.PerformTransition(trans);
@@ -77,19 +87,24 @@ public class PatrolEnemyController : BaseRoleController
     {
         if (other.gameObject.tag == "Player")
         {
+
             Statemanager.PerformTransition(Transition.SawPlayer);
         }
     }
 
     void OnTriggerStay2D(Collider2D other)
     {
-        //这令人绝望的判断...
+        //这令人窒息的判断...虽然目前只有chase可以转换到Stare态
         if (other.gameObject.tag == "Barrier" && Statemanager.currentStateID == StateID.Chase && (transform.position - other.gameObject.transform.position).magnitude < barrierValidDistance)
         {
             Statemanager.PerformTransition(Transition.TouchedBarrier);
         }
     }
 
+    void OnTriggerExit2D(Collider2D other)
+    {
+
+    }
 
     //死亡接口
     public override void OnDead()
@@ -100,6 +115,7 @@ public class PatrolEnemyController : BaseRoleController
     //吸引敌人注意力接口
     public override void ComeToMe(Transform trans)
     {
+        //if()
         Statemanager.PerformTransition(Transition.HeardNoise);
     }
 }

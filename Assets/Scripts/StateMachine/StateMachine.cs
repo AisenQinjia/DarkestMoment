@@ -184,6 +184,12 @@ public abstract class FSMState
         Vector3 dir = player.transform.position - enemy.transform.position;
         return Mathf.Abs(Vector3.Angle(enemy.transform.right, dir)) < angle && dir.magnitude < range;
     }
+
+    //计算距离
+    public float Distance(GameObject player, GameObject enemy)
+    {
+        return (player.transform.position - enemy.transform.position).magnitude;
+    }
 }
 
 //巡逻敌人行走状态
@@ -266,39 +272,36 @@ public class ChaseState : FSMState
 {
     private float speed;
     private float chaseRange;
+    private float chaseAngle;
     private float attackRange;
 
-    public ChaseState(float vel, float chaserange, float attackrange)
+    public ChaseState(float vel, float chaserange, float attackrange, float chaseangle)
     {
         stateID = StateID.Chase;
         speed = vel;
         chaseRange = chaserange;
         attackRange = attackrange;
+        chaseAngle = chaseangle;
     }
 
     public override void ReState(GameObject player, GameObject enemy)
     {
-        
+        if(!IsInRange(player, enemy, chaseAngle, chaseRange))
+        {
+            PerformTransition(Transition.LostPlayer, enemy);
+        }
+        else if(Distance(player, enemy) < attackRange)
+        {
+            PerformTransition(Transition.CanAttack, enemy);
+        }
     }
 
     public override void Update(GameObject player, GameObject enemy)
     {
         Vector3 moveDir = player.transform.position - enemy.transform.position;
-        moveDir = new Vector3(moveDir.x, 0, 0);
         LookAtDirection(enemy, moveDir);
-        if (moveDir.magnitude > chaseRange)
-        {
-            enemy.GetComponent<BaseRoleController>().Statemanager.PerformTransition(Transition.LostPlayer);
-        }
-        else if(moveDir.magnitude < attackRange)
-        {
-            enemy.GetComponent<BaseRoleController>().Statemanager.PerformTransition(Transition.CanAttack);
-        }
-        else
-        {
-            Vector3 vel = moveDir.normalized * speed;
-            enemy.GetComponent<Rigidbody2D>().velocity = new Vector2(vel.x, 0);
-        }
+        Vector3 vel = moveDir.normalized * speed;
+        enemy.GetComponent<Rigidbody2D>().velocity = new Vector2(vel.x, 0);
     }
 }
 
