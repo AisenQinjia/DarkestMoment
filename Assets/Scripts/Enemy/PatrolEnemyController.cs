@@ -144,9 +144,7 @@ public class PatrolEnemyController : BaseRoleController
                 else if(alarmTimer > backKillTime)
                 {
                     RedAlarmBegin();
-                    //转个方向
-                    gameObject.transform.Rotate(new Vector3(0, 180, 0));
-                    yellowAlarm.transform.Rotate(new Vector3(0, 180, 0));//让yellow再转回来，不然画面翻转了
+                    LookAtPlayer(player, gameObject);
                     Statemanager.PerformTransition(Transition.SawPlayer);
                 }
             }
