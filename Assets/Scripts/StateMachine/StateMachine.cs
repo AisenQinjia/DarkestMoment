@@ -22,6 +22,8 @@ public enum Transition
     ShouldTurn,
     ShouldWalk,
     SawPlayer,
+    CanChase,
+    CanAttack,
     LostPlayer,
     HeardNoise
 }
@@ -47,7 +49,6 @@ public class EnemyStateManager
 
     public void AddState(FSMState state)
     {
-        Debug.Log("AddState");
         if (state == null)
         {
             Debug.LogError("添加的状态机不存在");
@@ -55,7 +56,6 @@ public class EnemyStateManager
         }
         if(states.Count == 0)
         {
-            Debug.Log("states.Count == 0");
             states.Add(state);
             currentState = state;
             currentStateID = state.stateID;
@@ -150,6 +150,30 @@ public abstract class FSMState
         return StateID.NullState;
     }
 
+    //看着行进方向
+    public void LookAtDirection(GameObject enemy, Vector3 moveDir)
+    {
+        moveDir = new Vector3(moveDir.x, 0, 0);
+        if (Mathf.Abs(Vector3.Angle(moveDir, enemy.transform.right)) > 90)
+        {
+            enemy.transform.Rotate(new Vector3(0, 180, 0));
+        }
+    }
+
+    //背对着行进方向
+    public void BackAtDirection(GameObject enemy, Vector3 moveDir)
+    {
+        moveDir = new Vector3(moveDir.x, 0, 0);
+        if (Mathf.Abs(Vector3.Angle(moveDir, enemy.transform.right)) < 90)
+        {
+            enemy.transform.Rotate(new Vector3(0, 180, 0));
+        }
+    }
+
+    public void PerformTransition(Transition trans, GameObject enemy)
+    {
+        enemy.GetComponent<PatrolEnemyController>().PerformTransition(trans);
+    }
 }
 
 //巡逻敌人行走状态
@@ -178,7 +202,7 @@ public  class WalkStateForPatrol : FSMState
     public override void Update(GameObject player, GameObject enemy)
     {
         Vector3 moveDir = pathPoints[currentPointIndex].position - enemy.transform.position;
-        moveDir = new Vector3(moveDir.x, 0, 0);
+        
         if (moveDir.magnitude < 1)
         {
             currentPointIndex++;
@@ -190,10 +214,9 @@ public  class WalkStateForPatrol : FSMState
         }
         else
         {
-            Vector3 vel = moveDir.normalized * enemy.GetComponent<PatrolEnemyController>().walkSpeed;
-
-            // Rotate towards the waypoint
-            //enemy.transform
+            moveDir = new Vector3(moveDir.x, 0, 0);
+            LookAtDirection(enemy, moveDir);
+            Vector3 vel = moveDir.normalized * speed;
             enemy.GetComponent<Rigidbody2D>().velocity = new Vector2(vel.x, 0);
         }
     }
@@ -232,10 +255,15 @@ public class TurnState : FSMState
 public class ChaseState : FSMState
 {
     private float speed;
-    public ChaseState(float vel)
+    private float chaseRange;
+    private float attackRange;
+
+    public ChaseState(float vel, float chaserange, float attackrange)
     {
         stateID = StateID.Chase;
         speed = vel;
+        chaseRange = chaserange;
+        attackRange = attackrange;
     }
 
     public override void ReState(GameObject player, GameObject enemy)
@@ -245,18 +273,111 @@ public class ChaseState : FSMState
 
     public override void Update(GameObject player, GameObject enemy)
     {
-        
+        Vector3 moveDir = player.transform.position - enemy.transform.position;
+        moveDir = new Vector3(moveDir.x, 0, 0);
+        LookAtDirection(enemy, moveDir);
+        if (moveDir.magnitude > chaseRange)
+        {
+            enemy.GetComponent<PatrolEnemyController>().PerformTransition(Transition.LostPlayer);
+        }
+        else if(moveDir.magnitude < attackRange)
+        {
+            enemy.GetComponent<PatrolEnemyController>().PerformTransition(Transition.CanAttack);
+        }
+        else
+        {
+            Vector3 vel = moveDir.normalized * speed;
+            enemy.GetComponent<Rigidbody2D>().velocity = new Vector2(vel.x, 0);
+        }
     }
 }
 
 //攻击
 public class AttackState : FSMState
 {
+    public AttackState()
+    {
+        stateID = StateID.Attack;
+    }
 
+    public override void DoBeforeEntering()
+    {
+        
+    }
+
+    public override void DoBeforeLeaving()
+    {
+        
+    }
+
+    public override void ReState(GameObject player, GameObject enemy)
+    {
+        
+    }
+    public override void Update(GameObject player, GameObject enemy)
+    {
+        Debug.LogError("Die !");
+        enemy.GetComponent<PatrolEnemyController>().PerformTransition(Transition.LostPlayer);
+    }
 }
 
 //后退
 public class RetreatState : FSMState
 {
+    //就是巡逻的两个点
+    Transform[] paths;
+    float speed;
+    float minX;
+    float maxX;
 
+    public RetreatState(Transform[] path, float vel)
+    {
+        stateID = StateID.Retreat;
+        paths = path;
+        speed = vel;
+        GetXRange();
+    }
+
+    public void GetXRange()
+    {
+        //就先假设只有两个点吧
+        minX = paths[0].position.x;
+        maxX = paths[1].position.x;
+
+        if(minX > maxX)
+        {
+            float tmp = minX;
+            minX = maxX;
+            maxX = tmp;
+        }
+    }
+    public override void DoBeforeEntering()
+    {
+
+    }
+
+    public override void DoBeforeLeaving()
+    {
+
+    }
+
+    public override void ReState(GameObject player, GameObject enemy)
+    {
+        if(enemy.transform.position.x > minX && enemy.transform.position.x < maxX)
+        {
+            PerformTransition(Transition.ShouldWalk, enemy);
+        }
+    }
+    public override void Update(GameObject player, GameObject enemy)
+    {
+        if(enemy.transform.position.x < minX)
+        {
+            enemy.GetComponent<Rigidbody2D>().velocity = new Vector2(speed, 0);
+        }
+        else if(enemy.transform.position.x > maxX)
+        {
+            enemy.GetComponent<Rigidbody2D>().velocity = new Vector2(-speed, 0);
+        }
+
+    }
 }
