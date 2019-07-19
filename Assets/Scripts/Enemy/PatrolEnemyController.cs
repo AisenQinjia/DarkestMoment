@@ -113,6 +113,16 @@ public class PatrolEnemyController : BaseRoleController
             //相当于触发器，让timer开始计时
             alarmTimer = 0.01f;
         }
+        else if(other.gameObject.tag == "Player")
+        {
+            //背后发现需要调转方向
+            if(!IsInForntOfEnemy(player, gameObject))
+            {
+                gameObject.transform.Rotate(new Vector3(0, 180, 0));
+            }
+           
+            PerformTransition(Transition.SawPlayer);
+        }
     }
 
     void OnTriggerStay2D(Collider2D other)
@@ -151,12 +161,7 @@ public class PatrolEnemyController : BaseRoleController
         coroutine = WaitAndDeactive(redAlarmLastTime);
         StartCoroutine(coroutine);
     }
-    //为了保证预警图片不被翻转，在这里补一下，turn的时候调用
-    public override void EnemyTurn()
-    {
-        if (yellowAlarm) yellowAlarm.transform.Rotate(new Vector3(0, 180, 0));
-        if (redAlarm) redAlarm.transform.Rotate(new Vector3(0, 180, 0));
-    }
+
     void OnTriggerExit2D(Collider2D other)
     {
         if(other.gameObject.tag == "Player")

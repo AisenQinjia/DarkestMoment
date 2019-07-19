@@ -263,7 +263,6 @@ public class TurnState : FSMState
     public override void Update(GameObject player, GameObject enemy)
     {
         enemy.transform.Rotate(new Vector3(0, 180, 0));
-        enemy.GetComponent<BaseRoleController>().EnemyTurn();
         enemy.GetComponent<BaseRoleController>().Statemanager.PerformTransition(Transition.ShouldWalk);
     }
 }

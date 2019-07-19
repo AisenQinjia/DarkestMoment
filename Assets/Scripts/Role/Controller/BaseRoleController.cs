@@ -46,9 +46,13 @@ public class BaseRoleController : MonoBehaviour
         return Mathf.Abs(Vector3.Angle(enemy.transform.right, dir)) < 90;
     }
 
-    //
-    public virtual void EnemyTurn()
+    //面对敌人
+    public void LookAtPlayer(GameObject player, GameObject enemy)
     {
-
+        Vector3 Dir = player.transform.position - enemy.transform.position;
+        if (Mathf.Abs(Vector3.Angle(Dir, enemy.transform.right)) > 90)
+        {
+            enemy.transform.Rotate(new Vector3(0, 180, 0));
+        }
     }
 }
