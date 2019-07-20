@@ -11,7 +11,7 @@ public class DieAtTouch : BaseInteractive
     }
 
 
-    void OnTriggerEnter(Collider other)
+    void OnTriggerEnter2D(Collider2D other)
     {
         BaseRoleController control_dead = other.GetComponent<BaseRoleController>();
         control_dead.OnDead();

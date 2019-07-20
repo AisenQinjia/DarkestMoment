@@ -14,13 +14,13 @@ public class UnlockedDoor : BaseInteractive
     }
 
     // Update is called once per frame
-    void OnTriggerEnter(Collider other)
+    void OnTriggerEnter2D(Collider2D other)
     {
         check_tag = other.gameObject.tag;
         if (check_tag == GameDefine.PlayerTag || check_tag == GameDefine.EnemyTag)
         {
             anim = GetComponent<Animator>();
-            gameObject.GetComponent<Collider>().enabled = false;
+            gameObject.GetComponent<Collider2D>().enabled = false;
             anim.SetFloat("Blend", 0.3f);
         }
     }

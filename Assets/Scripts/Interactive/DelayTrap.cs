@@ -11,7 +11,7 @@ public class DelayTrap : BaseInteractive
         
     }
 
-    void OnTriggerEnter(Collider other)
+    void OnTriggerEnter2D(Collider2D other)
     {
         BaseRoleController control_dead = other.GetComponent<BaseRoleController>();
         anim = GetComponent<Animator>();
