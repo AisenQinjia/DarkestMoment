@@ -19,10 +19,18 @@ public static class GameDefine
 
     public const string TestLevel = "TestLevel";
 
+    public const string LevelOne = "level1";
+
     public const string InterativeTag = "Interactive";
 
     public const string PlayerTag = "Player";
 
     public const string EnemyTag = "Enemy";
+
+    public const string winPanel = "Prefabs/Panel/WinPanel";
+
+    public const string losePanel = "Prefabs/Panel/LosePanel";
+
+
 
 }

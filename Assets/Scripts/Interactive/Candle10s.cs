@@ -33,6 +33,8 @@ public class Candle10s : BaseInteractive
     {
         anim = GetComponent<Animator>();
         anim.SetFloat("Blend", 0.3f);
+        //if (control_enemy.Length == 0)
+        //    return;
         foreach (BaseRoleController i in control_enemy)
         {
             i.ComeToMe(transform);

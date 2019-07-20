@@ -21,6 +21,7 @@ public class UIManager : MonoBehaviour
                 instance = obj.AddComponent<UIManager>();
                 obj.name = "UICanvas";
                 DontDestroyOnLoad(obj);
+                obj.GetComponent<Canvas>().sortingOrder = 10;
             }
             return instance;
         }
@@ -88,8 +89,8 @@ public class UIManager : MonoBehaviour
             panel.SetActive(true);
         }
 
-        Tween tween = panel.transform.DOScale(1, 0.5f);
-        tween.OnComplete(tweenCallback);
+        // Tween tween = panel.transform.DOScale(1, 0.5f);
+        // tween.OnComplete(tweenCallback);
 
         return panel;
     }
@@ -101,7 +102,7 @@ public class UIManager : MonoBehaviour
 
         if (panel == null)
         {
-            panel = Instantiate(Resources.Load(GameDefine.panelPath + name)) as GameObject;
+            panel = Instantiate(Resources.Load(name)) as GameObject;
             panel.transform.SetParent(this.Canvas.transform);
             panel.transform.localPosition = Vector3.zero;
             panelDict.Add(name, panel);
@@ -110,7 +111,7 @@ public class UIManager : MonoBehaviour
         {
             panel.SetActive(true);
         }
-        Tween tween = panel.transform.DOScale(1, 0.5f);
+        // Tween tween = panel.transform.DOScale(1, 0.5f);
 
         return panel;
 
@@ -136,10 +137,10 @@ public class UIManager : MonoBehaviour
             return;
         else
         {
-            panel.transform.DOScale(0, 0.5f).OnComplete(() =>
-            {
-                panel.SetActive(false);
-            });
+            //panel.transform.DOScale(0, 0.5f).OnComplete(() =>
+            //{
+            panel.SetActive(false);
+            //});
 
         }
 
@@ -154,12 +155,12 @@ public class UIManager : MonoBehaviour
             return;
         else
         {
-            panel.transform.DOScale(0, 0.5f).OnComplete(() =>
-            {
+            //panel.transform.DOScale(0, 0.5f).OnComplete(() =>
+            //{
 
-                tweenCallback();
-                panel.SetActive(false);
-            });
+            //    tweenCallback();
+            panel.SetActive(false);
+            //});
 
         }
 

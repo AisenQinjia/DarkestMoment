@@ -102,7 +102,7 @@ public class PlayerController : BaseRoleController
             this.transform.rotation = Quaternion.Euler(new Vector3(0, 0, 0));
             this.transform.position += new Vector3(1 * this.stateDatas[(int)this.state].walkSpeed, 0, 0) * Time.deltaTime;
         }
-        if (Input.GetKey(KeyCode.Space))
+        if (Input.GetKeyDown(KeyCode.Space))
         {
             Jump();
         }
@@ -118,10 +118,10 @@ public class PlayerController : BaseRoleController
 
     private void OnCollisionEnter2D(Collision2D col)
     {
-        if (col.transform.CompareTag("Ground"))
-        {
-            this.grounded = true;
-        }
+        // if (col.transform.CompareTag("Ground") || col.transform.CompareTag("Interactive"))
+        // {
+        this.grounded = true;
+        // }
     }
 
     public void ChangeState(int state)
@@ -232,7 +232,7 @@ public class PlayerController : BaseRoleController
     {
         if (Vector3.Distance(go.transform.position, this.transform.position) <= this.stateDatas[(int)this.state].interativeRange)
         {
-            go.GetComponent<BaseInteractive>().InteractiveLogic(go.transform);
+            go.GetComponent<BaseInteractive>().InteractiveLogic(this.transform);
         }
         else
         {
@@ -248,6 +248,7 @@ public class PlayerController : BaseRoleController
         Debug.Log("player dead");
         this.enabled = false;
         EventCenter.Broadcast(EventType.OnPlayerDead);
+        UIManager.Instance.PopPanel(GameDefine.losePanel);
     }
 
 

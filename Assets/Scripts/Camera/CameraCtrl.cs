@@ -21,7 +21,7 @@ public class CameraCtrl : MonoBehaviour
         if (RoleManager.Instance.GetPlayer() == null)
             return;
 
-        Vector3 targetPos = new Vector3(RoleManager.Instance.playerTransform.position.x, RoleManager.Instance.playerTransform.position.y, this.transform.position.z);
+        Vector3 targetPos = new Vector3(RoleManager.Instance.playerTransform.position.x, RoleManager.Instance.playerTransform.position.y + 1, this.transform.position.z);
         this.transform.position = Vector3.Lerp(this.transform.position, targetPos, smooth);
     }
 }
