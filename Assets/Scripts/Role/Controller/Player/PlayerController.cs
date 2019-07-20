@@ -197,7 +197,7 @@ public class PlayerController : BaseRoleController
         {
             if (hitInfo.transform.CompareTag("Enemy"))
             {
-               // Debug.Log("eat enemy");
+                // Debug.Log("eat enemy");
                 hitInfo.transform.GetComponent<BaseRoleController>().OnDead();
             }
         }
@@ -235,6 +235,8 @@ public class PlayerController : BaseRoleController
         Gizmos.DrawCube(center, this.attackBoxSize);
 
         Gizmos.color = Color.white;
+        if (this.transform == null || this.stateDatas[(int)this.state] == null)
+            return;
         Gizmos.DrawWireSphere(this.transform.position, this.stateDatas[(int)this.state].interativeRange);
     }
 
