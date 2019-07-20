@@ -11,8 +11,8 @@ public class RoleData : IcfgId
     public string name;
     public int walkSpeed;
     public int jumpForce;
-    public int eatLong;
-    public int eatWidth;
+    public float eatLong;
+    public float eatWidth;
     public int interativeRange;
     public RoleData()
     {

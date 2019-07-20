@@ -100,19 +100,19 @@ public class PatrolEnemyController : BaseRoleController
         redAlarm = gameObject.transform.Find("RedAlarm").gameObject;
         if (yellowAlarm == null || redAlarm == null) Debug.LogError("no alarm!");
         viewSprite = gameObject.transform.Find("ViewSprite").gameObject;
-        if (viewSprite == null ) Debug.LogError("no ViewSprite!");
+        if (viewSprite == null) Debug.LogError("no ViewSprite!");
         animator = gameObject.GetComponentInChildren<Animator>();
         if (animator == null) Debug.LogError("no animator!");
 
     }
     public void PerformTransition(Transition trans, GameObject player, GameObject enemy)
     {
-        Statemanager.PerformTransition(trans,  player,  enemy);
+        Statemanager.PerformTransition(trans, player, enemy);
     }
 
     void UpdateTimer()
     {
-        if(alarmTimer != 0)
+        if (alarmTimer != 0)
         {
             alarmTimer += Time.deltaTime;
         }
@@ -122,20 +122,20 @@ public class PatrolEnemyController : BaseRoleController
     {
         if (other.gameObject.tag == "Player" && Statemanager.currentStateID == StateID.Walk)
         {
-            PerformTransition(Transition.FeelSomethingWrong,  player,  gameObject);
+            PerformTransition(Transition.FeelSomethingWrong, player, gameObject);
             yellowAlarm.SetActive(true);
             redAlarm.SetActive(false);
             //相当于触发器，让timer开始计时
             alarmTimer = 0.01f;
         }
-        else if(other.gameObject.tag == "Player")
+        else if (other.gameObject.tag == "Player")
         {
             //背后发现需要调转方向
-            if(!IsInForntOfEnemy(player, gameObject))
+            if (!IsInForntOfEnemy(player, gameObject))
             {
                 gameObject.transform.Rotate(new Vector3(0, 180, 0));
             }
-            PerformTransition(Transition.SawPlayer,  player, gameObject);
+            PerformTransition(Transition.SawPlayer, player, gameObject);
         }
     }
 
@@ -144,24 +144,24 @@ public class PatrolEnemyController : BaseRoleController
         //这令人窒息的判断...虽然目前只有chase可以转换到Stare态
         if (other.gameObject.tag == "Barrier" && Statemanager.currentStateID == StateID.Chase && (transform.position - other.gameObject.transform.position).magnitude < barrierValidDistance)
         {
-            Statemanager.PerformTransition(Transition.TouchedBarrier,  player, gameObject);
+            Statemanager.PerformTransition(Transition.TouchedBarrier, player, gameObject);
         }
-        else if(other.gameObject.tag == "Player")
+        else if (other.gameObject.tag == "Player")
         {
-            if(alarmTimer > frontAlarmTime)
+            if (alarmTimer > frontAlarmTime)
             {
-                if(IsInForntOfEnemy(player, gameObject))
+                if (IsInForntOfEnemy(player, gameObject))
                 {
                     RedAlarmBegin();
                     LeaveWalkState();
-                    Statemanager.PerformTransition(Transition.SawPlayer,  player, gameObject);
+                    Statemanager.PerformTransition(Transition.SawPlayer, player, gameObject);
                 }
-                else if(alarmTimer > backKillTime)
+                else if (alarmTimer > backKillTime)
                 {
                     RedAlarmBegin();
                     LeaveWalkState();
                     LookAtPlayer(player, gameObject);
-                    Statemanager.PerformTransition(Transition.SawPlayer,  player, gameObject);
+                    Statemanager.PerformTransition(Transition.SawPlayer, player, gameObject);
                 }
             }
         }
@@ -195,19 +195,20 @@ public class PatrolEnemyController : BaseRoleController
 
     //离开Walk状态需要做的事
     public override void LeaveWalkState()
-    {     
-        if (viewSprite != null) viewSprite.SetActive(false);     
+    {
+        if (viewSprite != null) viewSprite.SetActive(false);
     }
 
     //攻击
     public override void Attack()
     {
         animator.SetTrigger("canAttack");
+        player.GetComponent<BaseRoleController>().OnDead();
     }
 
     public override void WaitTime(float time)
     {
-        
+
     }
     //等待
     IEnumerator Wait(float waitTime)
@@ -223,7 +224,8 @@ public class PatrolEnemyController : BaseRoleController
     //死亡接口
     public override void OnDead()
     {
-        Debug.LogError(" I am Dead!");
+        //Debug.LogError(" I am Dead!");
+        Destroy(this.gameObject);
     }
 
     //吸引敌人注意力接口

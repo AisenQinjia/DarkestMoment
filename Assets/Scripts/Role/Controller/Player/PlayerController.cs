@@ -92,13 +92,14 @@ public class PlayerController : BaseRoleController
         if (Input.GetKey(KeyCode.A))
         {
 
-            this.transform.rotation = Quaternion.Euler(new Vector3(0, 0, 0));
+            UIManager.Instance.PopHint("你好棒！");
+            this.transform.rotation = Quaternion.Euler(new Vector3(0, 180, 0));
             this.transform.position += new Vector3(-1 * this.stateDatas[(int)this.state].walkSpeed, 0, 0) * Time.deltaTime;
         }
         if (Input.GetKey(KeyCode.D))
         {
 
-            this.transform.rotation = Quaternion.Euler(new Vector3(0, 180, 0));
+            this.transform.rotation = Quaternion.Euler(new Vector3(0, 0, 0));
             this.transform.position += new Vector3(1 * this.stateDatas[(int)this.state].walkSpeed, 0, 0) * Time.deltaTime;
         }
         if (Input.GetKey(KeyCode.Space))
@@ -143,7 +144,7 @@ public class PlayerController : BaseRoleController
     private void MoveLeft()
     {
 
-        this.transform.rotation = Quaternion.Euler(new Vector3(0, 0, 0));
+        this.transform.rotation = Quaternion.Euler(new Vector3(0, 180, 0));
 
         this.velocity.x = -1 * this.stateDatas[(int)this.state].walkSpeed;
         if (this.stateAnims[(int)this.state] != null)
@@ -153,8 +154,8 @@ public class PlayerController : BaseRoleController
 
     private void MoveRight()
     {
+        this.transform.rotation = Quaternion.Euler(new Vector3(0, 0, 0));
 
-        this.transform.rotation = Quaternion.Euler(new Vector3(0, 180, 0));
 
         this.velocity.x = 1 * this.stateDatas[(int)this.state].walkSpeed;
         if (this.stateAnims[(int)this.state] != null)
@@ -176,31 +177,54 @@ public class PlayerController : BaseRoleController
         if (this.stateAnims[(int)this.state] != null)
             this.stateAnims[(int)this.state].SetTrigger("eat");
 
-        //  Debug.Log(this.transform.position);
-        //  Debug.Log(this.transform.forward);
-        Vector2 center = Vector2.zero;
-        if (this.transform.rotation.y == 180)
-        {
-            center.x = this.transform.position.x + this.stateDatas[(int)this.state].eatLong;
-        }
-        else
-        {
-            center.x = this.transform.position.x - this.stateDatas[(int)this.state].eatWidth;
-        }
-        center.y = this.transform.position.y;
+        Debug.Log(this.transform.position);
 
-        // Debug.Log(center);
+        Vector2 origin = Vector2.zero;
 
-        RaycastHit2D hitInfo = Physics2D.BoxCast(center, this.attackBoxSize, 0, this.transform.forward, 10, LayerMask.GetMask("Enemy"));
+        //center.x = this.transform.position.x + this.transform.right.x * this.stateDatas[(int)this.state].eatLong;
+
+        //center.y = this.transform.position.y;
+        origin.x = this.transform.position.x;
+        origin.y = this.transform.position.y;
+
+        Debug.Log(origin);
+        Debug.Log(this.attackBoxSize);
+
+
+        RaycastHit2D hitInfo = Physics2D.BoxCast(origin, this.attackBoxSize, 0, new Vector2(this.transform.right.x, this.transform.position.y), this.stateDatas[(int)this.state].eatLong, LayerMask.GetMask("Enemy"));
+        // public static RaycastHit2D BoxCast(Vector2 origin, Vector2 size, float angle, Vector2 direction, float distance, int layerMask);
 
         if (hitInfo)
         {
-            if (hitInfo.transform.CompareTag("Enemy"))
+            // if (hitInfo.transform.CompareTag("Enemy"))
+            // {
+            Debug.Log(hitInfo.transform.name);
+            BaseRoleController ctrl = hitInfo.transform.GetComponent<BaseRoleController>();
+            if (ctrl == null)
             {
-                // Debug.Log("eat enemy");
-                hitInfo.transform.GetComponent<BaseRoleController>().OnDead();
+                ctrl = hitInfo.transform.GetComponentInParent<BaseRoleController>();
+                ctrl.OnDead();
             }
+            ctrl.OnDead();
+            // }
         }
+    }
+
+    private void OnDrawGizmos()
+    {
+        if (this.transform == null || this.stateDatas[(int)this.state] == null)
+            return;
+        Gizmos.color = Color.yellow;
+        Vector2 center = Vector2.zero;
+
+        center.x = this.transform.position.x + this.transform.right.x * this.stateDatas[(int)this.state].eatLong;
+
+        center.y = this.transform.position.y;
+
+        Gizmos.DrawCube(center, this.attackBoxSize);
+
+        Gizmos.color = Color.white;
+        Gizmos.DrawWireSphere(this.transform.position, this.stateDatas[(int)this.state].interativeRange);
     }
 
 
@@ -210,34 +234,20 @@ public class PlayerController : BaseRoleController
         {
             go.GetComponent<BaseInteractive>().InteractiveLogic(go.transform);
         }
+        else
+        {
+            if (this.state.Equals(PlayerState.Power))
+                UIManager.Instance.PopHint("你的念力太差了，差一点点！");
+            else
+                UIManager.Instance.PopHint("靠近一点才能点我哦~,除非你是念力大师！");
+        }
     }
 
-    public void Dead()
+    public override void OnDead()
     {
         this.enabled = false;
         EventCenter.Broadcast(EventType.OnPlayerDead);
     }
 
-
-    private void OnDrawGizmos()
-    {
-        Gizmos.color = Color.yellow;
-        Vector2 center = Vector2.zero;
-        if (this.transform.rotation.y == 180)
-        {
-            center.x = this.transform.position.x + this.transform.forward.z;
-        }
-        else
-        {
-            center.x = this.transform.position.x - this.transform.forward.z;
-        }
-        center.y = this.transform.position.y;
-        Gizmos.DrawCube(center, this.attackBoxSize);
-
-        Gizmos.color = Color.white;
-        if (this.transform == null || this.stateDatas[(int)this.state] == null)
-            return;
-        Gizmos.DrawWireSphere(this.transform.position, this.stateDatas[(int)this.state].interativeRange);
-    }
 
 }

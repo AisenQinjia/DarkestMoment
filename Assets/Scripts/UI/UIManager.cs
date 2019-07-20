@@ -11,19 +11,17 @@ public class UIManager : MonoBehaviour
 
     private Dictionary<string, Dictionary<string, GameObject>> allWidgets; //保存对所有控件的引用
 
-
-
     public static UIManager Instance
     {
         get
         {
-            //if (instance == null)
-            //{
-            //    GameObject obj = new GameObject();
-            //    instance = obj.AddComponent<UIManager>();
-            //    obj.name = "UICanvas";
-            //    DontDestroyOnLoad(obj);
-            //}
+            if (instance == null)
+            {
+                GameObject obj = new GameObject();
+                instance = obj.AddComponent<UIManager>();
+                obj.name = "UICanvas";
+                DontDestroyOnLoad(obj);
+            }
             return instance;
         }
 
@@ -34,14 +32,10 @@ public class UIManager : MonoBehaviour
 
     private static bool hasCreated = false;
 
+    private Vector3 hintPos = new Vector2(0, -100);
+
     private void Awake()
     {
-        // if (hasCreated == false)
-        //  {
-
-        DontDestroyOnLoad(gameObject);
-
-        // }
 
         instance = this;
 
@@ -51,7 +45,7 @@ public class UIManager : MonoBehaviour
 
         hintPf = Resources.Load("Prefabs/UiHint") as GameObject;
 
-        hasCreated = true;
+        DontDestroyOnLoad(this.gameObject);
 
     }
 
@@ -67,10 +61,10 @@ public class UIManager : MonoBehaviour
         }
         hintGo.GetComponentInChildren<Text>().text = str;
 
-        hintGo.transform.SetParent(this.transform);
-        hintGo.transform.localPosition = Vector3.zero;
+        //  hintGo.transform.localPosition = this.hintPos;
+        hintGo.transform.SetParent(this.transform, false);
 
-        Destroy(hintGo, 1.2f);
+        Destroy(hintGo, 2);
     }
 
 
