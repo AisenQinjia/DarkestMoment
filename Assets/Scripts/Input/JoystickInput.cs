@@ -76,6 +76,8 @@ public class JoystickInput : MonoBehaviour
     private Vector2 rayOrigin;
     private void Update()
     {
+        //hitInfo = Physics2D.Raycast(Camera.main.ScreenToWorldPoint(Input.mousePosition), Vector2.zero);
+        //Debug.Log(hitInfo.transform.name);
         CheckTouch();
     }
 

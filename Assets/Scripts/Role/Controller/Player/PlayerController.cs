@@ -245,6 +245,7 @@ public class PlayerController : BaseRoleController
 
     public override void OnDead()
     {
+        Debug.Log("player dead");
         this.enabled = false;
         EventCenter.Broadcast(EventType.OnPlayerDead);
     }
