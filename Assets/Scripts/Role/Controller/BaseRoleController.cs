@@ -40,6 +40,12 @@ public class BaseRoleController : MonoBehaviour
 
     }
 
+    //让敌人离开，恢复原来状态
+    public virtual void LeaveMe(Transform trans)
+    {
+
+    }
+
     //判断player是否在敌人前面
     protected bool IsInForntOfEnemy(GameObject player, GameObject enemy)
     {
