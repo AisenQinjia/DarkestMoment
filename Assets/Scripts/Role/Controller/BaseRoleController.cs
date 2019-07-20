@@ -34,6 +34,12 @@ public class BaseRoleController : MonoBehaviour
     //吸引敌人注意力
     public virtual void ComeToMe(Transform trans) { }
 
+    //让敌人离开，恢复原来状态
+    public virtual void LeaveMe()
+    {
+
+    }
+
     //离开walk状态
     public virtual void LeaveWalkState() { }
 
@@ -46,11 +52,6 @@ public class BaseRoleController : MonoBehaviour
     //等待时间
     public virtual void WaitTime(float time) { }
 
-    //让敌人离开，恢复原来状态
-    public virtual void LeaveMe(Transform trans)
-    {
-
-    }
 
     //判断player是否在敌人前面
     protected bool IsInForntOfEnemy(GameObject player, GameObject enemy)
