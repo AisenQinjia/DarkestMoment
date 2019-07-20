@@ -1,0 +1,9 @@
+
+{
+    "headRow": 2,
+    "round":  true,
+    "format":  true,
+    "ignoreEmpty": true,
+    "srcFolder":  "./excel",
+    "destFolder":  "../Assets/Resources/Json"
+}

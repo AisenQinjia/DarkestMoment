@@ -12,16 +12,24 @@ public enum StateID
     Chase,
     Attack,
     Retreat,
-    CheckPoint
+    CheckPoint,
+    StareAtPlayer,
+    Stop
 }
 
 //过渡
 public enum Transition
 {
     NullTransition,
+    ShouldTurn,
+    ShouldWalk,
     SawPlayer,
+    CanChase,
+    CanAttack,
     LostPlayer,
-    HeardNoise
+    HeardNoise,
+    TouchedBarrier,
+    FeelSomethingWrong
 }
 
 public class EnemyStateManager
@@ -30,7 +38,7 @@ public class EnemyStateManager
     private StateID realCurrentStateID;
     public StateID currentStateID {
         set { realCurrentStateID = value; }
-        get { return currentStateID; }
+        get { return realCurrentStateID; }
     }
     private FSMState realCurrentState;
     public FSMState currentState {
@@ -45,7 +53,6 @@ public class EnemyStateManager
 
     public void AddState(FSMState state)
     {
-        Debug.Log("AddState");
         if (state == null)
         {
             Debug.LogError("添加的状态机不存在");
@@ -53,7 +60,6 @@ public class EnemyStateManager
         }
         if(states.Count == 0)
         {
-            Debug.Log("states.Count == 0");
             states.Add(state);
             currentState = state;
             currentStateID = state.stateID;
@@ -72,31 +78,37 @@ public class EnemyStateManager
 
     public void DeleteState(StateID id) { }
 
-    public void PerformTransition(Transition trans)
+    public void PerformTransition(Transition trans, GameObject player, GameObject enemy)
     {
         if(trans == Transition.NullTransition)
         {
             Debug.LogError("trans is null!");
             return;
         }
-
+        
         StateID id = currentState.GetState(trans);
-
-        if(id == StateID.NullState)
+        if (id == StateID.NullState)
         {
-            Debug.Log("不存在目标状态");
+            Debug.Log("当前状态: " + currentState.stateID.ToString() + " 没有 "+ trans.ToString() + " 行为");
             return;
         }
+
         currentStateID = id;
+        bool found = false;
         foreach(FSMState st in states)
         {
-            if(st.stateID == currentStateID)
+            if (st.stateID == currentStateID)
             {
-                currentState.DoBeforeLeaving();
+                found = true;
+                currentState.DoBeforeLeaving(player, enemy);
                 currentState = st;
-                currentState.DoBeforeLeaving();
+                currentState.DoBeforeEntering(player, enemy);
                 break;
             }
+        }
+        if (!found)
+        {
+            Debug.Log("状态机没有添加" + currentStateID.ToString() + "对应状态");
         }
     }
 }
@@ -106,9 +118,9 @@ public abstract class FSMState
     protected Dictionary<Transition, StateID> map = new Dictionary<Transition, StateID>();
     public StateID stateID;
 
-    public virtual void DoBeforeEntering() { }
+    public virtual void DoBeforeEntering(GameObject player, GameObject enemy) { }
 
-    public virtual void DoBeforeLeaving() { }
+    public virtual void DoBeforeLeaving(GameObject player, GameObject enemy) { }
  
     public virtual void ReState(GameObject player, GameObject enemy) { }
 
@@ -148,6 +160,51 @@ public abstract class FSMState
         return StateID.NullState;
     }
 
+    //看着行进方向
+    protected void LookAtDirection(GameObject enemy, Vector3 moveDir)
+    {
+        moveDir = new Vector3(moveDir.x, 0, 0);
+        if (Mathf.Abs(Vector3.Angle(moveDir, enemy.transform.right)) > 90)
+        {
+            enemy.transform.Rotate(new Vector3(0, 180, 0));
+        }
+    }
+
+    //背对着行进方向
+    protected void BackAtDirection(GameObject enemy, Vector3 moveDir)
+    {
+        moveDir = new Vector3(moveDir.x, 0, 0);
+        if (Mathf.Abs(Vector3.Angle(moveDir, enemy.transform.right)) < 90)
+        {
+            enemy.transform.Rotate(new Vector3(0, 180, 0));
+        }
+    }
+
+    //执行过渡
+    public void PerformTransition(Transition trans, GameObject player, GameObject enemy)
+    {
+        enemy.GetComponent<BaseRoleController>().Statemanager.PerformTransition(trans, player, enemy);
+    }
+
+    //计算是否在目标视野范围
+    protected bool IsInRange(GameObject player, GameObject enemy, float angle, float range)
+    {
+        Vector3 dir = player.transform.position - enemy.transform.position;
+        return Mathf.Abs(Vector3.Angle(enemy.transform.right, dir)) < angle && dir.magnitude < range;
+    }
+
+    //计算距离
+    protected float Distance(GameObject player, GameObject enemy)
+    {
+        return (player.transform.position - enemy.transform.position).magnitude;
+    }
+
+    //判断player是否在enemy左侧
+    protected bool IsEnemyLeft(GameObject player, GameObject enemy)
+    {
+        Vector3 dir = player.transform.position - enemy.transform.position;
+        return dir.x < 0;
+    }
 }
 
 //巡逻敌人行走状态
@@ -164,9 +221,15 @@ public  class WalkStateForPatrol : FSMState
         pathPoints = path;
         stateID = StateID.Walk;
     }
-    public override void DoBeforeEntering() { }
+    public override void DoBeforeEntering(GameObject player, GameObject enemy)
+    {
+        enemy.gameObject.GetComponent<BaseRoleController>().ReturnToWalkState();
+    }
 
-    public override void DoBeforeLeaving() { }
+    public override void DoBeforeLeaving(GameObject player, GameObject enemy)
+    {
+        enemy.gameObject.GetComponent<BaseRoleController>().LeaveWalkState();
+    }
 
     public override void ReState(GameObject player, GameObject enemy)
     {
@@ -175,9 +238,8 @@ public  class WalkStateForPatrol : FSMState
 
     public override void Update(GameObject player, GameObject enemy)
     {
-        Vector3 vel = enemy.GetComponent<Rigidbody>().velocity;
         Vector3 moveDir = pathPoints[currentPointIndex].position - enemy.transform.position;
-        moveDir = new Vector3(moveDir.x, 0, moveDir.z);
+        
         if (moveDir.magnitude < 1)
         {
             currentPointIndex++;
@@ -185,26 +247,20 @@ public  class WalkStateForPatrol : FSMState
             {
                 currentPointIndex = 0;
             }
+            enemy.GetComponent<BaseRoleController>().Statemanager.PerformTransition(Transition.ShouldTurn,  player,  enemy);
         }
         else
         {
-            vel = moveDir.normalized * enemy.GetComponent<PatrolEnemyController>().walkSpeed;
-
-            // Rotate towards the waypoint
-            enemy.transform.rotation = Quaternion.Slerp(enemy.transform.rotation,
-                                                      Quaternion.LookRotation(moveDir),
-                                                      5 * Time.deltaTime);
-            enemy.transform.eulerAngles = new Vector3(0, enemy.transform.eulerAngles.y, 0);
-
+            moveDir = new Vector3(moveDir.x, 0, 0);
+            LookAtDirection(enemy, moveDir);
+            Vector3 vel = moveDir.normalized * speed;
+            enemy.GetComponent<Rigidbody2D>().velocity = new Vector2(vel.x, 0);
         }
-
-        // Apply the Velocity
-        enemy.GetComponent<Rigidbody>().velocity = vel;
     }
 }
 
 
-//只有转向敌人行走状态
+//只能转向敌人行走状态
 public class WalkStateForTurn : FSMState
 {
 
@@ -219,23 +275,242 @@ public class WalkStateForTrigger : FSMState
 //转向
 public class TurnState : FSMState
 {
+    public TurnState()
+    {
+        stateID = StateID.Turn;
+    }
+    public override void ReState(GameObject player, GameObject enemy) { }
 
+    public override void Update(GameObject player, GameObject enemy)
+    {
+        enemy.transform.Rotate(new Vector3(0, 180, 0));
+        enemy.GetComponent<BaseRoleController>().Statemanager.PerformTransition(Transition.ShouldWalk,  player,  enemy);
+    }
 }
 
 //追击
 public class ChaseState : FSMState
 {
+    private float speed;
+    private float chaseRange;
+    private float chaseAngle;
+    private float attackRange;
 
+    public ChaseState(float vel, float chaserange, float attackrange, float chaseangle)
+    {
+        stateID = StateID.Chase;
+        speed = vel;
+        chaseRange = chaserange;
+        attackRange = attackrange;
+        chaseAngle = chaseangle;
+    }
+
+    public override void ReState(GameObject player, GameObject enemy)
+    {
+        if(!IsInRange(player, enemy, chaseAngle, chaseRange))
+        {
+            PerformTransition(Transition.LostPlayer,  player,  enemy);
+        }
+        else if(Distance(player, enemy) < attackRange)
+        {
+            PerformTransition(Transition.CanAttack,  player,  enemy);
+        }
+    }
+
+    public override void Update(GameObject player, GameObject enemy)
+    {
+        Vector3 moveDir = player.transform.position - enemy.transform.position;
+        LookAtDirection(enemy, moveDir);
+        Vector3 vel = moveDir.normalized * speed;
+        enemy.GetComponent<Rigidbody2D>().velocity = new Vector2(vel.x, 0);
+    }
 }
 
 //攻击
 public class AttackState : FSMState
 {
+    public AttackState()
+    {
+        stateID = StateID.Attack;
+    }
 
+    public override void DoBeforeEntering(GameObject player, GameObject enemy)
+    {
+        
+    }
+
+    public override void DoBeforeLeaving(GameObject player, GameObject enemy)
+    {
+        
+    }
+
+    public override void ReState(GameObject player, GameObject enemy)
+    {
+        
+    }
+    public override void Update(GameObject player, GameObject enemy)
+    {
+        Debug.LogError("Die !");
+        enemy.GetComponent<BaseRoleController>().Attack();
+        enemy.GetComponent<BaseRoleController>().Statemanager.PerformTransition(Transition.LostPlayer,  player,  enemy);
+    }
 }
 
 //后退
 public class RetreatState : FSMState
 {
+    //就是巡逻的两个点
+    Transform[] paths;
+    //正常回退速度
+    float speed;
+    //开始的回退速度
+    float initialSpeed;
+    //开始回退速度持续时间
+    float initialSpeedLastTime;
+    float timer;
 
+    float minX;
+    float maxX;
+
+    public RetreatState(Transform[] path, float vel, float initialSp, float initialSpTime)
+    {
+        timer = 0;
+        initialSpeed = initialSp;
+        initialSpeedLastTime = initialSpTime;
+        stateID = StateID.Retreat;
+        paths = path;
+        speed = vel;
+        GetXRange();
+    }
+
+    public void GetXRange()
+    {
+        //就先假设只有两个点吧
+        minX = paths[0].position.x;
+        maxX = paths[1].position.x;
+
+        if(minX > maxX)
+        {
+            float tmp = minX;
+            minX = maxX;
+            maxX = tmp;
+        }
+    }
+    public override void DoBeforeEntering(GameObject player, GameObject enemy)
+    {
+        timer = 0;
+    }
+
+    public override void DoBeforeLeaving(GameObject player, GameObject enemy)
+    {
+        timer = 0;
+    }
+
+    public override void ReState(GameObject player, GameObject enemy)
+    {
+        if(enemy.transform.position.x > minX && enemy.transform.position.x < maxX)
+        {
+            PerformTransition(Transition.ShouldWalk,  player,  enemy);
+        }
+    }
+    public override void Update(GameObject player, GameObject enemy)
+    {
+        timer += Time.deltaTime;
+        if(enemy.transform.position.x < minX)
+        {
+            if(timer < initialSpeedLastTime)
+            {
+                enemy.GetComponent<Rigidbody2D>().velocity = new Vector2(initialSpeed, 0);
+            }
+            else enemy.GetComponent<Rigidbody2D>().velocity = new Vector2(speed, 0);
+        }
+        else if(enemy.transform.position.x > maxX)
+        {
+            if (timer < initialSpeedLastTime)
+            {
+                enemy.GetComponent<Rigidbody2D>().velocity = new Vector2(-initialSpeed, 0);
+            }
+            else enemy.GetComponent<Rigidbody2D>().velocity = new Vector2(-speed, 0);
+        }
+        
+
+    }
+}
+
+//目视敌人状态
+public class StareAtPlayerState : FSMState
+{
+    float validTime;
+    float validRange;
+    float validAngle;
+    float timer;
+
+    public StareAtPlayerState(float vlidtime, float starerange, float validangle)
+    {
+        stateID = StateID.StareAtPlayer;
+        validTime = vlidtime;
+        validRange = starerange;
+        validAngle = validangle;
+    }
+
+    public override void DoBeforeEntering(GameObject player, GameObject enemy)
+    {
+        timer = 0;
+    }
+
+    public override void DoBeforeLeaving(GameObject player, GameObject enemy)
+    {
+        timer = 0;
+    }
+
+    public override void ReState(GameObject player, GameObject enemy)
+    {
+        if (IsInRange(player, enemy, validAngle, validRange))
+        {
+            timer = 0;
+        }
+        else
+        {
+            if (timer > validTime)
+            {
+                PerformTransition(Transition.LostPlayer, player,  enemy);
+            }
+        }
+    }
+    public override void Update(GameObject player, GameObject enemy)
+    {
+        timer = timer + Time.deltaTime;
+        enemy.GetComponent<BaseRoleController>().rigidbody.velocity = new Vector2(0, 0);
+    }
+}
+
+//stop状态
+public class StopState : FSMState
+{
+    public StopState()
+    {
+        stateID = StateID.Stop;
+    }
+
+    public override void DoBeforeEntering(GameObject player, GameObject enemy)
+    {
+
+    }
+
+    public override void DoBeforeLeaving(GameObject player, GameObject enemy)
+    {
+
+    }
+
+    public override void ReState(GameObject player, GameObject enemy)
+    {
+
+    }
+
+    public override void Update(GameObject player, GameObject enemy)
+    {
+        float x = 0.001f;
+        if (IsEnemyLeft(player, enemy)) x = -x;
+        enemy.GetComponent<Rigidbody2D>().velocity = new Vector2(x, 0);
+    }
 }
