@@ -30,6 +30,8 @@ public class RoleManager : MonoBehaviour
     {
         instance = this;
         this.playerTransform = null;
+
+        DontDestroyOnLoad(this.gameObject);
     }
 
 

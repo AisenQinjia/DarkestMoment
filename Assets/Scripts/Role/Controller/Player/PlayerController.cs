@@ -59,11 +59,31 @@ public class PlayerController : BaseRoleController
         EventCenter.AddListener<int>(EventType.OnPowerStateBtnClick, ChangeState);
         EventCenter.AddListener<int>(EventType.OnFlowStateBtnClick, ChangeState);
         EventCenter.AddListener<int>(EventType.OnStickStateBtnClick, ChangeState);
+
+        EventCenter.AddListener<GameObject>(EventType.OnClickInteractive, Interactive);
     }
 
+    void Start()
+    {
+        this.ChangeState((int)this.state);
+
+    }
     public override void OnDestroy()
     {
         base.OnDestroy();
+
+        EventCenter.RemoveListener(EventType.OnLeftBtnPressed, MoveLeft);
+        EventCenter.RemoveListener(EventType.OnRightBtnPressed, MoveRight);
+        EventCenter.RemoveListener(EventType.OnJumpBtnClick, Jump);
+        EventCenter.RemoveListener(EventType.OnKillBtnClick, Eat);
+        //  EventCenter.AddListener(EventType.OnInterativeBtnClick, Interactive);
+        EventCenter.RemoveListener(EventType.PlayerStopWalk, StopWalk);
+
+        EventCenter.RemoveListener<int>(EventType.OnPowerStateBtnClick, ChangeState);
+        EventCenter.RemoveListener<int>(EventType.OnFlowStateBtnClick, ChangeState);
+        EventCenter.RemoveListener<int>(EventType.OnStickStateBtnClick, ChangeState);
+
+        EventCenter.RemoveListener<GameObject>(EventType.OnClickInteractive, Interactive);
 
     }
 
@@ -117,7 +137,8 @@ public class PlayerController : BaseRoleController
     private void StopWalk()
     {
         this.velocity.x = 0;
-        this.stateAnims[(int)this.state].SetBool("walk", false);
+        if (this.stateAnims[(int)this.state] != null)
+            this.stateAnims[(int)this.state].SetBool("walk", false);
     }
     private void MoveLeft()
     {
@@ -125,7 +146,8 @@ public class PlayerController : BaseRoleController
         this.transform.rotation = Quaternion.Euler(new Vector3(0, 0, 0));
 
         this.velocity.x = -1 * this.stateDatas[(int)this.state].walkSpeed;
-        this.stateAnims[(int)this.state].SetBool("walk", true);
+        if (this.stateAnims[(int)this.state] != null)
+            this.stateAnims[(int)this.state].SetBool("walk", true);
 
     }
 
@@ -135,7 +157,8 @@ public class PlayerController : BaseRoleController
         this.transform.rotation = Quaternion.Euler(new Vector3(0, 180, 0));
 
         this.velocity.x = 1 * this.stateDatas[(int)this.state].walkSpeed;
-        this.stateAnims[(int)this.state].SetBool("walk", true);
+        if (this.stateAnims[(int)this.state] != null)
+            this.stateAnims[(int)this.state].SetBool("walk", true);
     }
 
     private void Jump()
@@ -150,7 +173,8 @@ public class PlayerController : BaseRoleController
 
     private void Eat()
     {
-        this.stateAnims[(int)this.state].SetTrigger("eat");
+        if (this.stateAnims[(int)this.state] != null)
+            this.stateAnims[(int)this.state].SetTrigger("eat");
 
         //  Debug.Log(this.transform.position);
         //  Debug.Log(this.transform.forward);
@@ -173,14 +197,31 @@ public class PlayerController : BaseRoleController
         {
             if (hitInfo.transform.CompareTag("Enemy"))
             {
-                Debug.Log("eat enemy");
+               // Debug.Log("eat enemy");
+                hitInfo.transform.GetComponent<BaseRoleController>().OnDead();
             }
         }
     }
 
+
+    private void Interactive(GameObject go)
+    {
+        if (Vector3.Distance(go.transform.position, this.transform.position) <= this.stateDatas[(int)this.state].interativeRange)
+        {
+            go.GetComponent<BaseInteractive>().InteractiveLogic(go.transform);
+        }
+    }
+
+    public void Dead()
+    {
+        this.enabled = false;
+        EventCenter.Broadcast(EventType.OnPlayerDead);
+    }
+
+
     private void OnDrawGizmos()
     {
-        Gizmos.color = Color.white;
+        Gizmos.color = Color.yellow;
         Vector2 center = Vector2.zero;
         if (this.transform.rotation.y == 180)
         {
@@ -192,38 +233,9 @@ public class PlayerController : BaseRoleController
         }
         center.y = this.transform.position.y;
         Gizmos.DrawCube(center, this.attackBoxSize);
+
+        Gizmos.color = Color.white;
+        Gizmos.DrawWireSphere(this.transform.position, this.stateDatas[(int)this.state].interativeRange);
     }
-
-    //private void Interactive()
-    //{
-    //    Vector2 center = Vector2.zero;
-    //    if (this.transform.rotation.y == 180)
-    //    {
-    //        center.x = this.transform.position.x + this.stateDatas[(int)this.state].eatLong;
-    //    }
-    //    else
-    //    {
-    //        center.x = this.transform.position.x - this.stateDatas[(int)this.state].eatWidth;
-    //    }
-    //    center.y = this.transform.position.y;
-
-    //    //Debug.Log(center);
-
-    //    RaycastHit2D hitInfo = Physics2D.BoxCast(center, this.attackBoxSize, 0, this.transform.forward, 10, LayerMask.GetMask("Interative"));
-
-    //    if (hitInfo)
-    //    {
-    //        if (hitInfo.transform.CompareTag("Enemy"))
-    //        {
-    //            Debug.Log("interactive obj");
-    //        }
-    //    }
-    //}
-
-    public void Dead()
-    {
-
-    }
-
 
 }

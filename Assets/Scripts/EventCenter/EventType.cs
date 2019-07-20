@@ -12,4 +12,6 @@
     OnSkillTwoBtnClick,
     PlayerStopWalk,
     PlayerEatBoxDisable,
+    OnClickInteractive,
+    OnPlayerDead,
 }

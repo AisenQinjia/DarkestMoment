@@ -38,6 +38,8 @@ public class JoystickInput : MonoBehaviour
         this.skillOneBtn.onClick.AddListener(OnSkillOneBtnClick);
         this.skillTwoBtn.onClick.AddListener(OnSkillTwoBtnClick);
 
+        EventCenter.AddListener(EventType.OnPlayerDead, DisableInput);
+
     }
 
     private void OnDestroy()
@@ -52,6 +54,13 @@ public class JoystickInput : MonoBehaviour
         this.skillOneBtn.onClick.RemoveListener(OnSkillOneBtnClick);
         this.skillTwoBtn.onClick.RemoveListener(OnSkillTwoBtnClick);
 
+        EventCenter.RemoveListener(EventType.OnPlayerDead, DisableInput);
+
+    }
+
+    private void DisableInput()
+    {
+        this.enabled = false;
     }
 
 
@@ -61,6 +70,34 @@ public class JoystickInput : MonoBehaviour
         {
             t.DOScale(new Vector2(1, 1), 0.1f);
         });
+    }
+
+    private RaycastHit2D hitInfo;
+    private Vector2 rayOrigin;
+    private void Update()
+    {
+        CheckTouch();
+    }
+
+    private void CheckTouch()
+    {
+        if (Input.GetMouseButtonDown(0) || (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began))
+        {
+
+            if (Application.isMobilePlatform)
+                rayOrigin = Camera.main.ScreenToWorldPoint(Input.GetTouch(0).position);
+            else
+                rayOrigin = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+
+            hitInfo = Physics2D.Raycast(Camera.main.ScreenToWorldPoint(Input.mousePosition), Vector2.zero, 15, LayerMask.GetMask("Interactive"));
+            if (hitInfo)
+            {
+                // if (hitInfo.transform.CompareTag(GameDefine.InterativeTag))
+                // {
+                EventCenter.Broadcast<GameObject>(EventType.OnClickInteractive, hitInfo.transform.gameObject);
+                // }
+            }
+        }
     }
 
 
@@ -85,26 +122,24 @@ public class JoystickInput : MonoBehaviour
 
     private void OnStickStateBtnClick()
     {
-        Debug.Log("click " + (int)PlayerState.Stick);
+        //  Debug.Log("click " + (int)PlayerState.Stick);
         EventCenter.Broadcast<int>(EventType.OnStickStateBtnClick, (int)PlayerState.Stick);
         ScaleBtn(this.stickStateBtn.transform);
     }
 
     private void OnFlowStateBtnClick()
     {
-        Debug.Log("click " + (int)PlayerState.Flow);
+        //  Debug.Log("click " + (int)PlayerState.Flow);
         EventCenter.Broadcast<int>(EventType.OnFlowStateBtnClick, (int)PlayerState.Flow);
         ScaleBtn(this.flowStateBtn.transform);
     }
 
     private void OnPowerStateBtnClick()
     {
-        Debug.Log("click " + (int)PlayerState.Power);
+        //  Debug.Log("click " + (int)PlayerState.Power);
         EventCenter.Broadcast<int>(EventType.OnPowerStateBtnClick, (int)PlayerState.Power);
         ScaleBtn(this.powerStateBtn.transform);
     }
-
-
 
 
     private void OnSkillOneBtnClick()

@@ -19,4 +19,6 @@ public static class GameDefine
 
     public const string TestLevel = "TestLevel";
 
+    public const string InterativeTag = "Interactive";
+
 }
