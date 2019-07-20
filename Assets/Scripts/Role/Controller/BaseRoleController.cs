@@ -15,7 +15,7 @@ public class BaseRoleController : MonoBehaviour
     public virtual void Awake()
     {
         cc = this.GetComponent<CharacterController>();
-  
+
         RoleManager.Instance.AddRole(this.transform);
     }
 
@@ -29,16 +29,22 @@ public class BaseRoleController : MonoBehaviour
     }
 
     //角色死亡
-    public virtual void OnDead()
-    {
-
-    }
+    public virtual void OnDead() { }
 
     //吸引敌人注意力
-    public virtual void ComeToMe(Transform trans)
-    {
+    public virtual void ComeToMe(Transform trans) { }
 
-    }
+    //离开walk状态
+    public virtual void LeaveWalkState() { }
+
+    //进入walk状态
+    public virtual void ReturnToWalkState() { }
+
+    //攻击
+    public virtual void Attack() { }
+
+    //等待时间
+    public virtual void WaitTime(float time) { }
 
     //让敌人离开，恢复原来状态
     public virtual void LeaveMe(Transform trans)

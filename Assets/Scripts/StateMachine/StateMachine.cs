@@ -78,7 +78,7 @@ public class EnemyStateManager
 
     public void DeleteState(StateID id) { }
 
-    public void PerformTransition(Transition trans)
+    public void PerformTransition(Transition trans, GameObject player, GameObject enemy)
     {
         if(trans == Transition.NullTransition)
         {
@@ -100,9 +100,9 @@ public class EnemyStateManager
             if (st.stateID == currentStateID)
             {
                 found = true;
-                currentState.DoBeforeLeaving();
+                currentState.DoBeforeLeaving(player, enemy);
                 currentState = st;
-                currentState.DoBeforeLeaving();
+                currentState.DoBeforeEntering(player, enemy);
                 break;
             }
         }
@@ -118,9 +118,9 @@ public abstract class FSMState
     protected Dictionary<Transition, StateID> map = new Dictionary<Transition, StateID>();
     public StateID stateID;
 
-    public virtual void DoBeforeEntering() { }
+    public virtual void DoBeforeEntering(GameObject player, GameObject enemy) { }
 
-    public virtual void DoBeforeLeaving() { }
+    public virtual void DoBeforeLeaving(GameObject player, GameObject enemy) { }
  
     public virtual void ReState(GameObject player, GameObject enemy) { }
 
@@ -161,7 +161,7 @@ public abstract class FSMState
     }
 
     //看着行进方向
-    public void LookAtDirection(GameObject enemy, Vector3 moveDir)
+    protected void LookAtDirection(GameObject enemy, Vector3 moveDir)
     {
         moveDir = new Vector3(moveDir.x, 0, 0);
         if (Mathf.Abs(Vector3.Angle(moveDir, enemy.transform.right)) > 90)
@@ -171,7 +171,7 @@ public abstract class FSMState
     }
 
     //背对着行进方向
-    public void BackAtDirection(GameObject enemy, Vector3 moveDir)
+    protected void BackAtDirection(GameObject enemy, Vector3 moveDir)
     {
         moveDir = new Vector3(moveDir.x, 0, 0);
         if (Mathf.Abs(Vector3.Angle(moveDir, enemy.transform.right)) < 90)
@@ -181,22 +181,29 @@ public abstract class FSMState
     }
 
     //执行过渡
-    public void PerformTransition(Transition trans, GameObject enemy)
+    public void PerformTransition(Transition trans, GameObject player, GameObject enemy)
     {
-        enemy.GetComponent<BaseRoleController>().Statemanager.PerformTransition(trans);
+        enemy.GetComponent<BaseRoleController>().Statemanager.PerformTransition(trans, player, enemy);
     }
 
     //计算是否在目标视野范围
-    public bool IsInRange(GameObject player, GameObject enemy, float angle, float range)
+    protected bool IsInRange(GameObject player, GameObject enemy, float angle, float range)
     {
         Vector3 dir = player.transform.position - enemy.transform.position;
         return Mathf.Abs(Vector3.Angle(enemy.transform.right, dir)) < angle && dir.magnitude < range;
     }
 
     //计算距离
-    public float Distance(GameObject player, GameObject enemy)
+    protected float Distance(GameObject player, GameObject enemy)
     {
         return (player.transform.position - enemy.transform.position).magnitude;
+    }
+
+    //判断player是否在enemy左侧
+    protected bool IsEnemyLeft(GameObject player, GameObject enemy)
+    {
+        Vector3 dir = player.transform.position - enemy.transform.position;
+        return dir.x < 0;
     }
 }
 
@@ -214,9 +221,15 @@ public  class WalkStateForPatrol : FSMState
         pathPoints = path;
         stateID = StateID.Walk;
     }
-    public override void DoBeforeEntering() { }
+    public override void DoBeforeEntering(GameObject player, GameObject enemy)
+    {
+        enemy.gameObject.GetComponent<BaseRoleController>().ReturnToWalkState();
+    }
 
-    public override void DoBeforeLeaving() { }
+    public override void DoBeforeLeaving(GameObject player, GameObject enemy)
+    {
+        enemy.gameObject.GetComponent<BaseRoleController>().LeaveWalkState();
+    }
 
     public override void ReState(GameObject player, GameObject enemy)
     {
@@ -234,7 +247,7 @@ public  class WalkStateForPatrol : FSMState
             {
                 currentPointIndex = 0;
             }
-            enemy.GetComponent<BaseRoleController>().Statemanager.PerformTransition(Transition.ShouldTurn);
+            enemy.GetComponent<BaseRoleController>().Statemanager.PerformTransition(Transition.ShouldTurn,  player,  enemy);
         }
         else
         {
@@ -271,7 +284,7 @@ public class TurnState : FSMState
     public override void Update(GameObject player, GameObject enemy)
     {
         enemy.transform.Rotate(new Vector3(0, 180, 0));
-        enemy.GetComponent<BaseRoleController>().Statemanager.PerformTransition(Transition.ShouldWalk);
+        enemy.GetComponent<BaseRoleController>().Statemanager.PerformTransition(Transition.ShouldWalk,  player,  enemy);
     }
 }
 
@@ -296,11 +309,11 @@ public class ChaseState : FSMState
     {
         if(!IsInRange(player, enemy, chaseAngle, chaseRange))
         {
-            PerformTransition(Transition.LostPlayer, enemy);
+            PerformTransition(Transition.LostPlayer,  player,  enemy);
         }
         else if(Distance(player, enemy) < attackRange)
         {
-            PerformTransition(Transition.CanAttack, enemy);
+            PerformTransition(Transition.CanAttack,  player,  enemy);
         }
     }
 
@@ -321,12 +334,12 @@ public class AttackState : FSMState
         stateID = StateID.Attack;
     }
 
-    public override void DoBeforeEntering()
+    public override void DoBeforeEntering(GameObject player, GameObject enemy)
     {
         
     }
 
-    public override void DoBeforeLeaving()
+    public override void DoBeforeLeaving(GameObject player, GameObject enemy)
     {
         
     }
@@ -338,7 +351,8 @@ public class AttackState : FSMState
     public override void Update(GameObject player, GameObject enemy)
     {
         Debug.LogError("Die !");
-        enemy.GetComponent<BaseRoleController>().Statemanager.PerformTransition(Transition.LostPlayer);
+        enemy.GetComponent<BaseRoleController>().Attack();
+        enemy.GetComponent<BaseRoleController>().Statemanager.PerformTransition(Transition.LostPlayer,  player,  enemy);
     }
 }
 
@@ -347,12 +361,22 @@ public class RetreatState : FSMState
 {
     //就是巡逻的两个点
     Transform[] paths;
+    //正常回退速度
     float speed;
+    //开始的回退速度
+    float initialSpeed;
+    //开始回退速度持续时间
+    float initialSpeedLastTime;
+    float timer;
+
     float minX;
     float maxX;
 
-    public RetreatState(Transform[] path, float vel)
+    public RetreatState(Transform[] path, float vel, float initialSp, float initialSpTime)
     {
+        timer = 0;
+        initialSpeed = initialSp;
+        initialSpeedLastTime = initialSpTime;
         stateID = StateID.Retreat;
         paths = path;
         speed = vel;
@@ -372,33 +396,43 @@ public class RetreatState : FSMState
             maxX = tmp;
         }
     }
-    public override void DoBeforeEntering()
+    public override void DoBeforeEntering(GameObject player, GameObject enemy)
     {
-
+        timer = 0;
     }
 
-    public override void DoBeforeLeaving()
+    public override void DoBeforeLeaving(GameObject player, GameObject enemy)
     {
-
+        timer = 0;
     }
 
     public override void ReState(GameObject player, GameObject enemy)
     {
         if(enemy.transform.position.x > minX && enemy.transform.position.x < maxX)
         {
-            PerformTransition(Transition.ShouldWalk, enemy);
+            PerformTransition(Transition.ShouldWalk,  player,  enemy);
         }
     }
     public override void Update(GameObject player, GameObject enemy)
     {
+        timer += Time.deltaTime;
         if(enemy.transform.position.x < minX)
         {
-            enemy.GetComponent<Rigidbody2D>().velocity = new Vector2(speed, 0);
+            if(timer < initialSpeedLastTime)
+            {
+                enemy.GetComponent<Rigidbody2D>().velocity = new Vector2(initialSpeed, 0);
+            }
+            else enemy.GetComponent<Rigidbody2D>().velocity = new Vector2(speed, 0);
         }
         else if(enemy.transform.position.x > maxX)
         {
-            enemy.GetComponent<Rigidbody2D>().velocity = new Vector2(-speed, 0);
+            if (timer < initialSpeedLastTime)
+            {
+                enemy.GetComponent<Rigidbody2D>().velocity = new Vector2(-initialSpeed, 0);
+            }
+            else enemy.GetComponent<Rigidbody2D>().velocity = new Vector2(-speed, 0);
         }
+        
 
     }
 }
@@ -419,12 +453,12 @@ public class StareAtPlayerState : FSMState
         validAngle = validangle;
     }
 
-    public override void DoBeforeEntering()
+    public override void DoBeforeEntering(GameObject player, GameObject enemy)
     {
         timer = 0;
     }
 
-    public override void DoBeforeLeaving()
+    public override void DoBeforeLeaving(GameObject player, GameObject enemy)
     {
         timer = 0;
     }
@@ -439,7 +473,7 @@ public class StareAtPlayerState : FSMState
         {
             if (timer > validTime)
             {
-                PerformTransition(Transition.LostPlayer, enemy);
+                PerformTransition(Transition.LostPlayer, player,  enemy);
             }
         }
     }
@@ -458,25 +492,25 @@ public class StopState : FSMState
         stateID = StateID.Stop;
     }
 
-    public override void DoBeforeEntering()
+    public override void DoBeforeEntering(GameObject player, GameObject enemy)
     {
-        base.DoBeforeEntering();
+
     }
 
-    public override void DoBeforeLeaving()
+    public override void DoBeforeLeaving(GameObject player, GameObject enemy)
     {
-        base.DoBeforeLeaving();
+
     }
 
     public override void ReState(GameObject player, GameObject enemy)
     {
-        Debug.Log("StopReState");
-        base.ReState(player, enemy);
+
     }
 
     public override void Update(GameObject player, GameObject enemy)
     {
-        Debug.Log("StopUpdate");
-        enemy.gameObject.GetComponent<BaseRoleController>().rigidbody.velocity = new Vector2(0, 0);
+        float x = 0.001f;
+        if (IsEnemyLeft(player, enemy)) x = -x;
+        enemy.GetComponent<Rigidbody2D>().velocity = new Vector2(x, 0);
     }
 }

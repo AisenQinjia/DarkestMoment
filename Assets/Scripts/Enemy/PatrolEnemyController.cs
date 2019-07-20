@@ -9,6 +9,8 @@ public class PatrolEnemyController : BaseRoleController
 
     GameObject redAlarm;
     GameObject yellowAlarm;
+    GameObject viewSprite;
+    Animator animator;
     //预警计时
     float alarmTimer = 0;
     //正面预警时间
@@ -24,6 +26,8 @@ public class PatrolEnemyController : BaseRoleController
     public float chaseRange;
     public float attackRange;
     public float retreatSpeed;
+    public float retreatInitialSpeed;
+    public float retreatInitialSpeedLastTime;
     public float chaseAngle;
     public float stareTime;
     public float stareRange;
@@ -67,7 +71,7 @@ public class PatrolEnemyController : BaseRoleController
         AttackState attack = new AttackState();
         attack.AddTransition(Transition.LostPlayer, StateID.Retreat);
 
-        RetreatState retreat = new RetreatState(path, retreatSpeed);
+        RetreatState retreat = new RetreatState(path, retreatSpeed, retreatInitialSpeed, retreatInitialSpeedLastTime);
         retreat.AddTransition(Transition.ShouldWalk, StateID.Walk);
         retreat.AddTransition(Transition.SawPlayer, StateID.Chase);
 
@@ -95,10 +99,15 @@ public class PatrolEnemyController : BaseRoleController
         yellowAlarm = gameObject.transform.Find("YellowAlarm").gameObject;
         redAlarm = gameObject.transform.Find("RedAlarm").gameObject;
         if (yellowAlarm == null || redAlarm == null) Debug.LogError("no alarm!");
+        viewSprite = gameObject.transform.Find("ViewSprite").gameObject;
+        if (viewSprite == null ) Debug.LogError("no ViewSprite!");
+        animator = gameObject.GetComponentInChildren<Animator>();
+        if (animator == null) Debug.LogError("no animator!");
+
     }
-    public void PerformTransition(Transition trans)
+    public void PerformTransition(Transition trans, GameObject player, GameObject enemy)
     {
-        Statemanager.PerformTransition(trans);
+        Statemanager.PerformTransition(trans,  player,  enemy);
     }
 
     void UpdateTimer()
@@ -113,7 +122,7 @@ public class PatrolEnemyController : BaseRoleController
     {
         if (other.gameObject.tag == "Player" && Statemanager.currentStateID == StateID.Walk)
         {
-            PerformTransition(Transition.FeelSomethingWrong);
+            PerformTransition(Transition.FeelSomethingWrong,  player,  gameObject);
             yellowAlarm.SetActive(true);
             redAlarm.SetActive(false);
             //相当于触发器，让timer开始计时
@@ -126,8 +135,7 @@ public class PatrolEnemyController : BaseRoleController
             {
                 gameObject.transform.Rotate(new Vector3(0, 180, 0));
             }
-           
-            PerformTransition(Transition.SawPlayer);
+            PerformTransition(Transition.SawPlayer,  player, gameObject);
         }
     }
 
@@ -136,7 +144,7 @@ public class PatrolEnemyController : BaseRoleController
         //这令人窒息的判断...虽然目前只有chase可以转换到Stare态
         if (other.gameObject.tag == "Barrier" && Statemanager.currentStateID == StateID.Chase && (transform.position - other.gameObject.transform.position).magnitude < barrierValidDistance)
         {
-            Statemanager.PerformTransition(Transition.TouchedBarrier);
+            Statemanager.PerformTransition(Transition.TouchedBarrier,  player, gameObject);
         }
         else if(other.gameObject.tag == "Player")
         {
@@ -145,13 +153,15 @@ public class PatrolEnemyController : BaseRoleController
                 if(IsInForntOfEnemy(player, gameObject))
                 {
                     RedAlarmBegin();
-                    Statemanager.PerformTransition(Transition.SawPlayer);
+                    LeaveWalkState();
+                    Statemanager.PerformTransition(Transition.SawPlayer,  player, gameObject);
                 }
                 else if(alarmTimer > backKillTime)
                 {
                     RedAlarmBegin();
+                    LeaveWalkState();
                     LookAtPlayer(player, gameObject);
-                    Statemanager.PerformTransition(Transition.SawPlayer);
+                    Statemanager.PerformTransition(Transition.SawPlayer,  player, gameObject);
                 }
             }
         }
@@ -161,7 +171,7 @@ public class PatrolEnemyController : BaseRoleController
     {
         if (other.gameObject.tag == "Player" && Statemanager.currentStateID == StateID.Stop)
         {
-            PerformTransition(Transition.LostPlayer);
+            PerformTransition(Transition.LostPlayer, player, gameObject);
             yellowAlarm.SetActive(false);
             redAlarm.SetActive(false);
             alarmTimer = 0;
@@ -177,6 +187,39 @@ public class PatrolEnemyController : BaseRoleController
         StartCoroutine(coroutine);
     }
 
+    //回到Walk状态需要做的事
+    public override void ReturnToWalkState()
+    {
+        if (viewSprite != null) viewSprite.SetActive(true);
+    }
+
+    //离开Walk状态需要做的事
+    public override void LeaveWalkState()
+    {     
+        if (viewSprite != null) viewSprite.SetActive(false);     
+    }
+
+    //攻击
+    public override void Attack()
+    {
+        animator.SetTrigger("canAttack");
+    }
+
+    public override void WaitTime(float time)
+    {
+        
+    }
+    //等待
+    IEnumerator Wait(float waitTime)
+    {
+        yield return new WaitForSeconds(waitTime);
+    }
+
+    void EnemyStop()
+    {
+
+    }
+
     //死亡接口
     public override void OnDead()
     {
@@ -187,11 +230,11 @@ public class PatrolEnemyController : BaseRoleController
     public override void ComeToMe(Transform trans)
     {
         //if()
-        Statemanager.PerformTransition(Transition.HeardNoise);
+        Statemanager.PerformTransition(Transition.HeardNoise, player, gameObject);
     }
 
     //红色感叹号延时消失
-    private IEnumerator WaitAndDeactive(float waitTime)
+    IEnumerator WaitAndDeactive(float waitTime)
     {
         yield return new WaitForSeconds(waitTime);
         redAlarm.SetActive(false);
