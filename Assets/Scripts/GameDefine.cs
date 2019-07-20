@@ -21,4 +21,8 @@ public static class GameDefine
 
     public const string InterativeTag = "Interactive";
 
+    public const string PlayerTag = "Player";
+
+    public const string EnemyTag = "Enemy";
+
 }
