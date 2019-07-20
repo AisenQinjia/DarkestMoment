@@ -2,19 +2,29 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using DG.Tweening;
 
 public class LongPressBtn : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, IPointerExitHandler, IPointerEnterHandler
 {
     public int type = 1;  //1 left 2 right
     private bool pressed = false;
 
+    private void ScaleBtn()
+    {
+        this.transform.DOScale(new Vector2(1.2f, 1.2f), 0.1f).OnComplete(() =>
+        {
+            transform.DOScale(new Vector2(1, 1), 0.1f);
+        });
+    }
 
     public void OnPointerEnter(PointerEventData eventData)
     {
+        ScaleBtn();
         this.pressed = true;
     }
     public void OnPointerDown(PointerEventData eventData)
     {
+        ScaleBtn();
         this.pressed = true;
     }
 
