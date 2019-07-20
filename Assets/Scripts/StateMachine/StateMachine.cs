@@ -13,7 +13,8 @@ public enum StateID
     Attack,
     Retreat,
     CheckPoint,
-    StareAtPlayer
+    StareAtPlayer,
+    Stop
 }
 
 //过渡
@@ -27,7 +28,8 @@ public enum Transition
     CanAttack,
     LostPlayer,
     HeardNoise,
-    TouchedBarrier
+    TouchedBarrier,
+    FeelSomethingWrong
 }
 
 public class EnemyStateManager
@@ -87,20 +89,26 @@ public class EnemyStateManager
         StateID id = currentState.GetState(trans);
         if (id == StateID.NullState)
         {
-            Debug.Log("不存在目标状态");
+            Debug.Log("当前状态: " + currentState.stateID.ToString() + " 没有 "+ trans.ToString() + " 行为");
             return;
         }
 
         currentStateID = id;
+        bool found = false;
         foreach(FSMState st in states)
         {
             if (st.stateID == currentStateID)
             {
+                found = true;
                 currentState.DoBeforeLeaving();
                 currentState = st;
                 currentState.DoBeforeLeaving();
                 break;
             }
+        }
+        if (!found)
+        {
+            Debug.Log("状态机没有添加" + currentStateID.ToString() + "对应状态");
         }
     }
 }
@@ -440,5 +448,35 @@ public class StareAtPlayerState : FSMState
         timer = timer + Time.deltaTime;
         enemy.GetComponent<BaseRoleController>().rigidbody.velocity = new Vector2(0, 0);
     }
+}
 
+//stop状态
+public class StopState : FSMState
+{
+    public StopState()
+    {
+        stateID = StateID.Stop;
+    }
+
+    public override void DoBeforeEntering()
+    {
+        base.DoBeforeEntering();
+    }
+
+    public override void DoBeforeLeaving()
+    {
+        base.DoBeforeLeaving();
+    }
+
+    public override void ReState(GameObject player, GameObject enemy)
+    {
+        Debug.Log("StopReState");
+        base.ReState(player, enemy);
+    }
+
+    public override void Update(GameObject player, GameObject enemy)
+    {
+        Debug.Log("StopUpdate");
+        enemy.gameObject.GetComponent<BaseRoleController>().rigidbody.velocity = new Vector2(0, 0);
+    }
 }

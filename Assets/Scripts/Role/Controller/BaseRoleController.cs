@@ -7,6 +7,7 @@ using UnityEngine;
 public class BaseRoleController : MonoBehaviour
 {
     public EnemyStateManager Statemanager;//我为什么要大写...
+    [HideInInspector]
     public Rigidbody2D rigidbody;
     protected CharacterController cc;
     protected Animator anim;

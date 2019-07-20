@@ -54,6 +54,7 @@ public class PatrolEnemyController : BaseRoleController
         WalkStateForPatrol walk = new WalkStateForPatrol(path, walkSpeed);
         walk.AddTransition(Transition.ShouldTurn, StateID.Turn);
         walk.AddTransition(Transition.SawPlayer, StateID.Chase);
+        walk.AddTransition(Transition.FeelSomethingWrong, StateID.Stop);
 
         TurnState turn = new TurnState();
         turn.AddTransition(Transition.ShouldWalk, StateID.Walk);
@@ -75,6 +76,9 @@ public class PatrolEnemyController : BaseRoleController
         stareAtPlayer.AddTransition(Transition.CanAttack, StateID.Attack);
         stareAtPlayer.AddTransition(Transition.CanChase, StateID.Chase);
 
+        StopState stop = new StopState();
+        stop.AddTransition(Transition.LostPlayer, StateID.Walk);
+        stop.AddTransition(Transition.SawPlayer, StateID.Chase);
 
         Statemanager.AddState(walk);
         Statemanager.AddState(turn);
@@ -82,6 +86,7 @@ public class PatrolEnemyController : BaseRoleController
         Statemanager.AddState(attack);
         Statemanager.AddState(retreat);
         Statemanager.AddState(stareAtPlayer);
+        Statemanager.AddState(stop);
     }
 
     void GetResource()
@@ -108,6 +113,7 @@ public class PatrolEnemyController : BaseRoleController
     {
         if (other.gameObject.tag == "Player" && Statemanager.currentStateID == StateID.Walk)
         {
+            PerformTransition(Transition.FeelSomethingWrong);
             yellowAlarm.SetActive(true);
             redAlarm.SetActive(false);
             //相当于触发器，让timer开始计时
@@ -151,6 +157,17 @@ public class PatrolEnemyController : BaseRoleController
         }
     }
 
+    void OnTriggerExit2D(Collider2D other)
+    {
+        if (other.gameObject.tag == "Player" && Statemanager.currentStateID == StateID.Stop)
+        {
+            PerformTransition(Transition.LostPlayer);
+            yellowAlarm.SetActive(false);
+            redAlarm.SetActive(false);
+            alarmTimer = 0;
+        }
+    }
+
     void RedAlarmBegin()
     {
         alarmTimer = 0;
@@ -158,16 +175,6 @@ public class PatrolEnemyController : BaseRoleController
         redAlarm.SetActive(true);
         coroutine = WaitAndDeactive(redAlarmLastTime);
         StartCoroutine(coroutine);
-    }
-
-    void OnTriggerExit2D(Collider2D other)
-    {
-        if(other.gameObject.tag == "Player")
-        {
-            yellowAlarm.SetActive(false);
-            redAlarm.SetActive(false);
-            alarmTimer = 0;
-        }
     }
 
     //死亡接口
@@ -183,7 +190,7 @@ public class PatrolEnemyController : BaseRoleController
         Statemanager.PerformTransition(Transition.HeardNoise);
     }
 
-    //黄色延时消失
+    //红色感叹号延时消失
     private IEnumerator WaitAndDeactive(float waitTime)
     {
         yield return new WaitForSeconds(waitTime);
