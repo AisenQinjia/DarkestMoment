@@ -239,14 +239,14 @@ public  class WalkStateForPatrol : FSMState
     public override void Update(GameObject player, GameObject enemy)
     {
         Vector3 moveDir = pathPoints[currentPointIndex].position - enemy.transform.position;
-        
-        if (moveDir.magnitude < 1)
+        if (moveDir.magnitude < 2.6)
         {
             currentPointIndex++;
             if (currentPointIndex >= pathPoints.Length)
             {
                 currentPointIndex = 0;
             }
+           // Debug.Log("currentPointIndex: " + pathPoints[currentPointIndex].position.x);
             enemy.GetComponent<BaseRoleController>().Statemanager.PerformTransition(Transition.ShouldTurn,  player,  enemy);
         }
         else
