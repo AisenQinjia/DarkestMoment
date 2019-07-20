@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class people : MonoBehaviour
+public class People : MonoBehaviour
 {
     public Vector2 velocity;
     private Rigidbody2D rd;
