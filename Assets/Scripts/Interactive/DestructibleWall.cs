@@ -7,11 +7,12 @@ public class DestructibleWall : BaseInteractive
     // Start is called before the first frame update
     void Start()
     {
-        
+        gameObject.tag = GameDefine.InterativeTag;
     }
 
     public override void InteractiveLogic(Transform player)
     {
+        Debug.Log("player destroy the wall");
         Destroy(gameObject);
     }
 }

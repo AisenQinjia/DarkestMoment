@@ -8,12 +8,12 @@ public class PipeDelivery : BaseInteractive
     // Start is called before the first frame update
     void Start()
     {
-
+        gameObject.tag = GameDefine.InterativeTag;
     }
 
     public override void InteractiveLogic(Transform player)
     {
-        Debug.Log(player.name);
+        Debug.Log(player.name + " pipe delivery");
         player.position = other_pipe.transform.position;
     }
 }

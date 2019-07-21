@@ -17,10 +17,18 @@ public class UnlockedDoor : BaseInteractive
     void OnTriggerEnter2D(Collider2D other)
     {
         check_tag = other.gameObject.tag;
-        if (check_tag == GameDefine.PlayerTag || check_tag == GameDefine.EnemyTag)
+        if (check_tag == GameDefine.PlayerTag)
         {
+            Debug.Log("Player open the unlock door");
             anim = GetComponent<Animator>();
             gameObject.GetComponent<Collider2D>().enabled = false;
+            anim.SetFloat("Blend", 0.3f);
+        }
+        if (check_tag == GameDefine.EnemyTag)
+        {
+            Debug.Log("Enemy open the unlock door");
+            anim = GetComponent<Animator>();
+            gameObject.GetComponentInParent<Collider2D>().enabled = false;
             anim.SetFloat("Blend", 0.3f);
         }
     }
