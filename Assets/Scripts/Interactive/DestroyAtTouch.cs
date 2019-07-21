@@ -13,6 +13,7 @@ public class DestroyAtTouch : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
+        Debug.Log(item_index);
         other.gameObject.GetComponent<PlayerController>().AddItem(item_index);
         Destroy(gameObject);
     }
