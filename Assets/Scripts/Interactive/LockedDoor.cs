@@ -6,6 +6,7 @@ public class LockedDoor : BaseInteractive
 {
     Animator anim;
     string check_tag;
+    public int key_index = 1;
     // Start is called before the first frame update
     void Start()
     {
@@ -16,7 +17,7 @@ public class LockedDoor : BaseInteractive
     {
         Debug.Log("open door");
         check_tag = other.gameObject.tag;
-        if (check_tag == GameDefine.PlayerTag)
+        if (check_tag == GameDefine.PlayerTag && other.gameObject.GetComponent<PlayerController>().HasItem(key_index))
         {
             Debug.Log("Player open the lock door");
             anim = GetComponent<Animator>();
