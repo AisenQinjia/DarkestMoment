@@ -10,7 +10,7 @@ public class BaseRoleController : MonoBehaviour
     [HideInInspector]
     public Rigidbody2D rigidbody;
     protected CharacterController cc;
-    protected Animator anim;
+    protected Animator animator;
 
     public virtual void Awake()
     {
