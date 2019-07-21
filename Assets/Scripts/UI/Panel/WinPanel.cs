@@ -20,8 +20,7 @@ public class WinPanel : MonoBehaviour
 
     private void OnRestartClick()
     {
-        Debug.Log("restarty");
-        SceneManager.LoadScene(GameDefine.StartScene);
+        GameManager.Instance.StartGame();
         UIManager.Instance.ClosePanel(GameDefine.winPanel);
     }
 

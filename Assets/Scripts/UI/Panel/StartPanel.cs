@@ -20,7 +20,7 @@ public class StartPanel : BasePanel
 
     private void OnStartBtnClick()
     {
-        SceneManager.LoadScene(GameDefine.LevelOne);
+        GameManager.Instance.StartGame();
     }
 
     private void OnQuitBtnClick()

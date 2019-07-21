@@ -21,7 +21,7 @@ public class LosePanel : MonoBehaviour
     private void OnRestartClick()
     {
         UIManager.Instance.ClosePanel(GameDefine.losePanel);
-        SceneManager.LoadScene(GameDefine.StartScene);
+        GameManager.Instance.StartGame();
     }
 
     private void OnQuitClick()
