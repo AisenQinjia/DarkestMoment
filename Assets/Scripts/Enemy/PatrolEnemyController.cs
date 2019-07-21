@@ -10,7 +10,6 @@ public class PatrolEnemyController : BaseRoleController
     GameObject redAlarm;
     GameObject yellowAlarm;
     GameObject viewSprite;
-    Animator animator;
     //预警计时
     float alarmTimer = 0;
     //正面预警时间
@@ -69,7 +68,7 @@ public class PatrolEnemyController : BaseRoleController
         chase.AddTransition(Transition.LostPlayer, StateID.Retreat);
         chase.AddTransition(Transition.TouchedBarrier, StateID.StareAtPlayer);
 
-        AttackState attack = new AttackState();
+        AttackState attack = new AttackState(animator);
         attack.AddTransition(Transition.LostPlayer, StateID.Retreat);
 
         RetreatState retreat = new RetreatState(path, retreatSpeed, retreatInitialSpeed, retreatInitialSpeedLastTime);

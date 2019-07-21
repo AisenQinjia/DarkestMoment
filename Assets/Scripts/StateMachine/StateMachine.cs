@@ -309,10 +309,12 @@ public class ChaseState : FSMState
     {
         if(!IsInRange(player, enemy, chaseAngle, chaseRange))
         {
+            Debug.Log("lost player");
             PerformTransition(Transition.LostPlayer,  player,  enemy);
         }
         else if(Distance(player, enemy) < attackRange)
         {
+            Debug.Log("in attackRange");
             PerformTransition(Transition.CanAttack,  player,  enemy);
         }
     }
@@ -329,30 +331,38 @@ public class ChaseState : FSMState
 //攻击
 public class AttackState : FSMState
 {
-    public AttackState()
+    Animator animator;
+    AnimatorStateInfo animInfo;
+    public AttackState(Animator anim)
     {
+        animator = anim;
         stateID = StateID.Attack;
     }
 
     public override void DoBeforeEntering(GameObject player, GameObject enemy)
     {
-        
+        enemy.GetComponent<BaseRoleController>().Attack();
+        if (animator == null) Debug.Log("no animator");
+        enemy.GetComponent<BaseRoleController>().rigidbody.velocity = new Vector2(0, 0);
     }
 
     public override void DoBeforeLeaving(GameObject player, GameObject enemy)
     {
-        
+        Debug.Log("DoBeforeLeaving Attack");
     }
 
     public override void ReState(GameObject player, GameObject enemy)
     {
-        
+        AnimatorStateInfo stateinfo = animator.GetCurrentAnimatorStateInfo(0);
+        if( stateinfo.normalizedTime > 1.345f)
+        {
+            enemy.GetComponent<BaseRoleController>().Statemanager.PerformTransition(Transition.LostPlayer, player, enemy);
+        }
     }
     public override void Update(GameObject player, GameObject enemy)
     {
-        Debug.LogError("Die !");
-        enemy.GetComponent<BaseRoleController>().Attack();
-        enemy.GetComponent<BaseRoleController>().Statemanager.PerformTransition(Transition.LostPlayer,  player,  enemy);
+        //Debug.LogError("Die !");
+        
     }
 }
 
@@ -398,11 +408,13 @@ public class RetreatState : FSMState
     }
     public override void DoBeforeEntering(GameObject player, GameObject enemy)
     {
+        Debug.Log("enter retreate");
         timer = 0;
     }
 
     public override void DoBeforeLeaving(GameObject player, GameObject enemy)
     {
+        Debug.Log("leave retreate");
         timer = 0;
     }
 

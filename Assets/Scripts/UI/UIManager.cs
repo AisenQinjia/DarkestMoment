@@ -20,8 +20,8 @@ public class UIManager : MonoBehaviour
                 GameObject obj = new GameObject();
                 instance = obj.AddComponent<UIManager>();
                 obj.name = "UICanvas";
-                DontDestroyOnLoad(obj);
                 obj.AddComponent<Canvas>().sortingOrder = 10;
+                DontDestroyOnLoad(obj);
             }
             return instance;
         }
@@ -79,8 +79,8 @@ public class UIManager : MonoBehaviour
         if (panel == null)
         {
             panel = Instantiate(Resources.Load(GameDefine.panelPath + name)) as GameObject;
-            panel.transform.SetParent(this.Canvas.transform);
-            panel.transform.localPosition = Vector3.zero;
+            panel.transform.SetParent(this.Canvas.transform, false);
+            // panel.transform.localPosition = Vector3.zero;
             panelDict.Add(name, panel);
 
         }
@@ -103,8 +103,8 @@ public class UIManager : MonoBehaviour
         if (panel == null)
         {
             panel = Instantiate(Resources.Load(name)) as GameObject;
-            panel.transform.SetParent(this.Canvas.transform);
-            panel.transform.localPosition = Vector3.zero;
+            panel.transform.SetParent(this.Canvas.transform, false);
+            //  panel.transform.localPosition = Vector3.zero;
             panelDict.Add(name, panel);
         }
         else

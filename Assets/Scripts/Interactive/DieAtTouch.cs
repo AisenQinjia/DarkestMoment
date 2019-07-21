@@ -15,14 +15,16 @@ public class DieAtTouch : BaseInteractive
     void OnTriggerEnter2D(Collider2D other)
     {
         check_tag = other.gameObject.tag;
-        if (check_tag == GameDefine.PlayerTag || check_tag == GameDefine.EnemyTag)
+        if (check_tag == GameDefine.PlayerTag)
         {
-            Debug.Log("touch die");
+            Debug.Log("Play touch die");
             BaseRoleController control_dead = other.GetComponent<BaseRoleController>();
-            if (control_dead == null)
-            {
-                control_dead = other.GetComponentInParent<BaseRoleController>();
-            }
+            control_dead.OnDead();
+        }
+        if (check_tag == GameDefine.EnemyTag)
+        {
+            Debug.Log("Enemy touch die");
+            BaseRoleController control_dead = other.GetComponentInParent<BaseRoleController>();
             control_dead.OnDead();
         }
     }
@@ -30,10 +32,16 @@ public class DieAtTouch : BaseInteractive
     void OnCollisionEnter2D(Collision2D other)
     {
         check_tag = other.gameObject.tag;
-        if (check_tag == GameDefine.PlayerTag || check_tag == GameDefine.EnemyTag)
+        if (check_tag == GameDefine.PlayerTag)
         {
-            Debug.Log("touch die");
+            Debug.Log("Play touch die");
             BaseRoleController control_dead = other.collider.GetComponent<BaseRoleController>();
+            control_dead.OnDead();
+        }
+        if (check_tag == GameDefine.EnemyTag)
+        {
+            Debug.Log("Enemy touch die");
+            BaseRoleController control_dead = other.collider.GetComponentInParent<BaseRoleController>();
             control_dead.OnDead();
         }
     }
