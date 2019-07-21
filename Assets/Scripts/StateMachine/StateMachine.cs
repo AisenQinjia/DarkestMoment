@@ -219,6 +219,14 @@ public abstract class FSMState
         Vector3 dir = player.transform.position - enemy.transform.position;
         return dir.x < 0;
     }
+
+    protected void ReverseSprite(GameObject player, GameObject enemy)
+    {
+        //GameObject go = enemy.transform.Find("Slime_0").gameObject;
+        //go.transform.Rotate(new Vector3(0, 180, 0));
+        //bool isFlipX = go.GetComponent<SpriteRenderer>().flipX ;
+        //go.GetComponent<SpriteRenderer>().flipX = !isFlipX;
+    }
 }
 
 //巡逻敌人行走状态
@@ -298,6 +306,7 @@ public class TurnState : FSMState
     public override void Update(GameObject player, GameObject enemy)
     {
         enemy.transform.Rotate(new Vector3(0, 180, 0));
+        ReverseSprite(player, enemy);
         enemy.GetComponent<BaseRoleController>().Statemanager.PerformTransition(Transition.ShouldWalk,  player,  enemy);
     }
 }
