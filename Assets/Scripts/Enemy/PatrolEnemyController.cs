@@ -30,7 +30,7 @@ public class PatrolEnemyController : BaseRoleController
     public float chaseAngle;
     public float stareTime;
     public float stareRange;
-
+    public float checkSpeed;
     //暂时都用一个collider吧，用距离判断生效与否
     public float barrierValidDistance;
     public Transform[] path;
@@ -59,6 +59,7 @@ public class PatrolEnemyController : BaseRoleController
         walk.AddTransition(Transition.ShouldTurn, StateID.Turn);
         walk.AddTransition(Transition.SawPlayer, StateID.Chase);
         walk.AddTransition(Transition.FeelSomethingWrong, StateID.Stop);
+        walk.AddTransition(Transition.HeardNoise, StateID.CheckPoint);
 
         TurnState turn = new TurnState();
         turn.AddTransition(Transition.ShouldWalk, StateID.Walk);
@@ -84,6 +85,11 @@ public class PatrolEnemyController : BaseRoleController
         stop.AddTransition(Transition.LostPlayer, StateID.Walk);
         stop.AddTransition(Transition.SawPlayer, StateID.Chase);
 
+        CheckPointState checkPoint = new CheckPointState(checkSpeed);
+        checkPoint.AddTransition(Transition.SawPlayer, StateID.Chase);
+        checkPoint.AddTransition(Transition.ShouldStop, StateID.Stop);
+
+
         Statemanager.AddState(walk);
         Statemanager.AddState(turn);
         Statemanager.AddState(chase);
@@ -91,6 +97,7 @@ public class PatrolEnemyController : BaseRoleController
         Statemanager.AddState(retreat);
         Statemanager.AddState(stareAtPlayer);
         Statemanager.AddState(stop);
+        Statemanager.AddState(checkPoint);
     }
 
     void GetResource()
@@ -203,7 +210,7 @@ public class PatrolEnemyController : BaseRoleController
     public override void Attack()
     {
         animator.SetTrigger("canAttack");
-        player.GetComponent<BaseRoleController>().OnDead();
+        //player.GetComponent<BaseRoleController>().OnDead();
     }
 
     public override void WaitTime(float time)
@@ -231,8 +238,31 @@ public class PatrolEnemyController : BaseRoleController
     //吸引敌人注意力接口
     public override void ComeToMe(Transform trans)
     {
-        //if()
-        Statemanager.PerformTransition(Transition.HeardNoise, player, gameObject);
+        if(CanheardNosie())
+        {
+            CheckPointState cps = (CheckPointState)Statemanager.GetState(StateID.CheckPoint);
+            cps.SetTransform(trans);
+            Statemanager.PerformTransition(Transition.HeardNoise, player, gameObject);
+        }
+    }
+    //吸引敌人条件
+    bool CanheardNosie()
+    {
+        return Statemanager.currentStateID == StateID.CheckPoint || Statemanager.currentStateID == StateID.Retreat || Statemanager.currentStateID == StateID.Walk;
+    }
+    //离开检查点
+    public override void LeaveMe()
+    {
+        if (CanLeave())
+        {
+            Statemanager.PerformTransition(Transition.LostPlayer, player, gameObject);
+        }
+    }
+
+    //离开检查点条件
+    bool CanLeave()
+    {
+        return Statemanager.currentStateID == StateID.CheckPoint || Statemanager.currentStateID == StateID.Stop;
     }
 
     //红色感叹号延时消失

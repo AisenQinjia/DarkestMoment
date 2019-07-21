@@ -263,7 +263,7 @@ public class PlayerController : BaseRoleController
         Debug.Log("player dead");
         this.enabled = false;
         EventCenter.Broadcast(EventType.OnPlayerDead);
-        UIManager.Instance.PopPanel(GameDefine.losePanel);
+        GameManager.Instance.GameOver();
     }
 
 

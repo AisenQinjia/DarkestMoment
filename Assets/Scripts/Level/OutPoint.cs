@@ -9,7 +9,7 @@ public class OutPoint : MonoBehaviour
         if (col.transform.CompareTag(GameDefine.PlayerTag))
         {
             col.transform.GetComponent<PlayerController>().enabled = false;
-            UIManager.Instance.PopPanel(GameDefine.winPanel);
+            GameManager.Instance.GameWin();
         }
     }
 
