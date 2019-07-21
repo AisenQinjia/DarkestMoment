@@ -137,13 +137,14 @@ MonoBehaviour:
   walkSpeed: 1
   chaseSpeed: 5
   chaseRange: 50
-  attackRange: 1
+  attackRange: 3
   retreatSpeed: 1.5
   retreatInitialSpeed: 0.1
   retreatInitialSpeedLastTime: 1
   chaseAngle: 30
   stareTime: 5
   stareRange: 25
+  checkSpeed: 2
   barrierValidDistance: 10
   path:
   - {fileID: 0}

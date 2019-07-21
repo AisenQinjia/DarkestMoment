@@ -23,6 +23,7 @@ public enum Transition
     NullTransition,
     ShouldTurn,
     ShouldWalk,
+    ShouldStop,
     SawPlayer,
     CanChase,
     CanAttack,
@@ -74,6 +75,19 @@ public class EnemyStateManager
             }
         }
         states.Add(state);
+    }
+
+    public FSMState GetState(StateID stateid)
+    {
+        foreach (FSMState st in states)
+        {
+            if (st.stateID == stateid)
+            {
+                return st;
+            }
+        }
+        Debug.LogError("manager 不存在: " + stateid.ToString() + " 状态");
+        return states[0];
     }
 
     public void DeleteState(StateID id) { }
@@ -506,12 +520,13 @@ public class StopState : FSMState
 
     public override void DoBeforeEntering(GameObject player, GameObject enemy)
     {
+        Debug.Log("Enter Stop");
 
     }
 
     public override void DoBeforeLeaving(GameObject player, GameObject enemy)
     {
-
+        Debug.Log("Leave Stop");
     }
 
     public override void ReState(GameObject player, GameObject enemy)
@@ -524,5 +539,57 @@ public class StopState : FSMState
         float x = 0.001f;
         if (IsEnemyLeft(player, enemy)) x = -x;
         enemy.GetComponent<Rigidbody2D>().velocity = new Vector2(x, 0);
+    }
+}
+
+public class CheckPointState : FSMState
+{
+    float speed;
+    Transform transform;
+
+    public CheckPointState(float checkspeed)
+    {
+        speed = checkspeed;
+        stateID = StateID.CheckPoint;
+    }
+
+    public void SetTransform(Transform trans)
+    {
+        transform = trans;
+    }
+
+    public override void DoBeforeEntering(GameObject player, GameObject enemy)
+    {
+        Debug.Log("Enter CheckPointState");
+    }
+
+    public override void DoBeforeLeaving(GameObject player, GameObject enemy)
+    {
+        transform = null;
+    }
+
+    public override void ReState(GameObject player, GameObject enemy)
+    {
+
+    }
+
+    public override void Update(GameObject player, GameObject enemy)
+    {
+        if(transform != null)
+        {
+            Vector3 moveDir = transform.position - enemy.transform.position;
+            if (moveDir.magnitude < 0.6)
+            {
+                
+                enemy.GetComponent<BaseRoleController>().Statemanager.PerformTransition(Transition.ShouldStop, player, enemy);
+            }
+            else
+            {
+                moveDir = new Vector3(moveDir.x, 0, 0);
+                LookAtDirection(enemy, moveDir);
+                Vector3 vel = moveDir.normalized * speed;
+                enemy.GetComponent<Rigidbody2D>().velocity = new Vector2(vel.x, 0);
+            }
+        }
     }
 }

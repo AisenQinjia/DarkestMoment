@@ -35,10 +35,7 @@ public class BaseRoleController : MonoBehaviour
     public virtual void ComeToMe(Transform trans) { }
 
     //让敌人离开，恢复原来状态
-    public virtual void LeaveMe()
-    {
-
-    }
+    public virtual void LeaveMe() { }
 
     //离开walk状态
     public virtual void LeaveWalkState() { }
