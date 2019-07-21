@@ -17,6 +17,10 @@ public class PlayerController : BaseRoleController
 
     private Animator[] stateAnims = new Animator[3];
 
+    private RoleData[] stateDatas = new RoleData[3];
+
+    private SpriteRenderer[] stateSprites = new SpriteRenderer[3];
+
     private bool grounded = true;
     private Vector3 velocity = new Vector3(0, 0, 0);
     private Rigidbody2D rb;
@@ -26,7 +30,6 @@ public class PlayerController : BaseRoleController
     private Vector2 attackBoxDir;
 
     private PlayerState state;
-    private RoleData[] stateDatas = new RoleData[3];
     public override void Awake()
     {
         base.Awake();
@@ -45,6 +48,10 @@ public class PlayerController : BaseRoleController
         this.stateDatas[(int)PlayerState.Stick] = ConfigManager.Instance.GetRoleData(1);
         this.stateDatas[(int)PlayerState.Flow] = ConfigManager.Instance.GetRoleData(2);
         this.stateDatas[(int)PlayerState.Power] = ConfigManager.Instance.GetRoleData(3);
+
+        this.stateSprites[(int)PlayerState.Stick] = stateGos[(int)PlayerState.Stick].GetComponent<SpriteRenderer>();
+        this.stateSprites[(int)PlayerState.Flow] = stateGos[(int)PlayerState.Flow].GetComponent<SpriteRenderer>();
+        this.stateSprites[(int)PlayerState.Power] = stateGos[(int)PlayerState.Power].GetComponent<SpriteRenderer>();
 
         this.attackBoxSize = new Vector2(this.stateDatas[(int)this.state].eatLong, this.stateDatas[(int)this.state].eatWidth);
         this.attackBoxDir = new Vector2(0, 0);
@@ -91,20 +98,18 @@ public class PlayerController : BaseRoleController
     {
         if (Input.GetKey(KeyCode.A))
         {
-            this.transform.rotation = Quaternion.Euler(new Vector3(0, 180, 0));
+            TurnSprite(false);
             this.transform.position += new Vector3(-1 * this.stateDatas[(int)this.state].walkSpeed, 0, 0) * Time.deltaTime;
         }
         if (Input.GetKey(KeyCode.D))
         {
-
-            this.transform.rotation = Quaternion.Euler(new Vector3(0, 0, 0));
+            TurnSprite(true);
             this.transform.position += new Vector3(1 * this.stateDatas[(int)this.state].walkSpeed, 0, 0) * Time.deltaTime;
         }
         if (Input.GetKeyDown(KeyCode.Space))
         {
             Jump();
         }
-
 
 
         if (this.velocity.x != 0)
@@ -120,6 +125,18 @@ public class PlayerController : BaseRoleController
         // {
         this.grounded = true;
         // }
+    }
+
+    private void TurnSprite(bool right)  //设置朝向
+    {
+        if (right)
+        {
+            this.stateSprites[(int)this.state].flipX = true;
+        }
+        else
+        {
+            this.stateSprites[(int)this.state].flipX = false;
+        }
     }
 
     public void ChangeState(int state)
@@ -142,7 +159,7 @@ public class PlayerController : BaseRoleController
     private void MoveLeft()
     {
 
-        this.transform.rotation = Quaternion.Euler(new Vector3(0, 180, 0));
+        TurnSprite(false);
 
         this.velocity.x = -1 * this.stateDatas[(int)this.state].walkSpeed;
         if (this.stateAnims[(int)this.state] != null)
@@ -152,8 +169,8 @@ public class PlayerController : BaseRoleController
 
     private void MoveRight()
     {
-        this.transform.rotation = Quaternion.Euler(new Vector3(0, 0, 0));
 
+        TurnSprite(true);
 
         this.velocity.x = 1 * this.stateDatas[(int)this.state].walkSpeed;
         if (this.stateAnims[(int)this.state] != null)
