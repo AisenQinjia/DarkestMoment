@@ -91,8 +91,6 @@ public class PlayerController : BaseRoleController
     {
         if (Input.GetKey(KeyCode.A))
         {
-
-            UIManager.Instance.PopHint("你好棒！");
             this.transform.rotation = Quaternion.Euler(new Vector3(0, 180, 0));
             this.transform.position += new Vector3(-1 * this.stateDatas[(int)this.state].walkSpeed, 0, 0) * Time.deltaTime;
         }
