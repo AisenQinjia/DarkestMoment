@@ -57,12 +57,7 @@ public class PlayerController : BaseRoleController
         this.stateSprites[(int)PlayerState.Power] = stateGos[(int)PlayerState.Power].GetComponent<SpriteRenderer>();
 
         inventoryData = new InventoryData();
-        inventoryData.AddItem(1);
-        inventoryData.AddItem(2);
-        inventoryData.AddItem(1);
-        inventoryData.AddItem(1);
-        inventoryData.AddItem(2); inventoryData.AddItem(1);
-        inventoryData.AddItem(2);
+
 
         this.attackBoxSize = new Vector2(this.stateDatas[(int)this.state].eatLong, this.stateDatas[(int)this.state].eatWidth);
         this.attackBoxDir = new Vector2(0, 0);

@@ -14,10 +14,12 @@ public class InventoryData
     }
     public void AddItem(int cfgId)
     {
+
         for (int i = 0; i < items.Count; i++)
         {
             if (items[i].cfgId == cfgId)
             {
+                Debug.Log("add item " + cfgId);
                 items[i].count++;
                 return;
             }
@@ -41,6 +43,7 @@ public class InventoryData
 
     public bool HasItem(int cfgId)
     {
+        Debug.Log("check has item " + cfgId);
         for (int i = 0; i < items.Count; i++)
         {
             if (items[i].cfgId == cfgId && items[i].count > 0)

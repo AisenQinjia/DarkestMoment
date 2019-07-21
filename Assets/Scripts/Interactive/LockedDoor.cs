@@ -10,10 +10,10 @@ public class LockedDoor : BaseInteractive
     // Start is called before the first frame update
     void Start()
     {
-        
+        anim = GetComponent<Animator>();
     }
 
-    void OnTriggerEnter2D(Collider2D other)
+    void OnCollisionEnter2D(Collision2D other)
     {
         Debug.Log("open door");
         check_tag = other.gameObject.tag;
