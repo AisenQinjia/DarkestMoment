@@ -370,7 +370,7 @@ public class AttackState : FSMState
     public override void ReState(GameObject player, GameObject enemy)
     {
         AnimatorStateInfo stateinfo = animator.GetCurrentAnimatorStateInfo(0);
-        Debug.Log("time: " + stateinfo.normalizedTime);
+        //Debug.Log("time: " + stateinfo.normalizedTime);
         if( stateinfo.normalizedTime > 1.7f || timer > 1.0f)
         {
             enemy.GetComponent<BaseRoleController>().Statemanager.PerformTransition(Transition.LostPlayer, player, enemy);
@@ -527,7 +527,7 @@ public class StopState : FSMState
     {
         if(animator != null)
         {
-            Debug.Log("SetBool");
+            //Debug.Log("SetBool");
             animator.SetBool("stop", true);
         }
         Debug.Log("Enter Stop");
