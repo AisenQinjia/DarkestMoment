@@ -21,6 +21,9 @@ public class PlayerController : BaseRoleController
 
     private SpriteRenderer[] stateSprites = new SpriteRenderer[3];
 
+    private InventoryData inventoryData;
+    public InventoryData InventoryData { get { return inventoryData; } }
+
     private bool grounded = true;
     private Vector3 velocity = new Vector3(0, 0, 0);
     private Rigidbody2D rb;
@@ -52,6 +55,14 @@ public class PlayerController : BaseRoleController
         this.stateSprites[(int)PlayerState.Stick] = stateGos[(int)PlayerState.Stick].GetComponent<SpriteRenderer>();
         this.stateSprites[(int)PlayerState.Flow] = stateGos[(int)PlayerState.Flow].GetComponent<SpriteRenderer>();
         this.stateSprites[(int)PlayerState.Power] = stateGos[(int)PlayerState.Power].GetComponent<SpriteRenderer>();
+
+        inventoryData = new InventoryData();
+        inventoryData.AddItem(1);
+        inventoryData.AddItem(2);
+        inventoryData.AddItem(1);
+        inventoryData.AddItem(1);
+        inventoryData.AddItem(2); inventoryData.AddItem(1);
+        inventoryData.AddItem(2);
 
         this.attackBoxSize = new Vector2(this.stateDatas[(int)this.state].eatLong, this.stateDatas[(int)this.state].eatWidth);
         this.attackBoxDir = new Vector2(0, 0);
@@ -225,22 +236,22 @@ public class PlayerController : BaseRoleController
         }
     }
 
-    private void OnDrawGizmos()
-    {
-        if (this.transform == null || this.stateDatas[(int)this.state] == null)
-            return;
-        Gizmos.color = Color.yellow;
-        Vector2 center = Vector2.zero;
+    //private void OnDrawGizmos()
+    //{
+    //    if (this.transform == null || this.stateDatas[(int)this.state] == null)
+    //        return;
+    //    Gizmos.color = Color.yellow;
+    //    Vector2 center = Vector2.zero;
 
-        center.x = this.transform.position.x + this.transform.right.x * this.stateDatas[(int)this.state].eatLong;
+    //    center.x = this.transform.position.x + this.transform.right.x * this.stateDatas[(int)this.state].eatLong;
 
-        center.y = this.transform.position.y;
+    //    center.y = this.transform.position.y;
 
-        Gizmos.DrawCube(center, this.attackBoxSize);
+    //    Gizmos.DrawCube(center, this.attackBoxSize);
 
-        Gizmos.color = Color.white;
-        Gizmos.DrawWireSphere(this.transform.position, this.stateDatas[(int)this.state].interativeRange);
-    }
+    //    Gizmos.color = Color.white;
+    //    Gizmos.DrawWireSphere(this.transform.position, this.stateDatas[(int)this.state].interativeRange);
+    //}
 
 
     private void Interactive(GameObject go)
@@ -266,5 +277,21 @@ public class PlayerController : BaseRoleController
         GameManager.Instance.GameOver();
     }
 
+
+
+    public void AddItem(int cfgId)
+    {
+        inventoryData.AddItem(cfgId);
+    }
+
+    public void RemoveItem(int cfgId)
+    {
+        inventoryData.RemoveItem(cfgId);
+    }
+
+    public bool HasItem(int cfgId)
+    {
+        return inventoryData.HasItem(cfgId);
+    }
 
 }

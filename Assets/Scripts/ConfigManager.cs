@@ -13,6 +13,7 @@ public class ConfigManager
 
 
     private Dictionary<int, RoleData> roleDict = new Dictionary<int, RoleData>();
+    private Dictionary<int, ItemData> itemDict = new Dictionary<int, ItemData>();
     private static ConfigManager instance;
     public static ConfigManager Instance
     {
@@ -55,11 +56,22 @@ public class ConfigManager
         return this.roleDict[cfgId];
     }
 
+    public ItemData GetItemData(int cfgId)
+    {
+        if (!this.itemDict.ContainsKey(cfgId))
+        {
+            return null;
+        }
+        return this.itemDict[cfgId];
+    }
+
 
 
     public ConfigManager()
     {
         instance = this;
         LoadJson<RoleData>(roleDict, "Role");
+        LoadJson<ItemData>(itemDict, "Item");
+
     }
 }

@@ -80,7 +80,6 @@ public class UIManager : MonoBehaviour
         {
             panel = Instantiate(Resources.Load(GameDefine.panelPath + name)) as GameObject;
             panel.transform.SetParent(this.Canvas.transform, false);
-            // panel.transform.localPosition = Vector3.zero;
             panelDict.Add(name, panel);
 
         }
@@ -91,6 +90,12 @@ public class UIManager : MonoBehaviour
 
         // Tween tween = panel.transform.DOScale(1, 0.5f);
         // tween.OnComplete(tweenCallback);
+
+        BasePanel p = panel.GetComponent<BasePanel>();
+        if (p)
+        {
+            p.OnPop();
+        }
 
         return panel;
     }
@@ -104,7 +109,6 @@ public class UIManager : MonoBehaviour
         {
             panel = Instantiate(Resources.Load(name)) as GameObject;
             panel.transform.SetParent(this.Canvas.transform, false);
-            //  panel.transform.localPosition = Vector3.zero;
             panelDict.Add(name, panel);
         }
         else
@@ -112,7 +116,11 @@ public class UIManager : MonoBehaviour
             panel.SetActive(true);
         }
         // Tween tween = panel.transform.DOScale(1, 0.5f);
-
+        BasePanel p = panel.GetComponent<BasePanel>();
+        if (p)
+        {
+            p.OnPop();
+        }
         return panel;
 
     }
@@ -144,6 +152,12 @@ public class UIManager : MonoBehaviour
 
         }
 
+        BasePanel p = panel.GetComponent<BasePanel>();
+        if (p)
+        {
+            p.OnClose();
+        }
+
     }
 
     public void ClosePanel(string name, TweenCallback tweenCallback)
@@ -162,6 +176,11 @@ public class UIManager : MonoBehaviour
             panel.SetActive(false);
             //});
 
+        }
+        BasePanel p = panel.GetComponent<BasePanel>();
+        if (p)
+        {
+            p.OnClose();
         }
 
     }

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class MainPanel : MonoBehaviour
+public class MainPanel : BasePanel
 {
     public float loadTime = 3f;
 

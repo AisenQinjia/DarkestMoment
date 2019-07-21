@@ -14,6 +14,7 @@ public class JoystickInput : MonoBehaviour
     private Button stickStateBtn;
     private Button skillOneBtn;
     private Button skillTwoBtn;
+    private Button inventoryBtn;
 
 
     private void Awake()
@@ -27,6 +28,7 @@ public class JoystickInput : MonoBehaviour
         this.stickStateBtn = transform.Find("stickStateBtn").GetComponent<Button>();
         this.skillOneBtn = transform.Find("skillOneBtn").GetComponent<Button>();
         this.skillTwoBtn = transform.Find("skillTwoBtn").GetComponent<Button>();
+        this.inventoryBtn = this.transform.Find("inventoryBtn").GetComponent<Button>();
 
         this.jumpBtn.onClick.AddListener(OnJumpBtnClick);
         this.killBtn.onClick.AddListener(OnKillBtnClick);
@@ -37,6 +39,7 @@ public class JoystickInput : MonoBehaviour
 
         this.skillOneBtn.onClick.AddListener(OnSkillOneBtnClick);
         this.skillTwoBtn.onClick.AddListener(OnSkillTwoBtnClick);
+        this.inventoryBtn.onClick.AddListener(OnInventoryBtnClick);
 
         EventCenter.AddListener(EventType.OnPlayerDead, DisableInput);
 
@@ -91,13 +94,13 @@ public class JoystickInput : MonoBehaviour
             else
                 rayOrigin = Camera.main.ScreenToWorldPoint(Input.mousePosition);
 
-            hitInfo = Physics2D.Raycast(Camera.main.ScreenToWorldPoint(Input.mousePosition), Vector2.zero, 15, LayerMask.GetMask("Interactive"));
+            hitInfo = Physics2D.Raycast(Camera.main.ScreenToWorldPoint(Input.mousePosition), Vector2.zero, 15);
             if (hitInfo)
             {
-                // if (hitInfo.transform.CompareTag(GameDefine.InterativeTag))
-                // {
-                EventCenter.Broadcast<GameObject>(EventType.OnClickInteractive, hitInfo.transform.gameObject);
-                // }
+                if (hitInfo.transform.CompareTag(GameDefine.InterativeTag))
+                {
+                    EventCenter.Broadcast<GameObject>(EventType.OnClickInteractive, hitInfo.transform.gameObject);
+                }
             }
         }
     }
@@ -154,6 +157,12 @@ public class JoystickInput : MonoBehaviour
     {
         EventCenter.Broadcast(EventType.OnSkillTwoBtnClick);
         ScaleBtn(this.skillTwoBtn.transform);
+    }
+
+    private void OnInventoryBtnClick()
+    {
+        ScaleBtn(this.skillTwoBtn.transform);
+        UIManager.Instance.PopPanel(GameDefine.inventoryPanel);
     }
 
 }

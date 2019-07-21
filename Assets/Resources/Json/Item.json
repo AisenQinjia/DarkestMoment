@@ -1,0 +1,14 @@
+[
+    {
+        "cfgId": 1,
+        "name": "钥匙",
+        "desc": "这是通向某地的钥匙",
+        "usable": false
+    },
+    {
+        "cfgId": 2,
+        "name": "书信",
+        "desc": "一封破烂的的信",
+        "usable": false
+    }
+]

@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
-public class LosePanel : MonoBehaviour
+public class LosePanel : BasePanel
 {
     private Button restartBtn;
     private Button quitBtn;

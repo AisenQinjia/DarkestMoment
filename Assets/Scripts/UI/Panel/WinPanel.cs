@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
-public class WinPanel : MonoBehaviour
+public class WinPanel : BasePanel
 {
     private Button restartBtn;
     private Button quitBtn;

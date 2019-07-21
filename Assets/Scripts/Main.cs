@@ -15,6 +15,7 @@ public class Main : MonoBehaviour
 
         ConfigManager configMgr = new ConfigManager();
 
+        gameObject.AddComponent<GameManager>();
         gameObject.AddComponent<AudioManager>();
         gameObject.AddComponent<RoleManager>();
 

@@ -12,7 +12,15 @@ public class BasePanel : MonoBehaviour
     {
 
     }
+    public virtual void OnPop()
+    {
 
+    }
+
+    public virtual void OnClose()
+    {
+ 
+    }
     public virtual void OnDestroy()
     {
 

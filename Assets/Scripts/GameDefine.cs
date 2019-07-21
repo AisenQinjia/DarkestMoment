@@ -12,6 +12,7 @@ public static class GameDefine
 
     public const string panelPath = "Prefabs/Panels/";
 
+    public const string itemIconPath = "itemIcons/";
 
     public const string VfxPath = "Prefabs/Vfx/";
 
@@ -31,6 +32,8 @@ public static class GameDefine
 
     public const string losePanel = "Prefabs/Panel/LosePanel";
 
+    public const string inventoryPanel = "Prefabs/Panel/InventoryPanel";
 
+    public const string itemInfoUI = "Prefabs/Panel/ItemInfoUI";
 
 }

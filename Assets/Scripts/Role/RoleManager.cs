@@ -40,6 +40,7 @@ public class RoleManager : MonoBehaviour
         if (this.playerTransform == null)
         {
             this.playerTransform = playerTransform;
+
         }
         else
         {
@@ -52,6 +53,7 @@ public class RoleManager : MonoBehaviour
     {
         return this.playerTransform;
     }
+
 
     public void RemovePlayer()
     {
