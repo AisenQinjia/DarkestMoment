@@ -81,7 +81,7 @@ public class PatrolEnemyController : BaseRoleController
         stareAtPlayer.AddTransition(Transition.CanAttack, StateID.Attack);
         stareAtPlayer.AddTransition(Transition.CanChase, StateID.Chase);
 
-        StopState stop = new StopState();
+        StopState stop = new StopState(animator);
         stop.AddTransition(Transition.LostPlayer, StateID.Walk);
         stop.AddTransition(Transition.SawPlayer, StateID.Chase);
 
