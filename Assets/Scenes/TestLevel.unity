@@ -557,11 +557,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: PatrolEnemy
       objectReference: {fileID: 0}
-    - target: {fileID: 8363862035650019381, guid: 52f11555eecd4b1409b6aee7fb4a6b61,
-        type: 3}
-      propertyPath: m_Layer
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 8363862035650019380, guid: 52f11555eecd4b1409b6aee7fb4a6b61,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -617,21 +612,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 8363862035650019380, guid: 52f11555eecd4b1409b6aee7fb4a6b61,
-        type: 3}
-      propertyPath: m_LocalScale.x
-      value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 8363862035650019380, guid: 52f11555eecd4b1409b6aee7fb4a6b61,
-        type: 3}
-      propertyPath: m_LocalScale.y
-      value: 0.5
-      objectReference: {fileID: 0}
     - target: {fileID: 8363862035650019385, guid: 52f11555eecd4b1409b6aee7fb4a6b61,
         type: 3}
-      propertyPath: path.Array.size
-      value: 2
-      objectReference: {fileID: 0}
+      propertyPath: player
+      value: 
+      objectReference: {fileID: 1823221600}
     - target: {fileID: 8363862035650019385, guid: 52f11555eecd4b1409b6aee7fb4a6b61,
         type: 3}
       propertyPath: path.Array.data[0]
@@ -642,46 +627,6 @@ PrefabInstance:
       propertyPath: path.Array.data[1]
       value: 
       objectReference: {fileID: 1439941600}
-    - target: {fileID: 8363862035650019385, guid: 52f11555eecd4b1409b6aee7fb4a6b61,
-        type: 3}
-      propertyPath: player
-      value: 
-      objectReference: {fileID: 1823221600}
-    - target: {fileID: 8363862035650019385, guid: 52f11555eecd4b1409b6aee7fb4a6b61,
-        type: 3}
-      propertyPath: attackRange
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 8363862035650019385, guid: 52f11555eecd4b1409b6aee7fb4a6b61,
-        type: 3}
-      propertyPath: walkSpeed
-      value: 0.1
-      objectReference: {fileID: 0}
-    - target: {fileID: 8363862035650019385, guid: 52f11555eecd4b1409b6aee7fb4a6b61,
-        type: 3}
-      propertyPath: backKillTime
-      value: 100
-      objectReference: {fileID: 0}
-    - target: {fileID: 8363862036477658426, guid: 52f11555eecd4b1409b6aee7fb4a6b61,
-        type: 3}
-      propertyPath: m_Layer
-      value: 8
-      objectReference: {fileID: 0}
-    - target: {fileID: 8363862034907174560, guid: 52f11555eecd4b1409b6aee7fb4a6b61,
-        type: 3}
-      propertyPath: m_Materials.Array.data[0]
-      value: 
-      objectReference: {fileID: 2100000, guid: d075af40cbb405d4d8e0e624c85399f2, type: 2}
-    - target: {fileID: 8363862035799053277, guid: 52f11555eecd4b1409b6aee7fb4a6b61,
-        type: 3}
-      propertyPath: m_Materials.Array.data[0]
-      value: 
-      objectReference: {fileID: 2100000, guid: d075af40cbb405d4d8e0e624c85399f2, type: 2}
-    - target: {fileID: 8363862035842942981, guid: 52f11555eecd4b1409b6aee7fb4a6b61,
-        type: 3}
-      propertyPath: m_Materials.Array.data[0]
-      value: 
-      objectReference: {fileID: 2100000, guid: d075af40cbb405d4d8e0e624c85399f2, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 52f11555eecd4b1409b6aee7fb4a6b61, type: 3}
 --- !u!1 &1439941599

@@ -223,8 +223,8 @@ public abstract class FSMState
     protected void ReverseSprite(GameObject player, GameObject enemy)
     {
         //GameObject go = enemy.transform.Find("Slime_0").gameObject;
-        //go.transform.Rotate(new Vector3(0, 180, 0));
-        //bool isFlipX = go.GetComponent<SpriteRenderer>().flipX ;
+        ////go.transform.Rotate(new Vector3(0, 180, 0));
+        //bool isFlipX = go.GetComponent<SpriteRenderer>().flipX;
         //go.GetComponent<SpriteRenderer>().flipX = !isFlipX;
     }
 }

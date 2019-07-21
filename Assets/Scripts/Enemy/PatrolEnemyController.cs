@@ -234,17 +234,23 @@ public class PatrolEnemyController : BaseRoleController
         //Debug.LogError(" I am Dead!");
         // Destroy(this.gameObject);
         this.enabled = false;
-        EventCenter.AddListener(EventType.CameraShake, RealDead);
+        // EventCenter.AddListener(EventType.CameraShake, RealDead);
+        this.GetComponentInChildren<Collider2D>().enabled = false;
+        this.rigidbody.Sleep();
+        StartCoroutine(RealDead());
+
     }
 
-    private void RealDead()
+    IEnumerator RealDead()
     {
+        yield return new WaitForSeconds(0.1f);
         Destroy(this.gameObject);
     }
 
+
     public void OnDestroy()
     {
-        EventCenter.RemoveListener(EventType.CameraShake, RealDead);
+        //  EventCenter.RemoveListener(EventType.CameraShake, RealDead);
     }
 
     //吸引敌人注意力接口

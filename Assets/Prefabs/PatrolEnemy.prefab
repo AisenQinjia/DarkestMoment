@@ -48,7 +48,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: d075af40cbb405d4d8e0e624c85399f2, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -93,7 +93,7 @@ GameObject:
   - component: {fileID: 8363862035650019386}
   m_Layer: 0
   m_Name: PatrolEnemy
-  m_TagString: Enemy
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -107,7 +107,7 @@ Transform:
   m_GameObject: {fileID: 8363862035650019381}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 3.11, y: 0.41, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.4, y: 0.4, z: 1}
   m_Children:
   - {fileID: 8363862035799053272}
   - {fileID: 8363862035842942982}
@@ -131,13 +131,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   rigidbody: {fileID: 0}
   frontAlarmTime: 0.5
-  backKillTime: 1
+  backKillTime: 100
   redAlarmLastTime: 1
   player: {fileID: 0}
   walkSpeed: 1
-  chaseSpeed: 5
-  chaseRange: 50
-  attackRange: 3
+  chaseSpeed: 3
+  chaseRange: 100
+  attackRange: 0.2
   retreatSpeed: 1.5
   retreatInitialSpeed: 0.1
   retreatInitialSpeedLastTime: 1
@@ -162,7 +162,7 @@ BoxCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 1.109618, y: 0.36}
+  m_Offset: {x: 1.3049273, y: 0.5499844}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
@@ -173,7 +173,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 5.6392355, y: 1.8898997}
+  m_Size: {x: 5.3209248, y: 2.2698684}
   m_EdgeRadius: 0
 --- !u!50 &8363862035650019386
 Rigidbody2D:
@@ -245,7 +245,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: d075af40cbb405d4d8e0e624c85399f2, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -343,7 +343,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: d075af40cbb405d4d8e0e624c85399f2, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -464,9 +464,9 @@ GameObject:
   - component: {fileID: 8363862036477658425}
   - component: {fileID: 8363862036477658424}
   - component: {fileID: 8200330349872946280}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: bodyCollider
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
