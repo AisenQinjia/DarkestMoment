@@ -8,14 +8,15 @@ public class DestroyAtTouch : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+
     }
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        other.gameObject.GetComponent<PlayerController>().AddItem(item_index);
+        if (other.transform.CompareTag(GameDefine.PlayerTag))
+            other.gameObject.GetComponent<PlayerController>().AddItem(item_index);
         Destroy(gameObject);
     }
-    
-    
+
+
 }
