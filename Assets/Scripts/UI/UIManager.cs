@@ -21,7 +21,7 @@ public class UIManager : MonoBehaviour
                 instance = obj.AddComponent<UIManager>();
                 obj.name = "UICanvas";
                 DontDestroyOnLoad(obj);
-                obj.GetComponent<Canvas>().sortingOrder = 10;
+                obj.AddComponent<Canvas>().sortingOrder = 10;
             }
             return instance;
         }
