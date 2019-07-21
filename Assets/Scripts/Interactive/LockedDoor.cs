@@ -14,20 +14,41 @@ public class LockedDoor : BaseInteractive
 
     void OnTriggerEnter2D(Collider2D other)
     {
+        Debug.Log("open door");
         check_tag = other.gameObject.tag;
         if (check_tag == GameDefine.PlayerTag)
         {
             Debug.Log("Player open the lock door");
             anim = GetComponent<Animator>();
-            gameObject.GetComponent<Collider2D>().enabled = false;
             anim.SetFloat("Blend", 0.3f);
         }
+
         if (check_tag == GameDefine.EnemyTag)
         {
             Debug.Log("Enemy open the lock door");
-            anim = GetComponent<Animator>();
-            gameObject.GetComponentInParent<Collider2D>().enabled = false;
+            anim = GetComponentInParent<Animator>();
             anim.SetFloat("Blend", 0.3f);
         }
+        
+    }
+
+    void OnTriggerExit2D(Collider2D other)
+    {
+        Debug.Log("close door");
+        check_tag = other.gameObject.tag;
+        if (check_tag == GameDefine.PlayerTag)
+        {
+            Debug.Log("Player close the lock door");
+            anim = GetComponent<Animator>();
+            anim.SetFloat("Blend", -0.1f);
+        }
+
+        if (check_tag == GameDefine.EnemyTag)
+        {
+            Debug.Log("Enemy close the lock door");
+            anim = GetComponentInParent<Animator>();
+            anim.SetFloat("Blend", -0.1f);
+        }
+        
     }
 }

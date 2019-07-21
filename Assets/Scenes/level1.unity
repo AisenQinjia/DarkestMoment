@@ -1612,12 +1612,12 @@ PrefabInstance:
     - target: {fileID: 2239556796344574724, guid: eacd2a1272da23a4b890a4e8950ddc2d,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: -14.12
+      value: -15.74
       objectReference: {fileID: 0}
     - target: {fileID: 2239556796344574724, guid: eacd2a1272da23a4b890a4e8950ddc2d,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.23
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 2239556796344574724, guid: eacd2a1272da23a4b890a4e8950ddc2d,
         type: 3}
@@ -8707,6 +8707,8 @@ GameObject:
   - component: {fileID: 1879653683}
   - component: {fileID: 1879653682}
   - component: {fileID: 1879653681}
+  - component: {fileID: 1879653685}
+  - component: {fileID: 1879653686}
   m_Layer: 9
   m_Name: door1close (1)
   m_TagString: Untagged
@@ -8734,7 +8736,7 @@ Rigidbody2D:
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
-  m_Constraints: 0
+  m_Constraints: 1
 --- !u!61 &1879653682
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -8745,7 +8747,7 @@ BoxCollider2D:
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: -0.012506008, y: -0.004168272}
@@ -8817,12 +8819,43 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1879653680}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -10.184, y: 0.332, z: 0}
+  m_LocalPosition: {x: -10.09, y: 0.33, z: 0}
   m_LocalScale: {x: 1.2, y: 1.2, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 84
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1879653685
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1879653680}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7442d83ae80bdac428a8e62aa45085cb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!95 &1879653686
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1879653680}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: f7ca9c4957e8db7449fcf84e544aedd8, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &1900205275
 GameObject:
   m_ObjectHideFlags: 0
