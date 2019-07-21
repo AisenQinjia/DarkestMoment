@@ -347,10 +347,12 @@ public class AttackState : FSMState
 {
     Animator animator;
     AnimatorStateInfo animInfo;
+    float timer;
     public AttackState(Animator anim)
     {
         animator = anim;
         stateID = StateID.Attack;
+        timer = 0;
     }
 
     public override void DoBeforeEntering(GameObject player, GameObject enemy)
@@ -368,7 +370,8 @@ public class AttackState : FSMState
     public override void ReState(GameObject player, GameObject enemy)
     {
         AnimatorStateInfo stateinfo = animator.GetCurrentAnimatorStateInfo(0);
-        if( stateinfo.normalizedTime > 1.345f)
+        //Debug.Log("time: " + stateinfo.normalizedTime);
+        if( stateinfo.normalizedTime > 1.7f || timer > 1.0f)
         {
             enemy.GetComponent<BaseRoleController>().Statemanager.PerformTransition(Transition.LostPlayer, player, enemy);
         }
@@ -376,7 +379,7 @@ public class AttackState : FSMState
     public override void Update(GameObject player, GameObject enemy)
     {
         //Debug.LogError("Die !");
-        
+        timer += Time.deltaTime;
     }
 }
 
@@ -513,13 +516,20 @@ public class StareAtPlayerState : FSMState
 //stop状态
 public class StopState : FSMState
 {
-    public StopState()
+    Animator animator;
+    public StopState(Animator anim)
     {
         stateID = StateID.Stop;
+        animator = anim;
     }
 
     public override void DoBeforeEntering(GameObject player, GameObject enemy)
     {
+        if(animator != null)
+        {
+            //Debug.Log("SetBool");
+            animator.SetBool("stop", true);
+        }
         Debug.Log("Enter Stop");
 
     }
@@ -527,6 +537,11 @@ public class StopState : FSMState
     public override void DoBeforeLeaving(GameObject player, GameObject enemy)
     {
         Debug.Log("Leave Stop");
+        if (animator != null)
+        {
+            animator.SetBool("stop", false);
+        }
+        Debug.Log("Enter Stop");
     }
 
     public override void ReState(GameObject player, GameObject enemy)
