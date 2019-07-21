@@ -81,7 +81,7 @@ public class PatrolEnemyController : BaseRoleController
         stareAtPlayer.AddTransition(Transition.CanAttack, StateID.Attack);
         stareAtPlayer.AddTransition(Transition.CanChase, StateID.Chase);
 
-        StopState stop = new StopState(animator);
+        StopState stop = new StopState();
         stop.AddTransition(Transition.LostPlayer, StateID.Walk);
         stop.AddTransition(Transition.SawPlayer, StateID.Chase);
 
@@ -232,25 +232,13 @@ public class PatrolEnemyController : BaseRoleController
     public override void OnDead()
     {
         //Debug.LogError(" I am Dead!");
-        // Destroy(this.gameObject);
-        this.enabled = false;
-        EventCenter.AddListener(EventType.CameraShake, RealDead);
-    }
-
-    private void RealDead()
-    {
         Destroy(this.gameObject);
-    }
-
-    public void OnDestroy()
-    {
-        EventCenter.RemoveListener(EventType.CameraShake, RealDead);
     }
 
     //吸引敌人注意力接口
     public override void ComeToMe(Transform trans)
     {
-        if (CanheardNosie())
+        if(CanheardNosie())
         {
             CheckPointState cps = (CheckPointState)Statemanager.GetState(StateID.CheckPoint);
             cps.SetTransform(trans);
