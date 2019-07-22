@@ -140,7 +140,8 @@ public class PatrolEnemyController : BaseRoleController
             //背后发现需要调转方向
             if (!IsInForntOfEnemy(player, gameObject))
             {
-                gameObject.transform.Rotate(new Vector3(0, 180, 0));
+                LookAtPlayer(player, gameObject);
+                //gameObject.transform.Rotate(new Vector3(0, 180, 0));
             }
             PerformTransition(Transition.SawPlayer, player, gameObject);
         }
