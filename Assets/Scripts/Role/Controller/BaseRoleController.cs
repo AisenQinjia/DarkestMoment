@@ -64,6 +64,16 @@ public class BaseRoleController : MonoBehaviour
         if (Mathf.Abs(Vector3.Angle(Dir, enemy.transform.right)) > 90)
         {
             enemy.transform.Rotate(new Vector3(0, 180, 0));
+            ReverseSprite(player, enemy);
         }
+    }
+
+    //翻转sprite
+    protected void ReverseSprite(GameObject player, GameObject enemy)
+    {
+        GameObject go = enemy.transform.Find("Slime_0").gameObject;
+        go.transform.Rotate(new Vector3(0, 180, 0));
+        bool isFlipX = go.GetComponent<SpriteRenderer>().flipX;
+        go.GetComponent<SpriteRenderer>().flipX = !isFlipX;
     }
 }

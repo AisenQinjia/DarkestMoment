@@ -15,7 +15,7 @@ public class DestroyAtTouch : MonoBehaviour
     {
         if (other.transform.CompareTag(GameDefine.PlayerTag))
         {
-
+            Debug.Log("touch and destroy");
             other.gameObject.GetComponent<PlayerController>().AddItem(item_index);
             Destroy(gameObject);
         }

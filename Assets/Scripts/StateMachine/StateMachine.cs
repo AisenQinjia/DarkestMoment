@@ -175,22 +175,24 @@ public abstract class FSMState
     }
 
     //看着行进方向
-    protected void LookAtDirection(GameObject enemy, Vector3 moveDir)
+    protected void LookAtDirection(GameObject player, GameObject enemy, Vector3 moveDir)
     {
         moveDir = new Vector3(moveDir.x, 0, 0);
         if (Mathf.Abs(Vector3.Angle(moveDir, enemy.transform.right)) > 90)
         {
             enemy.transform.Rotate(new Vector3(0, 180, 0));
+            ReverseSprite(player, enemy);
         }
     }
 
     //背对着行进方向
-    protected void BackAtDirection(GameObject enemy, Vector3 moveDir)
+    protected void BackAtDirection(GameObject player, GameObject enemy, Vector3 moveDir)
     {
         moveDir = new Vector3(moveDir.x, 0, 0);
         if (Mathf.Abs(Vector3.Angle(moveDir, enemy.transform.right)) < 90)
         {
             enemy.transform.Rotate(new Vector3(0, 180, 0));
+            ReverseSprite(player, enemy);
         }
     }
 
@@ -222,10 +224,10 @@ public abstract class FSMState
 
     protected void ReverseSprite(GameObject player, GameObject enemy)
     {
-        //GameObject go = enemy.transform.Find("Slime_0").gameObject;
-        ////go.transform.Rotate(new Vector3(0, 180, 0));
-        //bool isFlipX = go.GetComponent<SpriteRenderer>().flipX;
-        //go.GetComponent<SpriteRenderer>().flipX = !isFlipX;
+        GameObject go = enemy.transform.Find("Slime_0").gameObject;
+        go.transform.Rotate(new Vector3(0, 180, 0));
+        bool isFlipX = go.GetComponent<SpriteRenderer>().flipX;
+        go.GetComponent<SpriteRenderer>().flipX = !isFlipX;
     }
 }
 
@@ -245,11 +247,14 @@ public  class WalkStateForPatrol : FSMState
     }
     public override void DoBeforeEntering(GameObject player, GameObject enemy)
     {
+        //Debug.Log("Enter Walk");
         enemy.gameObject.GetComponent<BaseRoleController>().ReturnToWalkState();
     }
 
     public override void DoBeforeLeaving(GameObject player, GameObject enemy)
     {
+        //Debug.Log("Leave Walk");
+
         enemy.gameObject.GetComponent<BaseRoleController>().LeaveWalkState();
     }
 
@@ -274,7 +279,7 @@ public  class WalkStateForPatrol : FSMState
         else
         {
             moveDir = new Vector3(moveDir.x, 0, 0);
-            LookAtDirection(enemy, moveDir);
+            LookAtDirection(player, enemy, moveDir);
             Vector3 vel = moveDir.normalized * speed;
             enemy.GetComponent<Rigidbody2D>().velocity = new Vector2(vel.x, 0);
         }
@@ -300,6 +305,17 @@ public class TurnState : FSMState
     public TurnState()
     {
         stateID = StateID.Turn;
+    }
+    public override void DoBeforeEntering(GameObject player, GameObject enemy)
+    {
+        //Debug.Log("enter turn");
+
+    }
+
+    public override void DoBeforeLeaving(GameObject player, GameObject enemy)
+    {
+        //Debug.Log("Leave turn");
+
     }
     public override void ReState(GameObject player, GameObject enemy) { }
 
@@ -328,6 +344,18 @@ public class ChaseState : FSMState
         chaseAngle = chaseangle;
     }
 
+    public override void DoBeforeEntering(GameObject player, GameObject enemy)
+    {
+        //Debug.Log("enter chase");
+
+    }
+
+    public override void DoBeforeLeaving(GameObject player, GameObject enemy)
+    {
+        //Debug.Log("Leave chase");
+
+    }
+
     public override void ReState(GameObject player, GameObject enemy)
     {
         if(!IsInRange(player, enemy, chaseAngle, chaseRange))
@@ -345,7 +373,7 @@ public class ChaseState : FSMState
     public override void Update(GameObject player, GameObject enemy)
     {
         Vector3 moveDir = player.transform.position - enemy.transform.position;
-        LookAtDirection(enemy, moveDir);
+        LookAtDirection(player, enemy, moveDir);
         Vector3 vel = moveDir.normalized * speed;
         enemy.GetComponent<Rigidbody2D>().velocity = new Vector2(vel.x, 0);
     }
@@ -366,6 +394,7 @@ public class AttackState : FSMState
 
     public override void DoBeforeEntering(GameObject player, GameObject enemy)
     {
+        //Debug.Log("enter attack");
         enemy.GetComponent<BaseRoleController>().Attack();
         if (animator == null) Debug.Log("no animator");
         enemy.GetComponent<BaseRoleController>().rigidbody.velocity = new Vector2(0, 0);
@@ -373,14 +402,14 @@ public class AttackState : FSMState
 
     public override void DoBeforeLeaving(GameObject player, GameObject enemy)
     {
-        Debug.Log("DoBeforeLeaving Attack");
+        //Debug.Log("Leave Attack");
     }
 
     public override void ReState(GameObject player, GameObject enemy)
     {
         AnimatorStateInfo stateinfo = animator.GetCurrentAnimatorStateInfo(0);
-        //Debug.Log("time: " + stateinfo.normalizedTime);
-        if( stateinfo.normalizedTime > 1.7f || timer > 1.0f)
+        //Debug.Log("time: " + stateinfo.normalizedTime);stateinfo.normalizedTime > 1.7f ||
+        if ( timer > 1.0f)
         {
             enemy.GetComponent<BaseRoleController>().Statemanager.PerformTransition(Transition.LostPlayer, player, enemy);
         }
@@ -434,13 +463,13 @@ public class RetreatState : FSMState
     }
     public override void DoBeforeEntering(GameObject player, GameObject enemy)
     {
-        Debug.Log("enter retreate");
+        //Debug.Log("enter retreate");
         timer = 0;
     }
 
     public override void DoBeforeLeaving(GameObject player, GameObject enemy)
     {
-        Debug.Log("leave retreate");
+       // Debug.Log("leave retreate");
         timer = 0;
     }
 
@@ -493,11 +522,14 @@ public class StareAtPlayerState : FSMState
 
     public override void DoBeforeEntering(GameObject player, GameObject enemy)
     {
+        //Debug.Log("Enter stare");
         timer = 0;
     }
 
     public override void DoBeforeLeaving(GameObject player, GameObject enemy)
     {
+        //Debug.Log("Leave stare");
+
         timer = 0;
     }
 
@@ -539,18 +571,17 @@ public class StopState : FSMState
             //Debug.Log("SetBool");
             animator.SetBool("stop", true);
         }
-        Debug.Log("Enter Stop");
+        //Debug.Log("Enter Stop");
 
     }
 
     public override void DoBeforeLeaving(GameObject player, GameObject enemy)
     {
-        Debug.Log("Leave Stop");
+        //Debug.Log("Leave Stop");
         if (animator != null)
         {
             animator.SetBool("stop", false);
         }
-        Debug.Log("Enter Stop");
     }
 
     public override void ReState(GameObject player, GameObject enemy)
@@ -584,11 +615,12 @@ public class CheckPointState : FSMState
 
     public override void DoBeforeEntering(GameObject player, GameObject enemy)
     {
-        Debug.Log("Enter CheckPointState");
+        //Debug.Log("Enter CheckPointState");
     }
 
     public override void DoBeforeLeaving(GameObject player, GameObject enemy)
     {
+        //Debug.Log("Leave CheckPointState");
         transform = null;
     }
 
@@ -610,7 +642,7 @@ public class CheckPointState : FSMState
             else
             {
                 moveDir = new Vector3(moveDir.x, 0, 0);
-                LookAtDirection(enemy, moveDir);
+                LookAtDirection(player, enemy, moveDir);
                 Vector3 vel = moveDir.normalized * speed;
                 enemy.GetComponent<Rigidbody2D>().velocity = new Vector2(vel.x, 0);
             }
