@@ -28,7 +28,7 @@ public class CeilingLamp : BaseInteractive
     {
         if (is_play_music)
         {
-            AudioManager.Instance.PlayClip("吊灯碎裂");
+            AudioManager.Instance.PlayClip("ceiling_lamp_break");
             is_play_music = false;
 
             check_tag = other.gameObject.tag;

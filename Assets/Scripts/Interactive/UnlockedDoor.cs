@@ -20,14 +20,14 @@ public class UnlockedDoor : BaseInteractive
         if (check_tag == GameDefine.PlayerTag)
         {
             Debug.Log("Player open the unlock door");
-            AudioManager.Instance.PlayClip("开门");
+            AudioManager.Instance.PlayClip("open_door");
             anim.SetFloat("Blend", 0.3f);
         }
 
         if (check_tag == GameDefine.EnemyTag)
         {
             Debug.Log("Enemy open the unlock door");
-            AudioManager.Instance.PlayClip("开门");
+            AudioManager.Instance.PlayClip("open_door");
             anim.SetFloat("Blend", 0.3f);
         }
 
@@ -40,14 +40,14 @@ public class UnlockedDoor : BaseInteractive
         if (check_tag == GameDefine.PlayerTag)
         {
             Debug.Log("Player close the unlock door");
-            AudioManager.Instance.PlayClip("锁门");
+            AudioManager.Instance.PlayClip("close_door");
             anim.SetFloat("Blend", -0.1f);
         }
 
         if (check_tag == GameDefine.EnemyTag)
         {
             Debug.Log("Enemy close the unlock door");
-            AudioManager.Instance.PlayClip("锁门");
+            AudioManager.Instance.PlayClip("close_door");
             anim.SetFloat("Blend", -0.1f);
         }
 

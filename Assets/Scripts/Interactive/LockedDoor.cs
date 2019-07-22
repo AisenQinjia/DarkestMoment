@@ -23,7 +23,7 @@ public class LockedDoor : BaseInteractive
         if (check_tag == GameDefine.PlayerTag && other.gameObject.GetComponent<PlayerController>().HasItem(key_index))
         {
             Debug.Log("Player open the lock door");
-            AudioManager.Instance.PlayClip("开门");
+            AudioManager.Instance.PlayClip("open_door");
             anim.SetFloat("Blend", 0.3f);
             change_pattern.isTrigger = true;
             
@@ -32,7 +32,7 @@ public class LockedDoor : BaseInteractive
         if (check_tag == GameDefine.EnemyTag)
         {
             Debug.Log("Enemy open the lock door");
-            AudioManager.Instance.PlayClip("开门");
+            AudioManager.Instance.PlayClip("open_door");
             anim.SetFloat("Blend", 0.3f);
             change_pattern.isTrigger = true;
         }
@@ -46,7 +46,7 @@ public class LockedDoor : BaseInteractive
         if (check_tag == GameDefine.PlayerTag)
         {
             Debug.Log("Player close the lock door");
-            AudioManager.Instance.PlayClip("锁门");
+            AudioManager.Instance.PlayClip("close_door");
             anim.SetFloat("Blend", -0.1f);
             change_pattern.isTrigger = false;
         }
@@ -54,7 +54,7 @@ public class LockedDoor : BaseInteractive
         if (check_tag == GameDefine.EnemyTag)
         {
             Debug.Log("Enemy close the lock door");
-            AudioManager.Instance.PlayClip("锁门");
+            AudioManager.Instance.PlayClip("close_door");
             anim.SetFloat("Blend", -0.1f);
             change_pattern.isTrigger = false;
         }
