@@ -9,8 +9,18 @@ public class CeilingLamp : BaseInteractive
     Rigidbody2D check_velocity;
     bool is_play_music = true;
     // Start is called before the first frame update
-    void Start()
+
+    public override void Awake()
     {
+        base.Awake();
+    }
+    public override void OnDestroy()
+    {
+        base.OnDestroy();
+    }
+   public override void Start()
+    {
+        base.Start();
         gameObject.tag = GameDefine.InterativeTag;
         ceiling_lamp = GetComponent<Rigidbody2D>();
         ceiling_lamp.gravityScale = 0;
@@ -21,7 +31,7 @@ public class CeilingLamp : BaseInteractive
         Debug.Log("Ceiling lamp fall");
         ceiling_lamp = GetComponent<Rigidbody2D>();
         ceiling_lamp.gravityScale = 1;
-        
+        this.KillTween();
     }
 
     void OnCollisionEnter2D(Collision2D other)

@@ -9,10 +9,21 @@ public class Candle10s : BaseInteractive
     bool is_begin = false;
     public GameObject[] control_enemy;
     // Start is called before the first frame update
-    void Start()
+
+    public override void Awake()
     {
+        base.Awake();
+    }
+    public override void OnDestroy()
+    {
+        base.OnDestroy();
+    }
+    public override void Start()
+    {
+        base.Start();
         gameObject.tag = GameDefine.InterativeTag;
     }
+
 
     void Update()
     {
@@ -39,7 +50,7 @@ public class Candle10s : BaseInteractive
 
     public override void InteractiveLogic(Transform player)
     {
-        
+        this.KillTween();
         Debug.Log("candle attract enemy");
         anim = GetComponent<Animator>();
         anim.SetFloat("Blend", 0.3f);
