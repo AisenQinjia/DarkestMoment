@@ -14,4 +14,5 @@
     PlayerEatBoxDisable,
     OnClickInteractive,
     OnPlayerDead,
+    CameraShake,
 }

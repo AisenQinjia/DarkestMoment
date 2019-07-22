@@ -19,6 +19,8 @@ public class ItemInfoUI : BasePanel
     {
         this.name.text = name;
         this.desc.text = desc;
-        this.icon.sprite = Resources.Load(GameDefine.itemIconPath + this.icon, typeof(Sprite)) as Sprite;
+
+       // Debug.Log(icon);
+        this.icon.sprite = Resources.Load(GameDefine.itemIconPath + icon, typeof(Sprite)) as Sprite;
     }
 }

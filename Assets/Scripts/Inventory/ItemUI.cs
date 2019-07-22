@@ -14,7 +14,7 @@ public class ItemUI : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
 
     private void Awake()
     {
-        this.image = this.GetComponent<Image>();
+        this.image = this.GetComponentInChildren<Image>();
     }
     public void Init(ItemData data)
     {
@@ -28,6 +28,7 @@ public class ItemUI : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
 
     private void SetIcon()
     {
+
         if (this.icon == "")
             return;
         image.sprite = Resources.Load(GameDefine.itemIconPath + this.icon, typeof(Sprite)) as Sprite;

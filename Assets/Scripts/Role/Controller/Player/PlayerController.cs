@@ -33,6 +33,8 @@ public class PlayerController : BaseRoleController
     private Vector2 attackBoxDir;
 
     private PlayerState state;
+
+    private int dir;  //1 right -1 left
     public override void Awake()
     {
         base.Awake();
@@ -138,10 +140,12 @@ public class PlayerController : BaseRoleController
         if (right)
         {
             this.stateSprites[(int)this.state].flipX = true;
+            this.dir = 1;
         }
         else
         {
             this.stateSprites[(int)this.state].flipX = false;
+            this.dir = -1;
         }
     }
 
@@ -198,6 +202,10 @@ public class PlayerController : BaseRoleController
         if (this.stateAnims[(int)this.state] != null)
             this.stateAnims[(int)this.state].SetTrigger("eat");
 
+    }
+
+    public void EatJudge()  //吞噬判定
+    {
         Debug.Log(this.transform.position);
 
         Vector2 origin = Vector2.zero;
@@ -212,7 +220,7 @@ public class PlayerController : BaseRoleController
         Debug.Log(this.attackBoxSize);
 
 
-        RaycastHit2D hitInfo = Physics2D.BoxCast(origin, this.attackBoxSize, 0, new Vector2(this.transform.right.x, this.transform.position.y), this.stateDatas[(int)this.state].eatLong, LayerMask.GetMask("Enemy"));
+        RaycastHit2D hitInfo = Physics2D.BoxCast(origin, this.attackBoxSize, 0, new Vector2(this.dir * this.transform.right.x, this.transform.position.y), this.stateDatas[(int)this.state].eatLong, LayerMask.GetMask("Enemy"));
         // public static RaycastHit2D BoxCast(Vector2 origin, Vector2 size, float angle, Vector2 direction, float distance, int layerMask);
 
         if (hitInfo)
@@ -228,25 +236,26 @@ public class PlayerController : BaseRoleController
             }
             ctrl.OnDead();
             // }
+           
         }
     }
 
-    //private void OnDrawGizmos()
-    //{
-    //    if (this.transform == null || this.stateDatas[(int)this.state] == null)
-    //        return;
-    //    Gizmos.color = Color.yellow;
-    //    Vector2 center = Vector2.zero;
+    private void OnDrawGizmos()
+    {
+        if (this.transform == null || this.stateDatas[(int)this.state] == null)
+            return;
+        Gizmos.color = Color.yellow;
+        Vector2 center = Vector2.zero;
 
-    //    center.x = this.transform.position.x + this.transform.right.x * this.stateDatas[(int)this.state].eatLong;
+        center.x = this.transform.position.x + this.dir * this.transform.right.x * this.stateDatas[(int)this.state].eatLong;
 
-    //    center.y = this.transform.position.y;
+        center.y = this.transform.position.y;
 
-    //    Gizmos.DrawCube(center, this.attackBoxSize);
+        Gizmos.DrawCube(center, this.attackBoxSize);
 
-    //    Gizmos.color = Color.white;
-    //    Gizmos.DrawWireSphere(this.transform.position, this.stateDatas[(int)this.state].interativeRange);
-    //}
+        Gizmos.color = Color.white;
+        Gizmos.DrawWireSphere(this.transform.position, this.stateDatas[(int)this.state].interativeRange);
+    }
 
 
     private void Interactive(GameObject go)
