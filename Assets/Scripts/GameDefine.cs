@@ -14,7 +14,7 @@ public static class GameDefine
 
     public const string itemIconPath = "itemIcons/";
 
-    public const string VfxPath = "Prefabs/Vfx/";
+    public const string VfxPath = "Vfx/";
 
     public const string StartScene = "StartScene";
 
@@ -45,4 +45,6 @@ public static class GameDefine
     public const string changeToFlow = "changeToFlow";
 
     public const string shineMaterial = "Materials/shineMaterial";
+
+    public const string powerLineVfx = "powerLine";
 }

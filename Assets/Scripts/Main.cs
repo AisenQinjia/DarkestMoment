@@ -18,6 +18,7 @@ public class Main : MonoBehaviour
         gameObject.AddComponent<GameManager>();
         gameObject.AddComponent<AudioManager>();
         gameObject.AddComponent<RoleManager>();
+        gameObject.AddComponent<ObjectPool>();
 
         hasCreated = true;
         DontDestroyOnLoad(this.gameObject);

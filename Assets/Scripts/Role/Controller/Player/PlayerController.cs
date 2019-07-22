@@ -264,6 +264,9 @@ public class PlayerController : BaseRoleController
         if (Vector3.Distance(go.transform.position, this.transform.position) <= this.stateDatas[(int)this.state].interativeRange)
         {
             go.GetComponent<BaseInteractive>().InteractiveLogic(this.transform);
+            GameObject powerLine = ObjectPool.Instance.SpawnVfx(GameDefine.powerLineVfx, this.transform.position, this.transform.rotation);
+            powerLine.transform.DOMove(go.transform.position, 0.5f);
+            StartCoroutine(RecyclePowerLine(powerLine, 0.6f));
         }
         else
         {
@@ -272,6 +275,12 @@ public class PlayerController : BaseRoleController
             else
                 UIManager.Instance.PopHint("靠近一点才能点我哦~,除非你是念力大师！");
         }
+    }
+
+    IEnumerator RecyclePowerLine(GameObject go, float time)
+    {
+        yield return new WaitForSeconds(time);
+        ObjectPool.Instance.RecycleObject(GameDefine.powerLineVfx, go);
     }
 
     public override void OnDead()

@@ -16,6 +16,13 @@ public class ObjectPool : MonoBehaviour
     {
         get
         {
+            if (instance == null)
+            {
+                GameObject obj = new GameObject();
+                instance = obj.AddComponent<ObjectPool>();
+                obj.name = "ObjectPool";
+                DontDestroyOnLoad(obj);
+            }
             return instance;
         }
     }
@@ -32,6 +39,8 @@ public class ObjectPool : MonoBehaviour
         hasCreated = true;
         pool = new Dictionary<string, List<GameObject>>();
         prefabs = new Dictionary<string, GameObject>();
+
+        this.CreatePool(GameDefine.powerLineVfx, GameDefine.VfxPath + GameDefine.powerLineVfx, 5);
 
     }
 
