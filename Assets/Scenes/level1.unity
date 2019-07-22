@@ -7893,7 +7893,7 @@ PrefabInstance:
     - target: {fileID: 8363862035650019381, guid: 52f11555eecd4b1409b6aee7fb4a6b61,
         type: 3}
       propertyPath: m_TagString
-      value: Enemy
+      value: Untagged
       objectReference: {fileID: 0}
     - target: {fileID: 8363862035650019380, guid: 52f11555eecd4b1409b6aee7fb4a6b61,
         type: 3}
