@@ -3,12 +3,21 @@
         "cfgId": 1,
         "name": "钥匙",
         "desc": "这是通向某地的钥匙",
+        "icon": "key",
         "usable": false
     },
     {
         "cfgId": 2,
         "name": "书信",
         "desc": "一封破烂的的信",
+        "icon": "letter",
+        "usable": false
+    },
+    {
+        "cfgId": 3,
+        "name": "生命",
+        "desc": "增加一条生命",
+        "icon": "life",
         "usable": false
     }
 ]

@@ -15,6 +15,7 @@ public class InventoryPanel : BasePanel
     public override void OnPop()
     {
         Time.timeScale = 0;
+        ShowItem();
     }
 
 
@@ -36,6 +37,12 @@ public class InventoryPanel : BasePanel
         if (RoleManager.Instance.playerTransform == null)
             return;
         List<ItemData> items = RoleManager.Instance.playerTransform.GetComponent<PlayerController>().InventoryData.Items;
+
+        foreach (Transform child in this.layout.transform)
+        {
+            Destroy(child.gameObject);
+        }
+        Debug.Log("items count " + items.Count);
         for (int i = 0; i < items.Count; i++)
         {
             for (int j = 0; j < items[i].count; j++)

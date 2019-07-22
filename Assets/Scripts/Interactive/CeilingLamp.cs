@@ -7,20 +7,19 @@ public class CeilingLamp : BaseInteractive
     Rigidbody2D ceiling_lamp;
     string check_tag;
     Rigidbody2D check_velocity;
-    public int gravity_scale = 1;
     // Start is called before the first frame update
     void Start()
     {
         gameObject.tag = GameDefine.InterativeTag;
-        gameObject.GetComponent<Rigidbody2D>().Sleep();
-        ceiling_lamp.gravityScale = gravity_scale;
+        ceiling_lamp = GetComponent<Rigidbody2D>();
+        ceiling_lamp.gravityScale = 0;
     }
 
     public override void InteractiveLogic(Transform player)
     {
         Debug.Log("Ceiling lamp fall");
         ceiling_lamp = GetComponent<Rigidbody2D>();
-        ceiling_lamp.WakeUp();
+        ceiling_lamp.gravityScale = 1;
         
     }
 

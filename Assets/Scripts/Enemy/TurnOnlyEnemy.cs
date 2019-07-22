@@ -1,8 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-//巡逻型敌人
-public class PatrolEnemyController : BaseRoleController
+
+public class TurnOnlyEnemy : BaseRoleController
 {
     //协程
     IEnumerator coroutine;
@@ -20,7 +20,8 @@ public class PatrolEnemyController : BaseRoleController
     public float redAlarmLastTime;
 
     public GameObject player;
-    public float walkSpeed;
+    //public float walkSpeed;
+    public float faceTime;
     public float chaseSpeed;
     public float chaseRange;
     public float attackRange;
@@ -57,7 +58,7 @@ public class PatrolEnemyController : BaseRoleController
     {
         Statemanager = new EnemyStateManager();
 
-        WalkStateForPatrol walk = new WalkStateForPatrol(path, walkSpeed);
+        WalkStateForTurn walk = new WalkStateForTurn(faceTime);
         walk.AddTransition(Transition.ShouldTurn, StateID.Turn);
         walk.AddTransition(Transition.SawPlayer, StateID.Chase);
         walk.AddTransition(Transition.FeelSomethingWrong, StateID.Stop);
@@ -235,12 +236,12 @@ public class PatrolEnemyController : BaseRoleController
     public override void OnDead()
     {
         //Debug.LogError(" I am Dead!");
-        Destroy(this.gameObject);
-        //this.enabled = false;
-        //// EventCenter.AddListener(EventType.CameraShake, RealDead);
-        //this.GetComponentInChildren<Collider2D>().enabled = false;
-        //this.rigidbody.Sleep();
-        //StartCoroutine(RealDead());
+        // Destroy(this.gameObject);
+        this.enabled = false;
+        // EventCenter.AddListener(EventType.CameraShake, RealDead);
+        this.GetComponentInChildren<Collider2D>().enabled = false;
+        this.rigidbody.Sleep();
+        StartCoroutine(RealDead());
 
     }
 
