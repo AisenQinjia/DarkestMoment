@@ -7,7 +7,7 @@ public class Candle10s : BaseInteractive
     float burning_time = 10f;
     Animator anim;
     bool is_begin = false;
-    BaseRoleController[] control_enemy;
+    GameObject[] control_enemy;
     // Start is called before the first frame update
     void Start()
     {
@@ -27,9 +27,9 @@ public class Candle10s : BaseInteractive
                     Destroy(gameObject);
                     return;
                 }
-                foreach (BaseRoleController i in control_enemy)
+                foreach (GameObject i in control_enemy)
                 {
-                    i.LeaveMe();
+                    i.GetComponent<BaseRoleController>().LeaveMe();
                     Destroy(gameObject);
                 }
             }
@@ -47,9 +47,9 @@ public class Candle10s : BaseInteractive
             is_begin = true;
             return;
         }
-        foreach (BaseRoleController i in control_enemy)
+        foreach (GameObject i in control_enemy)
         {
-            i.ComeToMe(transform);
+            i.GetComponent<BaseRoleController>().ComeToMe(transform);
         }
         is_begin = true;
     }
