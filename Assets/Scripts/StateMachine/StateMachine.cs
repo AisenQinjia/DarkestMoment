@@ -248,14 +248,14 @@ public  class WalkStateForPatrol : FSMState
     public override void DoBeforeEntering(GameObject player, GameObject enemy)
     {
         //Debug.Log("Enter Walk");
-        enemy.gameObject.GetComponent<BaseRoleController>().ReturnToWalkState();
+        enemy.gameObject.GetComponent<BaseRoleController>().ShowViewSprite();
     }
 
     public override void DoBeforeLeaving(GameObject player, GameObject enemy)
     {
         //Debug.Log("Leave Walk");
 
-        enemy.gameObject.GetComponent<BaseRoleController>().LeaveWalkState();
+        enemy.gameObject.GetComponent<BaseRoleController>().HideViewSprite();
     }
 
     public override void ReState(GameObject player, GameObject enemy)
@@ -601,9 +601,13 @@ public class CheckPointState : FSMState
 {
     float speed;
     Transform transform;
+    float angle;
+    float range;
 
-    public CheckPointState(float checkspeed)
+    public CheckPointState(float checkspeed, float checkangle, float checkrange)
     {
+        angle = checkangle;
+        range = checkrange;
         speed = checkspeed;
         stateID = StateID.CheckPoint;
     }
@@ -626,7 +630,10 @@ public class CheckPointState : FSMState
 
     public override void ReState(GameObject player, GameObject enemy)
     {
-
+        if (IsInRange(player, enemy, angle, range))
+        {
+            enemy.GetComponent<BaseRoleController>().Statemanager.PerformTransition(Transition.SawPlayer, player, enemy);
+        }
     }
 
     public override void Update(GameObject player, GameObject enemy)

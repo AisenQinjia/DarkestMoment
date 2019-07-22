@@ -37,11 +37,11 @@ public class BaseRoleController : MonoBehaviour
     //让敌人离开，恢复原来状态
     public virtual void LeaveMe() { }
 
-    //离开walk状态
-    public virtual void LeaveWalkState() { }
+    //隐藏视野
+    public virtual void HideViewSprite() { }
 
-    //进入walk状态
-    public virtual void ReturnToWalkState() { }
+    //显示视野
+    public virtual void ShowViewSprite() { }
 
     //攻击
     public virtual void Attack() { }

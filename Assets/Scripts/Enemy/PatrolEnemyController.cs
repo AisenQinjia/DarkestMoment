@@ -24,10 +24,12 @@ public class PatrolEnemyController : BaseRoleController
     public float chaseSpeed;
     public float chaseRange;
     public float attackRange;
+    public float checkRange;
     public float retreatSpeed;
     public float retreatInitialSpeed;
     public float retreatInitialSpeedLastTime;
     public float chaseAngle;
+    public float checkAngle;
     public float stareTime;
     public float stareRange;
     public float checkSpeed;
@@ -70,7 +72,7 @@ public class PatrolEnemyController : BaseRoleController
         chase.AddTransition(Transition.TouchedBarrier, StateID.StareAtPlayer);
 
         AttackState attack = new AttackState(animator);
-        attack.AddTransition(Transition.LostPlayer, StateID.Retreat);
+        attack.AddTransition(Transition.LostPlayer, StateID.Retreat);//击杀主角
 
         RetreatState retreat = new RetreatState(path, retreatSpeed, retreatInitialSpeed, retreatInitialSpeedLastTime);
         retreat.AddTransition(Transition.ShouldWalk, StateID.Walk);
@@ -78,14 +80,14 @@ public class PatrolEnemyController : BaseRoleController
 
         StareAtPlayerState stareAtPlayer = new StareAtPlayerState(stareTime, stareRange, chaseAngle);
         stareAtPlayer.AddTransition(Transition.LostPlayer, StateID.Retreat);
-        stareAtPlayer.AddTransition(Transition.CanAttack, StateID.Attack);
-        stareAtPlayer.AddTransition(Transition.CanChase, StateID.Chase);
+        //stareAtPlayer.AddTransition(Transition.CanAttack, StateID.Attack);
+        //stareAtPlayer.AddTransition(Transition.CanChase, StateID.Chase);
 
         StopState stop = new StopState(animator);
         stop.AddTransition(Transition.LostPlayer, StateID.Walk);
         stop.AddTransition(Transition.SawPlayer, StateID.Chase);
 
-        CheckPointState checkPoint = new CheckPointState(checkSpeed);
+        CheckPointState checkPoint = new CheckPointState(checkSpeed, checkAngle, checkRange);
         checkPoint.AddTransition(Transition.SawPlayer, StateID.Chase);
         checkPoint.AddTransition(Transition.ShouldStop, StateID.Stop);
 
@@ -161,13 +163,13 @@ public class PatrolEnemyController : BaseRoleController
                 if (IsInForntOfEnemy(player, gameObject))
                 {
                     RedAlarmBegin();
-                    LeaveWalkState();
+                    HideViewSprite();
                     Statemanager.PerformTransition(Transition.SawPlayer, player, gameObject);
                 }
                 else if (alarmTimer > backKillTime)
                 {
                     RedAlarmBegin();
-                    LeaveWalkState();
+                    ShowViewSprite();
                     LookAtPlayer(player, gameObject);
                     Statemanager.PerformTransition(Transition.SawPlayer, player, gameObject);
                 }
@@ -196,13 +198,13 @@ public class PatrolEnemyController : BaseRoleController
     }
 
     //回到Walk状态需要做的事
-    public override void ReturnToWalkState()
+    public override void ShowViewSprite()
     {
         if (viewSprite != null) viewSprite.SetActive(true);
     }
 
     //离开Walk状态需要做的事
-    public override void LeaveWalkState()
+    public override void HideViewSprite()
     {
         if (viewSprite != null) viewSprite.SetActive(false);
     }
