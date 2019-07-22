@@ -90,6 +90,7 @@ GameObject:
   - component: {fileID: 5835582858915850500}
   - component: {fileID: 5835582858915850507}
   - component: {fileID: 5835582858915850506}
+  - component: {fileID: 7976536564928708385}
   m_Layer: 0
   m_Name: TurnOnlyEnemy
   m_TagString: Untagged
@@ -163,6 +164,39 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
+--- !u!114 &7976536564928708385
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5835582858915850501}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e19f6ebe546696040be2b9782f91e3d3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  rigidbody: {fileID: 0}
+  frontAlarmTime: 0.5
+  backKillTime: 0.3
+  redAlarmLastTime: 0.5
+  player: {fileID: 0}
+  faceTime: 3
+  chaseSpeed: 1
+  chaseRange: 200
+  attackRange: 0.2
+  checkRange: 20
+  retreatSpeed: 1.5
+  retreatInitialSpeed: 0.001
+  retreatInitialSpeedLastTime: 1
+  chaseAngle: 30
+  checkAngle: 30
+  stareTime: 3
+  stareRange: 30
+  checkSpeed: 25
+  canHoldDistance: 0.3
+  barrierValidDistance: 0.4
+  path: []
 --- !u!1 &5835582859006425833
 GameObject:
   m_ObjectHideFlags: 0

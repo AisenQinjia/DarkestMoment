@@ -34,6 +34,7 @@ public class TurnOnlyEnemy : BaseRoleController
     public float stareTime;
     public float stareRange;
     public float checkSpeed;
+    public float canHoldDistance;
     //暂时都用一个collider吧，用距离判断生效与否
     public float barrierValidDistance;
     public Transform[] path;
@@ -62,7 +63,6 @@ public class TurnOnlyEnemy : BaseRoleController
         walk.AddTransition(Transition.ShouldTurn, StateID.Turn);
         walk.AddTransition(Transition.SawPlayer, StateID.Chase);
         walk.AddTransition(Transition.FeelSomethingWrong, StateID.Stop);
-        walk.AddTransition(Transition.HeardNoise, StateID.CheckPoint);
 
         TurnState turn = new TurnState();
         turn.AddTransition(Transition.ShouldWalk, StateID.Walk);
@@ -75,7 +75,7 @@ public class TurnOnlyEnemy : BaseRoleController
         AttackState attack = new AttackState(animator);
         attack.AddTransition(Transition.LostPlayer, StateID.Retreat);//击杀主角
 
-        RetreatState retreat = new RetreatState(path, retreatSpeed, retreatInitialSpeed, retreatInitialSpeedLastTime);
+        RetreatStateForTurn retreat = new RetreatStateForTurn(transform, retreatSpeed, retreatInitialSpeed, retreatInitialSpeedLastTime, canHoldDistance);
         retreat.AddTransition(Transition.ShouldWalk, StateID.Walk);
         retreat.AddTransition(Transition.SawPlayer, StateID.Chase);
 
@@ -88,10 +88,6 @@ public class TurnOnlyEnemy : BaseRoleController
         stop.AddTransition(Transition.LostPlayer, StateID.Walk);
         stop.AddTransition(Transition.SawPlayer, StateID.Chase);
 
-        CheckPointState checkPoint = new CheckPointState(checkSpeed, checkAngle, checkRange);
-        checkPoint.AddTransition(Transition.SawPlayer, StateID.Chase);
-        checkPoint.AddTransition(Transition.ShouldStop, StateID.Stop);
-
 
         Statemanager.AddState(walk);
         Statemanager.AddState(turn);
@@ -100,7 +96,6 @@ public class TurnOnlyEnemy : BaseRoleController
         Statemanager.AddState(retreat);
         Statemanager.AddState(stareAtPlayer);
         Statemanager.AddState(stop);
-        Statemanager.AddState(checkPoint);
     }
 
     void GetResource()

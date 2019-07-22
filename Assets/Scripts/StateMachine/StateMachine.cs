@@ -547,6 +547,76 @@ public class RetreatState : FSMState
     }
 }
 
+public class RetreatStateForTurn : FSMState
+{
+    //自己的点
+    Transform transform;
+    //正常回退速度
+    float speed;
+    //开始的回退速度
+    float initialSpeed;
+    //开始回退速度持续时间
+    float initialSpeedLastTime;
+    float timer;
+    float shouldWalkDistance;
+    float transX;
+
+    public RetreatStateForTurn( Transform trans, float vel, float initialSp, float initialSpTime, float shouldwalkdistance)
+    {
+        transform = trans;
+        transX = transform.position.x;
+        shouldWalkDistance = shouldwalkdistance;
+        timer = 0;
+        initialSpeed = initialSp;
+        initialSpeedLastTime = initialSpTime;
+        stateID = StateID.Retreat;
+        speed = vel;
+    }
+
+    
+    public override void DoBeforeEntering(GameObject player, GameObject enemy)
+    {
+        //Debug.Log("enter retreate");
+        timer = 0;
+    }
+
+    public override void DoBeforeLeaving(GameObject player, GameObject enemy)
+    {
+        // Debug.Log("leave retreate");
+        timer = 0;
+    }
+
+    public override void ReState(GameObject player, GameObject enemy)
+    {
+        if (Mathf.Abs(enemy.transform.position.x - transX) < 0.5)
+        {
+            PerformTransition(Transition.ShouldWalk, player, enemy);
+        }
+    }
+    public override void Update(GameObject player, GameObject enemy)
+    {
+        timer += Time.deltaTime;
+        if (enemy.transform.position.x < transX)
+        {
+            if (timer < initialSpeedLastTime)
+            {
+                enemy.GetComponent<Rigidbody2D>().velocity = new Vector2(initialSpeed, 0);
+            }
+            else enemy.GetComponent<Rigidbody2D>().velocity = new Vector2(speed, 0);
+        }
+        else if (enemy.transform.position.x > transX)
+        {
+            if (timer < initialSpeedLastTime)
+            {
+                enemy.GetComponent<Rigidbody2D>().velocity = new Vector2(-initialSpeed, 0);
+            }
+            else enemy.GetComponent<Rigidbody2D>().velocity = new Vector2(-speed, 0);
+        }
+
+
+    }
+}
+
 //目视敌人状态
 public class StareAtPlayerState : FSMState
 {
