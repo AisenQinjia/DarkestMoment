@@ -12,4 +12,5 @@
     OnClickInteractive,  //当用户点击到一个可交互物体
     OnPlayerDead,
     CameraShake,
+    ChangeView, //切换视野范围
 }

@@ -4,26 +4,19 @@
         "name": "常规史莱姆",
         "walkSpeed": 3,
         "jumpForce": 250,
-        "eatLong": 0.8,
-        "eatWidth": 0.8,
-        "interativeRange": 1
+        "eatLong": 0.7,
+        "eatWidth": 0.7,
+        "interativeRange": 1,
+        "viewRadius": 40
     },
     {
         "cfgId": 2,
-        "name": "流体史莱姆",
-        "walkSpeed": 5,
-        "jumpForce": 400,
-        "eatLong": 0.8,
-        "eatWidth": 0.8,
-        "interativeRange": 1
-    },
-    {
-        "cfgId": 3,
         "name": "念力史莱姆",
         "walkSpeed": 3,
         "jumpForce": 250,
         "eatLong": 0.8,
         "eatWidth": 0.8,
-        "interativeRange": 5
+        "interativeRange": 5,
+        "viewRadius": 80
     }
 ]

@@ -30,7 +30,7 @@ public class ClipManager
         {
             AudioClip clip = Resources.Load<AudioClip>(GameDefine.audioPath + clipNames[i]);
             audioClips.Add(clip);
-            Debug.Log(clipNames[i]);
+           // Debug.Log(clipNames[i]);
         }
     }
 
