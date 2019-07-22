@@ -8,6 +8,7 @@ public class LockedDoor : BaseInteractive
     string check_tag;
     public int key_index = 1;
     private BoxCollider2D change_pattern;
+    
     // Start is called before the first frame update
     void Start()
     {
@@ -17,12 +18,12 @@ public class LockedDoor : BaseInteractive
 
     void OnCollisionEnter2D(Collision2D other)
     {
-        Debug.Log("open door");
+        
         check_tag = other.gameObject.tag;
         if (check_tag == GameDefine.PlayerTag && other.gameObject.GetComponent<PlayerController>().HasItem(key_index))
         {
             Debug.Log("Player open the lock door");
-            
+            AudioManager.Instance.PlayClip("开门");
             anim.SetFloat("Blend", 0.3f);
             change_pattern.isTrigger = true;
             
@@ -31,7 +32,7 @@ public class LockedDoor : BaseInteractive
         if (check_tag == GameDefine.EnemyTag)
         {
             Debug.Log("Enemy open the lock door");
-            
+            AudioManager.Instance.PlayClip("开门");
             anim.SetFloat("Blend", 0.3f);
             change_pattern.isTrigger = true;
         }
@@ -40,12 +41,12 @@ public class LockedDoor : BaseInteractive
 
     void OnTriggerExit2D(Collider2D other)
     {
-        Debug.Log("close door");
+        
         check_tag = other.gameObject.tag;
         if (check_tag == GameDefine.PlayerTag)
         {
             Debug.Log("Player close the lock door");
-            
+            AudioManager.Instance.PlayClip("锁门");
             anim.SetFloat("Blend", -0.1f);
             change_pattern.isTrigger = false;
         }
@@ -53,7 +54,7 @@ public class LockedDoor : BaseInteractive
         if (check_tag == GameDefine.EnemyTag)
         {
             Debug.Log("Enemy close the lock door");
-            
+            AudioManager.Instance.PlayClip("锁门");
             anim.SetFloat("Blend", -0.1f);
             change_pattern.isTrigger = false;
         }
