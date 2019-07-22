@@ -145,6 +145,15 @@ public class PlayerController : BaseRoleController
         this.state++;
         this.state = this.state % 2;
 
+        if (this.state == 0)
+        {
+            EventCenter.Broadcast(EventType.OnChangeToNormal);
+        }
+        else
+        {
+            EventCenter.Broadcast(EventType.OnChangeToPower);
+        }
+
         for (int i = 0; i < 2; i++)
         {
             this.stateGos[i].SetActive(false);

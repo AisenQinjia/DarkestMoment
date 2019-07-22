@@ -2,7 +2,7 @@
     {
         "cfgId": 1,
         "name": "常规史莱姆",
-        "walkSpeed": 3,
+        "walkSpeed": 2.5,
         "jumpForce": 250,
         "eatLong": 0.7,
         "eatWidth": 0.7,
@@ -12,11 +12,11 @@
     {
         "cfgId": 2,
         "name": "念力史莱姆",
-        "walkSpeed": 3,
-        "jumpForce": 250,
-        "eatLong": 0.8,
-        "eatWidth": 0.8,
-        "interativeRange": 5,
-        "viewRadius": 80
+        "walkSpeed": 1.0,
+        "jumpForce": 50,
+        "eatLong": 0.0,
+        "eatWidth": 0.0,
+        "interativeRange": 7,
+        "viewRadius": 120
     }
 ]

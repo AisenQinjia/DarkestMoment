@@ -43,4 +43,6 @@ public static class GameDefine
     public const string changeToPower = "changeToPower";
     public const string changeToNormal = "changeToNormal";
     public const string changeToFlow = "changeToFlow";
+
+    public const string shineMaterial = "Materials/shineMaterial";
 }

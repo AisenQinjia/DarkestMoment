@@ -33,7 +33,6 @@ public class CameraCtrl : MonoBehaviour
         {
 
             this.SpotLight.spotAngle = Mathf.Lerp(this.SpotLight.spotAngle, this.targetView, changeViewSpeed * Time.deltaTime);
-            Debug.Log("targetView " + this.targetView + " spotangle " + this.SpotLight.spotAngle);
             if (Mathf.Abs(this.SpotLight.spotAngle - this.targetView) < 1.5f)
                 this.changeView = false;
         }
