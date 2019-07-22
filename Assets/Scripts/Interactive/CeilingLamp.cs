@@ -26,12 +26,13 @@ public class CeilingLamp : BaseInteractive
 
     void OnCollisionEnter2D(Collision2D other)
     {
+        
         if (is_play_music)
         {
             AudioManager.Instance.PlayClip("ceiling_lamp_break");
             is_play_music = false;
 
-            check_tag = other.gameObject.tag;
+            check_tag = other.collider.tag;
             if (check_tag == GameDefine.PlayerTag)
             {
                 Debug.Log("Player ceiling touch die");
@@ -44,7 +45,9 @@ public class CeilingLamp : BaseInteractive
                 BaseRoleController control_dead = other.collider.GetComponentInParent<BaseRoleController>();
                 control_dead.OnDead();
             }
+            
         }
+        
         /*
         check_velocity = GetComponent<Rigidbody2D>();
         check_tag = other.gameObject.tag;
