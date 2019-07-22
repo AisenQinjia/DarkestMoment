@@ -130,22 +130,24 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rigidbody: {fileID: 0}
-  frontAlarmTime: 0.5
-  backKillTime: 100
+  frontAlarmTime: 0.05
+  backKillTime: 1
   redAlarmLastTime: 1
   player: {fileID: 0}
-  walkSpeed: 1
-  chaseSpeed: 3
-  chaseRange: 100
+  walkSpeed: 0.5
+  chaseSpeed: 4
+  chaseRange: 1000
   attackRange: 0.2
+  checkRange: 200
   retreatSpeed: 1.5
   retreatInitialSpeed: 0.1
   retreatInitialSpeedLastTime: 1
-  chaseAngle: 30
+  chaseAngle: 120
+  checkAngle: 0
   stareTime: 5
   stareRange: 25
   checkSpeed: 2
-  barrierValidDistance: 10
+  barrierValidDistance: 0.5
   path:
   - {fileID: 0}
   - {fileID: 0}
@@ -162,7 +164,7 @@ BoxCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 1.3049273, y: 0.5499844}
+  m_Offset: {x: 2.0411677, y: 0.54998446}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
@@ -173,7 +175,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 5.3209248, y: 2.2698684}
+  m_Size: {x: 6.7934055, y: 2.2698684}
   m_EdgeRadius: 0
 --- !u!50 &8363862035650019386
 Rigidbody2D:
@@ -264,7 +266,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 3
   m_Sprite: {fileID: 21300000, guid: e88fa6cc3bd22d94dbbbaed3e448a296, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -399,8 +401,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8363862036220118329}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 2.57, y: 0.31, z: 0}
-  m_LocalScale: {x: 10, y: 3.57, z: 1}
+  m_LocalPosition: {x: 3.38, y: 0.45, z: 0}
+  m_LocalScale: {x: 15.45, y: 5.1, z: 1}
   m_Children: []
   m_Father: {fileID: 8363862035650019380}
   m_RootOrder: 4

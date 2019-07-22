@@ -9,11 +9,12 @@ public class RoleData : IcfgId
 {
     public int cfgId { get; set; }
     public string name;
-    public int walkSpeed;
+    public float walkSpeed;
     public int jumpForce;
     public float eatLong;
     public float eatWidth;
     public int interativeRange;
+    public int viewRadius;
     public RoleData()
     {
         this.walkSpeed = 1;
@@ -21,5 +22,6 @@ public class RoleData : IcfgId
         this.eatLong = 1;
         this.eatWidth = 1;
         this.interativeRange = 1;
+
     }
 }

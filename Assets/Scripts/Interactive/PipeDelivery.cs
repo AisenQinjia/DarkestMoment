@@ -6,6 +6,8 @@ public class PipeDelivery : BaseInteractive
 {
     public GameObject other_pipe;
     // Start is called before the first frame update
+
+    
     void Start()
     {
         gameObject.tag = GameDefine.InterativeTag;

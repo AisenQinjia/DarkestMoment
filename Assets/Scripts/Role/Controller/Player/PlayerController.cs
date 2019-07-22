@@ -49,7 +49,7 @@ public class PlayerController : BaseRoleController
 
 
         this.stateDatas[(int)PlayerState.Normal] = ConfigManager.Instance.GetRoleData(1);
-        this.stateDatas[(int)PlayerState.Power] = ConfigManager.Instance.GetRoleData(3);
+        this.stateDatas[(int)PlayerState.Power] = ConfigManager.Instance.GetRoleData(2);
 
         this.stateSprites[(int)PlayerState.Normal] = stateGos[(int)PlayerState.Normal].GetComponent<SpriteRenderer>();
         this.stateSprites[(int)PlayerState.Power] = stateGos[(int)PlayerState.Power].GetComponent<SpriteRenderer>();
@@ -74,8 +74,7 @@ public class PlayerController : BaseRoleController
 
     void Start()
     {
-        this.ChangeState();
-
+        EventCenter.Broadcast<float>(EventType.ChangeView, this.stateDatas[this.state].viewRadius);
     }
     public override void OnDestroy()
     {
@@ -145,12 +144,22 @@ public class PlayerController : BaseRoleController
         //Debug.Log(state);
         this.state++;
         this.state = this.state % 2;
-        Debug.Log(state);
+
+        if (this.state == 0)
+        {
+            EventCenter.Broadcast(EventType.OnChangeToNormal);
+        }
+        else
+        {
+            EventCenter.Broadcast(EventType.OnChangeToPower);
+        }
+
         for (int i = 0; i < 2; i++)
         {
             this.stateGos[i].SetActive(false);
         }
         this.stateGos[this.state].SetActive(true);
+        EventCenter.Broadcast<float>(EventType.ChangeView, this.stateDatas[this.state].viewRadius);
 
     }
 

@@ -38,6 +38,15 @@ public class JoystickInput : MonoBehaviour
 
     private void DisableInput()
     {
+        for (int i = 0; i < this.joystickBtns.Count; i++)
+        {
+            this.joystickBtns[i].enabled = false;
+        }
+
+        for (int i = 0; i < this.longPressBtns.Count; i++)
+        {
+            this.longPressBtns[i].enabled = false;
+        }
         this.enabled = false;
     }
 

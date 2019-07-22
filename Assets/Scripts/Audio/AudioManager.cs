@@ -13,10 +13,18 @@ public class AudioManager : MonoBehaviour
     private static AudioManager instance;
     public static AudioManager Instance
     {
-        get { return instance; }
+        get
+        {
+            if (instance == null)
+            {
+                GameObject obj = new GameObject();
+                instance = obj.AddComponent<AudioManager>();
+                obj.name = "AudioManager";
+                DontDestroyOnLoad(obj);
+            }
+            return instance;
+        }
     }
-
-
 
     private void Awake()
     {

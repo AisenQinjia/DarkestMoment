@@ -18,7 +18,7 @@ public class RollingStone : MonoBehaviour
         {
             if (GetComponent<Rigidbody2D>().angularVelocity != 0)
             {
-                AudioManager.Instance.PlayClip("石头滚动");
+                AudioManager.Instance.PlayClip("stone_roll");
                 is_play_music = false;
             }
         }

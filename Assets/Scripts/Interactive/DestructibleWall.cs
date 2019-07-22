@@ -13,7 +13,7 @@ public class DestructibleWall : BaseInteractive
     public override void InteractiveLogic(Transform player)
     {
         Debug.Log("player destroy the wall");
-        AudioManager.Instance.PlayClip("墙壁裂开1");
+        AudioManager.Instance.PlayClip("wall_break");
         Destroy(gameObject);
     }
 }
