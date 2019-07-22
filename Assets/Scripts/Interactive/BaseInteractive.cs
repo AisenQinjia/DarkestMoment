@@ -8,12 +8,12 @@ public class BaseInteractive : MonoBehaviour
     protected Material shineMaterial;
     protected Material originMaterial;
     protected SpriteRenderer sr;
-    public void Awake()
+    public virtual void Awake()
     {
         this.shineMaterial = Resources.Load<Material>(GameDefine.shineMaterial);
     }
 
-    public void Start()
+    public virtual void Start()
     {
         EventCenter.AddListener(EventType.OnChangeToPower, this.ChangeShineMaterial);
         EventCenter.AddListener(EventType.OnChangeToNormal, this.ChangeToOriginMaterial);
