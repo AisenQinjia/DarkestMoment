@@ -29,6 +29,7 @@ public class PatrolEnemyController : BaseRoleController
     public float retreatInitialSpeed;
     public float retreatInitialSpeedLastTime;
     public float chaseAngle;
+    public float stareAngle;
     public float checkAngle;
     public float stareTime;
     public float stareRange;
@@ -78,7 +79,7 @@ public class PatrolEnemyController : BaseRoleController
         retreat.AddTransition(Transition.ShouldWalk, StateID.Walk);
         retreat.AddTransition(Transition.SawPlayer, StateID.Chase);
 
-        StareAtPlayerState stareAtPlayer = new StareAtPlayerState(stareTime, stareRange, chaseAngle);
+        StareAtPlayerState stareAtPlayer = new StareAtPlayerState(stareTime, stareRange, stareAngle);
         stareAtPlayer.AddTransition(Transition.LostPlayer, StateID.Retreat);
         //stareAtPlayer.AddTransition(Transition.CanAttack, StateID.Attack);
         //stareAtPlayer.AddTransition(Transition.CanChase, StateID.Chase);

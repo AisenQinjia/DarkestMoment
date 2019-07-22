@@ -143,11 +143,12 @@ MonoBehaviour:
   retreatInitialSpeed: 0.1
   retreatInitialSpeedLastTime: 1
   chaseAngle: 120
+  stareAngle: 30
   checkAngle: 0
-  stareTime: 5
-  stareRange: 25
+  stareTime: 2
+  stareRange: 10
   checkSpeed: 2
-  barrierValidDistance: 0.5
+  barrierValidDistance: 3
   path:
   - {fileID: 0}
   - {fileID: 0}
