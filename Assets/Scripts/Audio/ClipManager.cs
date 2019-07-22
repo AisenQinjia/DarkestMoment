@@ -15,6 +15,11 @@ public class ClipManager
         "changeToPower",
         "changeToNormal",
         "changeToFlow",
+        "open_door",
+        "close_door",
+        "stone_roll",
+        "wall_break",
+        "ceiling_lamp_break",
     };
 
     public ClipManager()
