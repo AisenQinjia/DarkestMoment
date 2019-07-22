@@ -142,7 +142,7 @@ MonoBehaviour:
   retreatSpeed: 1.5
   retreatInitialSpeed: 0.1
   retreatInitialSpeedLastTime: 1
-  chaseAngle: 179
+  chaseAngle: 120
   checkAngle: 0
   stareTime: 5
   stareRange: 25
