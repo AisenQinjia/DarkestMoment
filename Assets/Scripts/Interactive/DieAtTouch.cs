@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class DieAtTouch : BaseInteractive
+public class DieAtTouch : MonoBehaviour
 {
     string check_tag;
     // Start is called before the first frame update

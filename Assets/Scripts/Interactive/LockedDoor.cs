@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class LockedDoor : BaseInteractive
+public class LockedDoor : MonoBehaviour
 {
     Animator anim;
     string check_tag;

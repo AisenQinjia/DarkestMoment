@@ -2,15 +2,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class DelayTrap : BaseInteractive
+public class DelayTrap : MonoBehaviour
 {
     Animator anim;
     string check_tag;
     // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
 
     void OnTriggerEnter2D(Collider2D other)
     {

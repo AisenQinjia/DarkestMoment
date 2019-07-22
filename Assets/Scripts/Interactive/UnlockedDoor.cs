@@ -2,11 +2,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class UnlockedDoor : BaseInteractive
+public class UnlockedDoor : MonoBehaviour
 {
     Animator anim;
     string check_tag;
-    
+
     // Start is called before the first frame update
     void Start()
     {
@@ -15,7 +15,7 @@ public class UnlockedDoor : BaseInteractive
 
     void OnTriggerEnter2D(Collider2D other)
     {
-        
+
         check_tag = other.gameObject.tag;
         if (check_tag == GameDefine.PlayerTag)
         {
@@ -35,7 +35,7 @@ public class UnlockedDoor : BaseInteractive
 
     void OnTriggerExit2D(Collider2D other)
     {
-        
+
         check_tag = other.gameObject.tag;
         if (check_tag == GameDefine.PlayerTag)
         {
