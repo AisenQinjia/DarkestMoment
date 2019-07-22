@@ -38,7 +38,7 @@ public class LockedDoor : BaseInteractive
 
     }
 
-    void OnCollisionExit2D(Collision2D other)
+    void OnTriggerExit2D(Collider2D other)
     {
         Debug.Log("close door");
         check_tag = other.gameObject.tag;
