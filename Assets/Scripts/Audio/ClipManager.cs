@@ -8,10 +8,13 @@ public class ClipManager
     private List<AudioClip> audioClips;
 
     private string[] clipNames = {
-        "hit_npc1",
-        "hit_npc2",
-        "hit_npc3",
-        "attack",
+        "playerWalk",
+        "playerEat",
+        "bgm",
+        "playerJump",
+        "changeToPower",
+        "changeToNormal",
+        "changeToFlow",
     };
 
     public ClipManager()
@@ -27,7 +30,7 @@ public class ClipManager
         {
             AudioClip clip = Resources.Load<AudioClip>(GameDefine.audioPath + clipNames[i]);
             audioClips.Add(clip);
-            
+            Debug.Log(clipNames[i]);
         }
     }
 
@@ -37,7 +40,7 @@ public class ClipManager
         {
             if (clipNames[i].Equals(name))
             {
-    
+
                 return audioClips[i];
             }
         }

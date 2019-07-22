@@ -37,6 +37,7 @@ public class GameManager : MonoBehaviour
     {
         SceneManager.LoadScene(GameDefine.LevelOne);
         Time.timeScale = 1;
+        AudioManager.Instance.PlayClip(GameDefine.bgm);
     }
 
     public void GameOver()
