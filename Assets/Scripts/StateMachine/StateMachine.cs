@@ -635,13 +635,13 @@ public class StareAtPlayerState : FSMState
 
     public override void DoBeforeEntering(GameObject player, GameObject enemy)
     {
-        //Debug.Log("Enter stare");
+        Debug.Log("Enter stare");
         timer = 0;
     }
 
     public override void DoBeforeLeaving(GameObject player, GameObject enemy)
     {
-        //Debug.Log("Leave stare");
+        Debug.Log("Leave stare");
 
         timer = 0;
     }
