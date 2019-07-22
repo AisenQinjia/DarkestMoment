@@ -450,16 +450,21 @@ public class RetreatState : FSMState
 
     public void GetXRange()
     {
-        //就先假设只有两个点吧
-        minX = paths[0].position.x;
-        maxX = paths[1].position.x;
-
-        if(minX > maxX)
+        if (paths.Length == 2)
         {
-            float tmp = minX;
-            minX = maxX;
-            maxX = tmp;
+            //就先假设只有两个点吧
+            minX = paths[0].position.x;
+            maxX = paths[1].position.x;
+
+            if (minX > maxX)
+            {
+                float tmp = minX;
+                minX = maxX;
+                maxX = tmp;
+            }
         }
+        else Debug.Log("paths dont have two points");
+        
     }
     public override void DoBeforeEntering(GameObject player, GameObject enemy)
     {
