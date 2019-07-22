@@ -20,14 +20,14 @@ public class UnlockedDoor : BaseInteractive
         if (check_tag == GameDefine.PlayerTag)
         {
             Debug.Log("Player open the lock door");
-            anim = GetComponent<Animator>();
+            
             anim.SetFloat("Blend", 0.3f);
         }
 
         if (check_tag == GameDefine.EnemyTag)
         {
             Debug.Log("Enemy open the lock door");
-            anim = GetComponentInParent<Animator>();
+            
             anim.SetFloat("Blend", 0.3f);
         }
 
@@ -40,14 +40,14 @@ public class UnlockedDoor : BaseInteractive
         if (check_tag == GameDefine.PlayerTag)
         {
             Debug.Log("Player close the lock door");
-            anim = GetComponent<Animator>();
+            
             anim.SetFloat("Blend", -0.1f);
         }
 
         if (check_tag == GameDefine.EnemyTag)
         {
             Debug.Log("Enemy close the lock door");
-            anim = GetComponentInParent<Animator>();
+            
             anim.SetFloat("Blend", -0.1f);
         }
 
