@@ -247,13 +247,13 @@ public  class WalkStateForPatrol : FSMState
     }
     public override void DoBeforeEntering(GameObject player, GameObject enemy)
     {
-        Debug.Log("Enter Walk");
+        //Debug.Log("Enter Walk");
         enemy.gameObject.GetComponent<BaseRoleController>().ReturnToWalkState();
     }
 
     public override void DoBeforeLeaving(GameObject player, GameObject enemy)
     {
-        Debug.Log("Leave Walk");
+        //Debug.Log("Leave Walk");
 
         enemy.gameObject.GetComponent<BaseRoleController>().LeaveWalkState();
     }
@@ -308,13 +308,13 @@ public class TurnState : FSMState
     }
     public override void DoBeforeEntering(GameObject player, GameObject enemy)
     {
-        Debug.Log("enter turn");
+        //Debug.Log("enter turn");
 
     }
 
     public override void DoBeforeLeaving(GameObject player, GameObject enemy)
     {
-        Debug.Log("Leave turn");
+        //Debug.Log("Leave turn");
 
     }
     public override void ReState(GameObject player, GameObject enemy) { }
@@ -346,13 +346,13 @@ public class ChaseState : FSMState
 
     public override void DoBeforeEntering(GameObject player, GameObject enemy)
     {
-        Debug.Log("enter chase");
+        //Debug.Log("enter chase");
 
     }
 
     public override void DoBeforeLeaving(GameObject player, GameObject enemy)
     {
-        Debug.Log("Leave chase");
+        //Debug.Log("Leave chase");
 
     }
 
@@ -394,7 +394,7 @@ public class AttackState : FSMState
 
     public override void DoBeforeEntering(GameObject player, GameObject enemy)
     {
-        Debug.Log("enter attack");
+        //Debug.Log("enter attack");
         enemy.GetComponent<BaseRoleController>().Attack();
         if (animator == null) Debug.Log("no animator");
         enemy.GetComponent<BaseRoleController>().rigidbody.velocity = new Vector2(0, 0);
@@ -402,7 +402,7 @@ public class AttackState : FSMState
 
     public override void DoBeforeLeaving(GameObject player, GameObject enemy)
     {
-        Debug.Log("Leave Attack");
+        //Debug.Log("Leave Attack");
     }
 
     public override void ReState(GameObject player, GameObject enemy)
@@ -411,7 +411,6 @@ public class AttackState : FSMState
         //Debug.Log("time: " + stateinfo.normalizedTime);stateinfo.normalizedTime > 1.7f ||
         if ( timer > 1.0f)
         {
-            Debug.Log("timer > 1");
             enemy.GetComponent<BaseRoleController>().Statemanager.PerformTransition(Transition.LostPlayer, player, enemy);
         }
     }
@@ -464,13 +463,13 @@ public class RetreatState : FSMState
     }
     public override void DoBeforeEntering(GameObject player, GameObject enemy)
     {
-        Debug.Log("enter retreate");
+        //Debug.Log("enter retreate");
         timer = 0;
     }
 
     public override void DoBeforeLeaving(GameObject player, GameObject enemy)
     {
-        Debug.Log("leave retreate");
+       // Debug.Log("leave retreate");
         timer = 0;
     }
 
@@ -523,13 +522,13 @@ public class StareAtPlayerState : FSMState
 
     public override void DoBeforeEntering(GameObject player, GameObject enemy)
     {
-        Debug.Log("Enter stare");
+        //Debug.Log("Enter stare");
         timer = 0;
     }
 
     public override void DoBeforeLeaving(GameObject player, GameObject enemy)
     {
-        Debug.Log("Leave stare");
+        //Debug.Log("Leave stare");
 
         timer = 0;
     }
@@ -572,13 +571,13 @@ public class StopState : FSMState
             //Debug.Log("SetBool");
             animator.SetBool("stop", true);
         }
-        Debug.Log("Enter Stop");
+        //Debug.Log("Enter Stop");
 
     }
 
     public override void DoBeforeLeaving(GameObject player, GameObject enemy)
     {
-        Debug.Log("Leave Stop");
+        //Debug.Log("Leave Stop");
         if (animator != null)
         {
             animator.SetBool("stop", false);
@@ -616,12 +615,12 @@ public class CheckPointState : FSMState
 
     public override void DoBeforeEntering(GameObject player, GameObject enemy)
     {
-        Debug.Log("Enter CheckPointState");
+        //Debug.Log("Enter CheckPointState");
     }
 
     public override void DoBeforeLeaving(GameObject player, GameObject enemy)
     {
-        Debug.Log("Leave CheckPointState");
+        //Debug.Log("Leave CheckPointState");
         transform = null;
     }
 
