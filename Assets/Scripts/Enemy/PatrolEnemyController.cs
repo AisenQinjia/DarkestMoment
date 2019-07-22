@@ -235,12 +235,12 @@ public class PatrolEnemyController : BaseRoleController
     public override void OnDead()
     {
         //Debug.LogError(" I am Dead!");
-        // Destroy(this.gameObject);
-        this.enabled = false;
-        // EventCenter.AddListener(EventType.CameraShake, RealDead);
-        this.GetComponentInChildren<Collider2D>().enabled = false;
-        this.rigidbody.Sleep();
-        StartCoroutine(RealDead());
+        Destroy(this.gameObject);
+        //this.enabled = false;
+        //// EventCenter.AddListener(EventType.CameraShake, RealDead);
+        //this.GetComponentInChildren<Collider2D>().enabled = false;
+        //this.rigidbody.Sleep();
+        //StartCoroutine(RealDead());
 
     }
 
