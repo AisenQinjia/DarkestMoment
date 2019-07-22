@@ -9,6 +9,13 @@ public class LongPressBtn : MonoBehaviour, IPointerDownHandler, IPointerUpHandle
     public int type = 1;  //1 left 2 right
     private bool pressed = false;
 
+    protected JoystickInput joyStickInput;
+
+    public virtual void Start()
+    {
+        joyStickInput = this.transform.GetComponentInParent<JoystickInput>();
+        joyStickInput.AddLongPressBtn(this);
+    }
     private void ScaleBtn()
     {
         this.transform.DOScale(new Vector2(1.2f, 1.2f), 0.1f).OnComplete(() =>

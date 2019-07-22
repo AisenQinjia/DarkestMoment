@@ -1,18 +1,15 @@
 ﻿public enum EventType
 {
+
     OnLeftBtnPressed,
     OnRightBtnPressed,
     OnJumpBtnClick,
     OnKillBtnClick,
-    OnPowerStateBtnClick,
-    OnInterativeBtnClick,
-    OnFlowStateBtnClick,
-    OnStickStateBtnClick,
-    OnSkillOneBtnClick,
-    OnSkillTwoBtnClick,
+    OnChangeStateBtnClick,
+
     PlayerStopWalk,
     PlayerEatBoxDisable,
-    OnClickInteractive,
+    OnClickInteractive,  //当用户点击到一个可交互物体
     OnPlayerDead,
     CameraShake,
 }

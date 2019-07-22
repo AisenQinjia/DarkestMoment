@@ -36,4 +36,18 @@ public static class GameDefine
 
     public const string itemInfoUI = "Prefabs/Panel/ItemInfoUI";
 
+     //"playerWalk",
+     //   "playerEat",
+     //   "bgm",
+     //   "playerJump",
+     //   "changeToPower",
+     //   "changeToNormal",
+     //   "changeToFlow",
+    public const string playerWalk = "playerWalk";
+    public const string playerEat = "playerEat";
+    public const string playerJump = "playerJump";
+    public const string bgm = "bgm";
+    public const string changeToPower = "changeToPower";
+    public const string changeToNormal = "changeToNormal";
+    public const string changeToFlow = "changeToFlow";
 }

@@ -5,21 +5,20 @@ using DG.Tweening;
 
 public enum PlayerState
 {
-    Stick = 0,
-    Flow,
+    Normal = 0,
     Power,
 }
 
 public class PlayerController : BaseRoleController
 {
 
-    private GameObject[] stateGos = new GameObject[3];
+    private GameObject[] stateGos = new GameObject[2];
 
-    private Animator[] stateAnims = new Animator[3];
+    private Animator[] stateAnims = new Animator[2];
 
-    private RoleData[] stateDatas = new RoleData[3];
+    private RoleData[] stateDatas = new RoleData[2];
 
-    private SpriteRenderer[] stateSprites = new SpriteRenderer[3];
+    private SpriteRenderer[] stateSprites = new SpriteRenderer[2];
 
     private InventoryData inventoryData;
     public InventoryData InventoryData { get { return inventoryData; } }
@@ -32,30 +31,27 @@ public class PlayerController : BaseRoleController
     private Vector2 attackBoxSize;
     private Vector2 attackBoxDir;
 
-    private PlayerState state;
+    private int state;
 
     private int dir;  //1 right -1 left
     public override void Awake()
     {
         base.Awake();
-        this.state = PlayerState.Stick;
+        this.state = (int)PlayerState.Normal;
 
         RoleManager.Instance.AddPlayer(this.transform);
         this.rb = GetComponent<Rigidbody2D>();
 
-        stateGos[(int)PlayerState.Stick] = transform.Find("stickState").gameObject;
-        stateGos[(int)PlayerState.Flow] = transform.Find("flowState").gameObject;
+        stateGos[(int)PlayerState.Normal] = transform.Find("normalState").gameObject;
         stateGos[(int)PlayerState.Power] = transform.Find("powerState").gameObject;
 
-        this.stateAnims[(int)PlayerState.Stick] = stateGos[(int)PlayerState.Stick].GetComponent<Animator>();
+        this.stateAnims[(int)PlayerState.Normal] = stateGos[(int)PlayerState.Normal].GetComponent<Animator>();
 
 
-        this.stateDatas[(int)PlayerState.Stick] = ConfigManager.Instance.GetRoleData(1);
-        this.stateDatas[(int)PlayerState.Flow] = ConfigManager.Instance.GetRoleData(2);
+        this.stateDatas[(int)PlayerState.Normal] = ConfigManager.Instance.GetRoleData(1);
         this.stateDatas[(int)PlayerState.Power] = ConfigManager.Instance.GetRoleData(3);
 
-        this.stateSprites[(int)PlayerState.Stick] = stateGos[(int)PlayerState.Stick].GetComponent<SpriteRenderer>();
-        this.stateSprites[(int)PlayerState.Flow] = stateGos[(int)PlayerState.Flow].GetComponent<SpriteRenderer>();
+        this.stateSprites[(int)PlayerState.Normal] = stateGos[(int)PlayerState.Normal].GetComponent<SpriteRenderer>();
         this.stateSprites[(int)PlayerState.Power] = stateGos[(int)PlayerState.Power].GetComponent<SpriteRenderer>();
 
         inventoryData = new InventoryData();
@@ -68,19 +64,17 @@ public class PlayerController : BaseRoleController
         EventCenter.AddListener(EventType.OnRightBtnPressed, MoveRight);
         EventCenter.AddListener(EventType.OnJumpBtnClick, Jump);
         EventCenter.AddListener(EventType.OnKillBtnClick, Eat);
-        //  EventCenter.AddListener(EventType.OnInterativeBtnClick, Interactive);
+        EventCenter.AddListener(EventType.OnChangeStateBtnClick, ChangeState);
+
         EventCenter.AddListener(EventType.PlayerStopWalk, StopWalk);
 
-        EventCenter.AddListener<int>(EventType.OnPowerStateBtnClick, ChangeState);
-        EventCenter.AddListener<int>(EventType.OnFlowStateBtnClick, ChangeState);
-        EventCenter.AddListener<int>(EventType.OnStickStateBtnClick, ChangeState);
 
         EventCenter.AddListener<GameObject>(EventType.OnClickInteractive, Interactive);
     }
 
     void Start()
     {
-        this.ChangeState((int)this.state);
+        this.ChangeState();
 
     }
     public override void OnDestroy()
@@ -91,12 +85,9 @@ public class PlayerController : BaseRoleController
         EventCenter.RemoveListener(EventType.OnRightBtnPressed, MoveRight);
         EventCenter.RemoveListener(EventType.OnJumpBtnClick, Jump);
         EventCenter.RemoveListener(EventType.OnKillBtnClick, Eat);
-        //  EventCenter.AddListener(EventType.OnInterativeBtnClick, Interactive);
-        EventCenter.RemoveListener(EventType.PlayerStopWalk, StopWalk);
+        EventCenter.RemoveListener(EventType.OnChangeStateBtnClick, ChangeState);
 
-        EventCenter.RemoveListener<int>(EventType.OnPowerStateBtnClick, ChangeState);
-        EventCenter.RemoveListener<int>(EventType.OnFlowStateBtnClick, ChangeState);
-        EventCenter.RemoveListener<int>(EventType.OnStickStateBtnClick, ChangeState);
+        EventCenter.RemoveListener(EventType.PlayerStopWalk, StopWalk);
 
         EventCenter.RemoveListener<GameObject>(EventType.OnClickInteractive, Interactive);
 
@@ -149,15 +140,18 @@ public class PlayerController : BaseRoleController
         }
     }
 
-    public void ChangeState(int state)
+    public void ChangeState()
     {
         //Debug.Log(state);
-        for (int i = 0; i < 3; i++)
+        this.state++;
+        this.state = this.state % 2;
+        Debug.Log(state);
+        for (int i = 0; i < 2; i++)
         {
             this.stateGos[i].SetActive(false);
         }
-        this.stateGos[state].SetActive(true);
-        this.state = (PlayerState)state;
+        this.stateGos[this.state].SetActive(true);
+
     }
 
     private void StopWalk()
@@ -170,7 +164,6 @@ public class PlayerController : BaseRoleController
     {
 
         TurnSprite(false);
-
         this.velocity.x = -1 * this.stateDatas[(int)this.state].walkSpeed;
         if (this.stateAnims[(int)this.state] != null)
             this.stateAnims[(int)this.state].SetBool("walk", true);
@@ -181,7 +174,6 @@ public class PlayerController : BaseRoleController
     {
 
         TurnSprite(true);
-
         this.velocity.x = 1 * this.stateDatas[(int)this.state].walkSpeed;
         if (this.stateAnims[(int)this.state] != null)
             this.stateAnims[(int)this.state].SetBool("walk", true);
@@ -236,7 +228,7 @@ public class PlayerController : BaseRoleController
             }
             ctrl.OnDead();
             // }
-           
+
         }
     }
 

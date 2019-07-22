@@ -7,6 +7,7 @@ public class CeilingLamp : BaseInteractive
     Rigidbody2D ceiling_lamp;
     string check_tag;
     Rigidbody2D check_velocity;
+    bool is_play_music = true;
     // Start is called before the first frame update
     void Start()
     {
@@ -25,7 +26,27 @@ public class CeilingLamp : BaseInteractive
 
     void OnCollisionEnter2D(Collision2D other)
     {
-        check_velocity = other.rigidbody;
+        if (is_play_music)
+        {
+            AudioManager.Instance.PlayClip("吊灯碎裂");
+            is_play_music = false;
+
+            check_tag = other.gameObject.tag;
+            if (check_tag == GameDefine.PlayerTag)
+            {
+                Debug.Log("Player ceiling touch die");
+                BaseRoleController control_dead = other.collider.GetComponent<BaseRoleController>();
+                control_dead.OnDead();
+            }
+            if (check_tag == GameDefine.EnemyTag)
+            {
+                Debug.Log("Enemy ceiling touch die");
+                BaseRoleController control_dead = other.collider.GetComponentInParent<BaseRoleController>();
+                control_dead.OnDead();
+            }
+        }
+        /*
+        check_velocity = GetComponent<Rigidbody2D>();
         check_tag = other.gameObject.tag;
         if (check_velocity.velocity[1] > 0)
         {
@@ -42,5 +63,6 @@ public class CeilingLamp : BaseInteractive
                 control_dead.OnDead();
             }
         }
+        */
     }
 }
