@@ -290,7 +290,45 @@ public  class WalkStateForPatrol : FSMState
 //只能转向敌人行走状态
 public class WalkStateForTurn : FSMState
 {
+    float faceTime;
+    float timer;
+    float changeDir = 0.001f;
+    public WalkStateForTurn(float facetime)
+    {
+        stateID = StateID.Walk;
+        faceTime = facetime;
+        timer = 0;
+        changeDir = 0.001f;
+    }
 
+    public override void DoBeforeEntering(GameObject player, GameObject enemy)
+    {
+        //Debug.Log("Enter Walk");
+        timer = 0;
+        enemy.gameObject.GetComponent<BaseRoleController>().ShowViewSprite();
+    }
+
+    public override void DoBeforeLeaving(GameObject player, GameObject enemy)
+    {
+        //Debug.Log("Leave Walk");
+        timer = 0;
+        changeDir = -changeDir;
+        enemy.gameObject.GetComponent<BaseRoleController>().HideViewSprite();
+    }
+
+    public override void ReState(GameObject player, GameObject enemy)
+    {
+        if (timer > faceTime)
+        {
+            enemy.GetComponent<BaseRoleController>().Statemanager.PerformTransition(Transition.ShouldTurn, player, enemy);
+        }
+    }
+
+    public override void Update(GameObject player, GameObject enemy)
+    {
+        timer += Time.deltaTime;
+        enemy.GetComponent<Rigidbody2D>().velocity = new Vector2(changeDir, 0);
+    }
 }
 
 //触发器敌人行走状态
@@ -450,16 +488,21 @@ public class RetreatState : FSMState
 
     public void GetXRange()
     {
-        //就先假设只有两个点吧
-        minX = paths[0].position.x;
-        maxX = paths[1].position.x;
-
-        if(minX > maxX)
+        if (paths.Length == 2)
         {
-            float tmp = minX;
-            minX = maxX;
-            maxX = tmp;
+            //就先假设只有两个点吧
+            minX = paths[0].position.x;
+            maxX = paths[1].position.x;
+
+            if (minX > maxX)
+            {
+                float tmp = minX;
+                minX = maxX;
+                maxX = tmp;
+            }
         }
+        else Debug.Log("paths dont have two points");
+        
     }
     public override void DoBeforeEntering(GameObject player, GameObject enemy)
     {
