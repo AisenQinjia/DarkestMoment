@@ -20,6 +20,7 @@ public class ClipManager
         "stone_roll",
         "wall_break",
         "ceiling_lamp_break",
+        "EnemyChase",
     };
 
     public ClipManager()

@@ -35,7 +35,7 @@ public class AudioManager : MonoBehaviour
         clipManager = new ClipManager();
     }
 
-    public void PlayClip(string name)
+    public void PlayClip(string name, bool isLoop = false)
     {
         AudioSource tmpSource = sourceManager.GetFreeSource();
 
@@ -43,14 +43,27 @@ public class AudioManager : MonoBehaviour
         if (clip != null)
         {
             tmpSource.clip = clip;
+            tmpSource.loop = isLoop;
             tmpSource.Play();
         }
     }
 
-    public void StopClip(string name)
+    public bool IsPlayAudio(string name)
     {
-
+        AudioSource tmpSource = sourceManager.GetExistingSource(name);
+        if (tmpSource != null)
+        {
+            return true;
+        }
+        return false;
     }
 
-
+    public void StopClip(string name)
+    {
+        AudioSource tmpSource = sourceManager.GetExistingSource(name);
+        if (tmpSource != null)
+        {
+            tmpSource.Stop();
+        }
+    }
 }

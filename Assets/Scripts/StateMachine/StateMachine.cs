@@ -14,7 +14,8 @@ public enum StateID
     Retreat,
     CheckPoint,
     StareAtPlayer,
-    Stop
+    Stop,
+    Dead
 }
 
 //过渡
@@ -30,7 +31,8 @@ public enum Transition
     LostPlayer,
     HeardNoise,
     TouchedBarrier,
-    FeelSomethingWrong
+    FeelSomethingWrong,
+    EnemyDie
 }
 
 public class EnemyStateManager
@@ -385,13 +387,21 @@ public class ChaseState : FSMState
     public override void DoBeforeEntering(GameObject player, GameObject enemy)
     {
         //Debug.Log("enter chase");
-
+        if (AudioManager.Instance != null && !AudioManager.Instance.IsPlayAudio("EnemyChase"))
+        {
+            Debug.Log("Chase Sound Begin");
+            AudioManager.Instance.PlayClip("EnemyChase", true);
+        }
     }
 
     public override void DoBeforeLeaving(GameObject player, GameObject enemy)
     {
         //Debug.Log("Leave chase");
-
+        if (AudioManager.Instance != null && AudioManager.Instance.IsPlayAudio("EnemyChase"))
+        {
+            Debug.Log("Chase Sound Stop");
+            AudioManager.Instance.StopClip("EnemyChase");
+        }
     }
 
     public override void ReState(GameObject player, GameObject enemy)
@@ -767,5 +777,35 @@ public class CheckPointState : FSMState
                 enemy.GetComponent<Rigidbody2D>().velocity = new Vector2(vel.x, 0);
             }
         }
+    }
+}
+
+public class DeadState : FSMState
+{
+    public DeadState()
+    {
+        stateID = StateID.Dead;
+    }
+
+    public override void DoBeforeEntering(GameObject player, GameObject enemy)
+    {
+        Debug.Log("enter dead");
+        base.DoBeforeEntering(player, enemy);
+    }
+
+    public override void DoBeforeLeaving(GameObject player, GameObject enemy)
+    {
+        Debug.Log("leave dead");
+        base.DoBeforeLeaving(player, enemy);
+    }
+
+    public override void ReState(GameObject player, GameObject enemy)
+    {
+        base.ReState(player, enemy);
+    }
+
+    public override void Update(GameObject player, GameObject enemy)
+    {
+        base.Update(player, enemy);
     }
 }

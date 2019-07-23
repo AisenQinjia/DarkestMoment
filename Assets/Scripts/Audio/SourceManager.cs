@@ -35,12 +35,22 @@ public class SourceManager
             if (!audioSources[i].isPlaying)
                 return audioSources[i];
         }
-
         AudioSource tmpSource = gameObject.AddComponent<AudioSource>();
         audioSources.Add(tmpSource);
         return tmpSource;
     }
-
+    public AudioSource GetExistingSource(string sourcename)
+    {
+        for (int i = 0; i < audioSources.Count; i++)
+        {
+            if (audioSources[i].clip != null && audioSources[i].clip.name == sourcename)
+            {
+                return audioSources[i];
+            }  
+        }
+        Debug.Log(sourcename + " source doesn't exist!");
+        return null;
+    }
     public void RealseSource()
     {
         int count = 0;

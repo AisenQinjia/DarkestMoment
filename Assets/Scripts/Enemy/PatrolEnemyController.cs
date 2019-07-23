@@ -63,34 +63,52 @@ public class PatrolEnemyController : BaseRoleController
         walk.AddTransition(Transition.SawPlayer, StateID.Chase);
         walk.AddTransition(Transition.FeelSomethingWrong, StateID.Stop);
         walk.AddTransition(Transition.HeardNoise, StateID.CheckPoint);
+        walk.AddTransition(Transition.EnemyDie, StateID.Dead);
+
 
         TurnState turn = new TurnState();
         turn.AddTransition(Transition.ShouldWalk, StateID.Walk);
+        turn.AddTransition(Transition.EnemyDie, StateID.Dead);
+
 
         ChaseState chase = new ChaseState(chaseSpeed, chaseRange, attackRange, chaseAngle);
         chase.AddTransition(Transition.CanAttack, StateID.Attack);
         chase.AddTransition(Transition.LostPlayer, StateID.Retreat);
         chase.AddTransition(Transition.TouchedBarrier, StateID.StareAtPlayer);
+        chase.AddTransition(Transition.EnemyDie, StateID.Dead);
+
 
         AttackState attack = new AttackState(animator);
         attack.AddTransition(Transition.LostPlayer, StateID.Retreat);//击杀主角
+        attack.AddTransition(Transition.EnemyDie, StateID.Dead);
+
 
         RetreatState retreat = new RetreatState(path, retreatSpeed, retreatInitialSpeed, retreatInitialSpeedLastTime);
         retreat.AddTransition(Transition.ShouldWalk, StateID.Walk);
         retreat.AddTransition(Transition.SawPlayer, StateID.Chase);
+        retreat.AddTransition(Transition.EnemyDie, StateID.Dead);
+
 
         StareAtPlayerState stareAtPlayer = new StareAtPlayerState(stareTime, stareRange, stareAngle);
         stareAtPlayer.AddTransition(Transition.LostPlayer, StateID.Retreat);
+        stareAtPlayer.AddTransition(Transition.EnemyDie, StateID.Dead);
+
         //stareAtPlayer.AddTransition(Transition.CanAttack, StateID.Attack);
         //stareAtPlayer.AddTransition(Transition.CanChase, StateID.Chase);
 
         StopState stop = new StopState(animator);
         stop.AddTransition(Transition.LostPlayer, StateID.Walk);
         stop.AddTransition(Transition.SawPlayer, StateID.Chase);
+        stop.AddTransition(Transition.EnemyDie, StateID.Dead);
+
 
         CheckPointState checkPoint = new CheckPointState(checkSpeed, checkAngle, checkRange);
         checkPoint.AddTransition(Transition.SawPlayer, StateID.Chase);
         checkPoint.AddTransition(Transition.ShouldStop, StateID.Stop);
+        checkPoint.AddTransition(Transition.EnemyDie, StateID.Dead);
+
+
+        DeadState dead = new DeadState();
 
 
         Statemanager.AddState(walk);
@@ -101,6 +119,8 @@ public class PatrolEnemyController : BaseRoleController
         Statemanager.AddState(stareAtPlayer);
         Statemanager.AddState(stop);
         Statemanager.AddState(checkPoint);
+        Statemanager.AddState(dead);
+
     }
 
     void GetResource()
@@ -235,6 +255,7 @@ public class PatrolEnemyController : BaseRoleController
     //死亡接口
     public override void OnDead()
     {
+        PerformTransition(Transition.EnemyDie, player, gameObject);
         //Debug.LogError(" I am Dead!");
         Destroy(this.gameObject);
         //this.enabled = false;
