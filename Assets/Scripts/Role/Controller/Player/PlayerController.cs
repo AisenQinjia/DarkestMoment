@@ -32,6 +32,7 @@ public class PlayerController : BaseRoleController
     private Vector2 attackBoxDir;
 
     private int state;
+    public int State { get { return state; } }
 
     private int dir;  //1 right -1 left
     public override void Awake()
@@ -192,6 +193,7 @@ public class PlayerController : BaseRoleController
     {
         if (this.grounded)
         {
+            this.velocity.x = 0;
             this.GetComponent<Rigidbody2D>().AddForce(new Vector2(0, this.stateDatas[(int)this.state].jumpForce));
             this.grounded = false;
         }
@@ -205,9 +207,9 @@ public class PlayerController : BaseRoleController
 
     }
 
-    public void EatJudge()  //吞噬判定
+    public bool EatJudge()  //吞噬判定
     {
-        Debug.Log(this.transform.position);
+        //  Debug.Log(this.transform.position);
 
         Vector2 origin = Vector2.zero;
 
@@ -217,8 +219,8 @@ public class PlayerController : BaseRoleController
         origin.x = this.transform.position.x;
         origin.y = this.transform.position.y;
 
-        Debug.Log(origin);
-        Debug.Log(this.attackBoxSize);
+        // Debug.Log(origin);
+        // Debug.Log(this.attackBoxSize);
 
 
         RaycastHit2D hitInfo = Physics2D.BoxCast(origin, this.attackBoxSize, 0, new Vector2(this.dir * this.transform.right.x, this.transform.position.y), this.stateDatas[(int)this.state].eatLong, LayerMask.GetMask("Enemy"));
@@ -237,8 +239,9 @@ public class PlayerController : BaseRoleController
             }
             ctrl.OnDead();
             // }
-
+            return true;
         }
+        return false;
     }
 
     private void OnDrawGizmos()
@@ -271,9 +274,7 @@ public class PlayerController : BaseRoleController
         else
         {
             if (this.state.Equals(PlayerState.Power))
-                UIManager.Instance.PopHint("你的念力太差了，差一点点！");
-            else
-                UIManager.Instance.PopHint("靠近一点才能点我哦~,除非你是念力大师！");
+                UIManager.Instance.PopHint("你的念力太差了，再差一点点！");
         }
     }
 

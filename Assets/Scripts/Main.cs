@@ -21,8 +21,14 @@ public class Main : MonoBehaviour
         gameObject.AddComponent<ObjectPool>();
 
         hasCreated = true;
+        LoadResources();
         DontDestroyOnLoad(this.gameObject);
 
+    }
+
+    private void LoadResources()
+    {
+        Resources.LoadAll(GameDefine.audioPath);
     }
 
 }

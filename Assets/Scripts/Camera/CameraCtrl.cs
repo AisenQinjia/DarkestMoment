@@ -6,23 +6,33 @@ public class CameraCtrl : MonoBehaviour
 {
 
     public float smooth = 0.1f;
+    public float changeViewSpeed = 60f;
+    public int hightLighIntensity = 50;
+    public float resumeIntensityTime = 0.5f;
 
     private Light SpotLight;
     private bool changeView;
     private float targetView;
-    public float changeViewSpeed = 60f;
+    private float originIntensity;
+    private Transform blood;
     void Start()
     {
-        EventCenter.AddListener(EventType.CameraShake, CameraShake);
+        EventCenter.AddListener<float, float>(EventType.CameraShake, CameraShake);
         EventCenter.AddListener<float>(EventType.ChangeView, ChangeView);
+        EventCenter.AddListener(EventType.CameraHightLight, HightLight);
+
+        this.blood = transform.Find("blood");
 
         this.SpotLight = this.transform.Find("SpotLight").GetComponent<Light>();
+        this.originIntensity = this.SpotLight.intensity;
+
     }
 
     private void OnDestroy()
     {
-        EventCenter.RemoveListener(EventType.CameraShake, CameraShake);
+        EventCenter.RemoveListener<float, float>(EventType.CameraShake, CameraShake);
         EventCenter.RemoveListener<float>(EventType.ChangeView, ChangeView);
+        EventCenter.RemoveListener(EventType.CameraHightLight, HightLight);
     }
 
     void Update()
@@ -36,6 +46,7 @@ public class CameraCtrl : MonoBehaviour
             if (Mathf.Abs(this.SpotLight.spotAngle - this.targetView) < 1.5f)
                 this.changeView = false;
         }
+
     }
 
     void Follow()
@@ -49,9 +60,9 @@ public class CameraCtrl : MonoBehaviour
 
     }
 
-    private void CameraShake()
+    private void CameraShake(float duration, float strength)
     {
-        Tween tween = this.transform.DOShakePosition(0.2f, 1f);
+        Tween tween = this.transform.DOShakePosition(duration, strength);
     }
 
 
@@ -62,5 +73,20 @@ public class CameraCtrl : MonoBehaviour
         this.targetView = viewRadius;
         //  this.SpotLight.spotAngle = viewRadius;
         //  this.SpotLight.spotAngle = Mathf.Lerp(this.SpotLight.spotAngle, this.targetView, 1f);
+    }
+
+    private void HightLight()
+    {
+        this.SpotLight.intensity = 50;
+        this.blood.gameObject.SetActive(true);
+        StartCoroutine(ResumeIntensity());
+    }
+
+    IEnumerator ResumeIntensity()
+    {
+        yield return new WaitForSeconds(resumeIntensityTime);
+        this.SpotLight.intensity = this.originIntensity;
+        this.blood.gameObject.SetActive(false);
+
     }
 }

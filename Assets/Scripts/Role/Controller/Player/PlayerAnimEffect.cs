@@ -16,7 +16,24 @@ public class PlayerAnimEffect : MonoBehaviour
 
     public void EatEffect()
     {
-        player.EatJudge();
-        EventCenter.Broadcast(EventType.CameraShake);
+        if (player.State == (int)PlayerState.Power)
+        {
+            return;
+        }
+
+        if (player.EatJudge())
+        {
+            EventCenter.Broadcast(EventType.CameraHightLight);
+            EventCenter.Broadcast<float, float>(EventType.CameraShake, 0.2f, 2f);
+
+        }
+        else
+        {
+            EventCenter.Broadcast<float, float>(EventType.CameraShake, 0.05f, 0.5f);
+        }
+
+        if (AudioManager.Instance != null)
+            AudioManager.Instance.PlayClip(GameDefine.playerEat);
+
     }
 }

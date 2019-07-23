@@ -8,7 +8,7 @@ public class JumpBtn : JoystickBtn
     {
         base.OnPointerDown(eventData);
         if (AudioManager.Instance != null)
-            AudioManager.Instance.PlayClip(GameDefine.playerEat);
+            AudioManager.Instance.PlayClip(GameDefine.playerJump);
         EventCenter.Broadcast(EventType.OnJumpBtnClick);
     }
 }

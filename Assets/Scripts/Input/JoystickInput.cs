@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using DG.Tweening;
+using UnityEngine.EventSystems;
 
 public class JoystickInput : MonoBehaviour
 {
@@ -10,13 +11,14 @@ public class JoystickInput : MonoBehaviour
     private List<JoystickBtn> joystickBtns = new List<JoystickBtn>();
     private List<LongPressBtn> longPressBtns = new List<LongPressBtn>();
 
-
+    private Button inventoryBtn;
     private void Awake()
     {
-
+        inventoryBtn = transform.Find("inventoryBtn").GetComponent<Button>();
         EventCenter.AddListener(EventType.OnPlayerDead, DisableInput);
-
+        this.inventoryBtn.onClick.AddListener(OnInventoryBtnClick);
     }
+
 
     public void AddBtn(JoystickBtn btn)
     {
@@ -32,6 +34,7 @@ public class JoystickInput : MonoBehaviour
     {
 
         EventCenter.RemoveListener(EventType.OnPlayerDead, DisableInput);
+        this.inventoryBtn.onClick.RemoveListener(OnInventoryBtnClick);
         this.joystickBtns.Clear();
         this.longPressBtns.Clear();
     }
@@ -71,7 +74,7 @@ public class JoystickInput : MonoBehaviour
             hitInfo = Physics2D.Raycast(Camera.main.ScreenToWorldPoint(Input.mousePosition), Vector2.zero, 15);
             if (hitInfo)
             {
-                if (hitInfo.transform.CompareTag(GameDefine.InterativeTag))
+                if (!EventSystem.current.IsPointerOverGameObject() && hitInfo.transform.CompareTag(GameDefine.InterativeTag))
                 {
                     EventCenter.Broadcast<GameObject>(EventType.OnClickInteractive, hitInfo.transform.gameObject);
                 }
@@ -79,7 +82,10 @@ public class JoystickInput : MonoBehaviour
         }
     }
 
-
+    private void OnInventoryBtnClick()
+    {
+        UIManager.Instance.PopPanel(GameDefine.inventoryPanel);
+    }
 
 
 
