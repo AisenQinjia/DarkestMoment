@@ -28,16 +28,16 @@ public class RollingStone : MonoBehaviour
     {
         if (GetComponent<Rigidbody2D>().angularVelocity != 0)
         {
-            check_tag = other.gameObject.tag;
+            check_tag = other.collider.tag;
             if (check_tag == GameDefine.PlayerTag)
             {
-                Debug.Log("Play touch die");
+                Debug.Log("Play stone roll die");
                 BaseRoleController control_dead = other.collider.GetComponent<BaseRoleController>();
                 control_dead.OnDead();
             }
             if (check_tag == GameDefine.EnemyTag)
             {
-                Debug.Log("Enemy touch die");
+                Debug.Log("Enemy stone roll die");
                 BaseRoleController control_dead = other.collider.GetComponentInParent<BaseRoleController>();
                 control_dead.OnDead();
             }

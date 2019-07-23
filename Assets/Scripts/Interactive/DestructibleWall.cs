@@ -23,6 +23,7 @@ public class DestructibleWall : BaseInteractive
         this.KillTween();
         Debug.Log("player destroy the wall");
         AudioManager.Instance.PlayClip("wall_break");
+        AudioManager.Instance.PlayClip("stone_roll");
         Destroy(gameObject);
     }
 }
