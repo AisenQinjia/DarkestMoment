@@ -51,7 +51,7 @@ public class AudioManager : MonoBehaviour
     public bool IsPlayAudio(string name)
     {
         AudioSource tmpSource = sourceManager.GetExistingSource(name);
-        if (tmpSource != null)
+        if (tmpSource != null && tmpSource.isPlaying)
         {
             return true;
         }
