@@ -5,7 +5,7 @@ using UnityEngine;
 public class control_rolling_stone : BaseInteractive
 {
     public GameObject door;
-    Animation anim;
+    Animator anim;
     public GameObject[] rolling_stone;
     bool is_begin, is_begin1, is_interactive;
     public float interval_time;
@@ -28,7 +28,7 @@ public class control_rolling_stone : BaseInteractive
     {
         gameObject.tag = GameDefine.InterativeTag;
         base.Start();
-        anim = door.GetComponent<Animation>();
+        anim = door.GetComponent<Animator>();
         start_position = rolling_stone[0].transform.position;
         rolling_stone[1].SetActive(false);
         rolling_stone[2].SetActive(false);
@@ -88,6 +88,7 @@ public class control_rolling_stone : BaseInteractive
         {
             this.KillTween();
             Debug.Log("player open the control door");
+            anim.SetFloat("Blend", 0.3f);
             AudioManager.Instance.PlayClip("wall_break");
             rigid_of_stone[0].gravityScale = 1;
             AudioManager.Instance.PlayClip("stone_roll");
