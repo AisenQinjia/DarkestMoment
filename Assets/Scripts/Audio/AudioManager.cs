@@ -66,4 +66,9 @@ public class AudioManager : MonoBehaviour
             tmpSource.Stop();
         }
     }
+
+    public void ReleaseSource()
+    {
+        this.sourceManager.RealseSource();
+    }
 }
