@@ -4,8 +4,8 @@
         "name": "常规史莱姆",
         "walkSpeed": 2.5,
         "jumpForce": 250,
-        "eatLong": 0.7,
-        "eatWidth": 0.7,
+        "eatLong": 1.0,
+        "eatWidth": 1.0,
         "interativeRange": 1,
         "viewRadius": 40
     },

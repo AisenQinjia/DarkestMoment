@@ -4,6 +4,13 @@ using UnityEngine;
 using Newtonsoft.Json;
 using System;
 
+
+public enum ItemType
+{
+    Normal = 1,
+    Stroy,
+}
+
 [Serializable]
 public class ItemData : IcfgId
 {
@@ -13,6 +20,7 @@ public class ItemData : IcfgId
     public string name { get; set; }
     public bool usable { get; set; }
 
+    public ItemType type { get; set; }
     public string icon { get; set; }
 
     [JsonIgnore]
@@ -26,6 +34,7 @@ public class ItemData : IcfgId
             this.desc = data.desc;
             this.name = data.name;
             this.usable = data.usable;
+            this.type = data.type;
             this.icon = data.icon;
         }
         else
@@ -35,6 +44,7 @@ public class ItemData : IcfgId
             this.name = "";
             this.usable = false;
             this.icon = "";
+            this.type = ItemType.Normal;
         }
         this.count = 0;
     }

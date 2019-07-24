@@ -29,6 +29,7 @@ public class GameManager : MonoBehaviour
 
     public void ReloadScene(string sceneName)
     {
+        AudioManager.Instance.ReleaseSource();
         SceneManager.LoadScene(sceneName);
         Time.timeScale = 1;
     }
@@ -37,19 +38,21 @@ public class GameManager : MonoBehaviour
     {
         SceneManager.LoadScene(GameDefine.LevelOne);
         Time.timeScale = 1;
-        AudioManager.Instance.PlayClip(GameDefine.bgm);
+        AudioManager.Instance.PlayClip(GameDefine.bgm, true);
     }
 
     public void GameOver()
     {
         UIManager.Instance.PopPanel(GameDefine.losePanel);
         Time.timeScale = 0;
+        AudioManager.Instance.StopClip(GameDefine.bgm);
     }
 
     public void GameWin()
     {
         UIManager.Instance.PopPanel(GameDefine.winPanel);
         Time.timeScale = 0;
+        AudioManager.Instance.StopClip(GameDefine.bgm);
     }
 
 

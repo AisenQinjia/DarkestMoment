@@ -6,6 +6,7 @@ public class VanishingWall : MonoBehaviour
 {
     public float fadeTime;
     public float resetTime;
+    public float limitAlpha;
     bool canFade = false;
     bool startReset = false;
     float timer = 0;
@@ -30,9 +31,9 @@ public class VanishingWall : MonoBehaviour
         {
             Color c = spriteRenderer.color;
             c.a = (c.a - fadeSpeed * Time.deltaTime);
-            if(c.a <= 0)
+            if(c.a <= limitAlpha)
             {
-                c.a = 0;
+                c.a = limitAlpha;
                 TransparentLowerThanZero();
                 spriteRenderer.color = c;
             }
@@ -56,6 +57,7 @@ public class VanishingWall : MonoBehaviour
     void ShowWall()
     {
         startReset = false;
+        timer = 0;
         canFade = false;
         spriteRenderer.color = new Color(1, 1, 1, 1);
         collider.enabled = true;
