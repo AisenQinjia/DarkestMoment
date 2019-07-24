@@ -6,7 +6,7 @@ public class PipeDelivery : BaseInteractive
 {
     public GameObject other_pipe;
     // Start is called before the first frame update
-
+    private float canEnterDis = 0.5f;//可进入水管距离
 
     public override void Awake()
     {
@@ -26,7 +26,15 @@ public class PipeDelivery : BaseInteractive
     public override void InteractiveLogic(Transform player)
     {
         this.KillTween();
-        Debug.Log(player.name + " pipe delivery");
-        player.position = other_pipe.transform.position;
+        if (Vector3.Distance(player.transform.position, this.transform.position) <= canEnterDis)
+        {
+            Debug.Log(player.name + " pipe delivery");
+            player.position = other_pipe.transform.position;
+
+        }
+        else
+        {
+            UIManager.Instance.PopHint("水管要靠近才能互动。");
+        }
     }
 }

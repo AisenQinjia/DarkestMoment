@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5835582858718527377}
   - component: {fileID: 5835582858718527376}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: RedAlarm
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -91,7 +91,7 @@ GameObject:
   - component: {fileID: 5835582858915850507}
   - component: {fileID: 5835582858915850506}
   - component: {fileID: 7976536564928708385}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: TurnOnlyEnemy
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -208,7 +208,7 @@ GameObject:
   - component: {fileID: 5835582859006425832}
   - component: {fileID: 5835582859006425837}
   - component: {fileID: 5835582859006425838}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Slime_0
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -306,7 +306,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5835582859108770102}
   - component: {fileID: 5835582859108770101}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: YellowAlarm
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -385,7 +385,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5835582859418840072}
   - component: {fileID: 5835582859418840079}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: ViewSprite
   m_TagString: Untagged
   m_Icon: {fileID: 0}
