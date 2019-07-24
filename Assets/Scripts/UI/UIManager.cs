@@ -131,11 +131,10 @@ public class UIManager : MonoBehaviour
                 RectTransformUtility.ScreenPointToLocalPointInRectangle(typeWriter.GetComponentInParent<RectTransform>(), playerScreenPos, null, out localPoint);
                 Debug.Log("Screen: " + playerScreenPos.x + "   " + playerScreenPos.y);
                 Debug.Log("local: " + localPoint.x + "   " + localPoint.y);
-                Debug.LogError("  ");
                 typeWriter.GetComponent<RectTransform>().localPosition = localPoint;
             }
         }
-        else typeWriter.GetComponent<RectTransform>().anchoredPosition = new Vector2(640f, 700f);
+        else typeWriter.GetComponent<RectTransform>().anchoredPosition = new Vector2(0f, 350f);
         typeWriter.SetActive(true);
         coroutine = TypeString(str, typeWriter.GetComponent<Text>(), wordTime);
         StartCoroutine(coroutine);
