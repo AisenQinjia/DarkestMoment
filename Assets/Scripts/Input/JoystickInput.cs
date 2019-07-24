@@ -12,13 +12,35 @@ public class JoystickInput : MonoBehaviour
     private List<LongPressBtn> longPressBtns = new List<LongPressBtn>();
 
     private Button inventoryBtn;
+    private GameObject leftBtnGo;
+    private GameObject rightBtnGo;
+    private GameObject killBtnGo;
+    private GameObject jumpBtnGo;
     private void Awake()
     {
         inventoryBtn = transform.Find("inventoryBtn").GetComponent<Button>();
+        leftBtnGo = transform.Find("leftBtn").gameObject;
+        rightBtnGo = transform.Find("rightBtn").gameObject;
+        killBtnGo = transform.Find("killBtn").gameObject;
+        jumpBtnGo = transform.Find("jumpBtn").gameObject;
+
         EventCenter.AddListener(EventType.OnPlayerDead, DisableInput);
+        EventCenter.AddListener(EventType.OnChangeToNormal, HidePowerInput);
+        EventCenter.AddListener(EventType.OnChangeToPower, HideNormalInput);
         this.inventoryBtn.onClick.AddListener(OnInventoryBtnClick);
     }
 
+    private void OnDestroy()
+    {
+
+        EventCenter.RemoveListener(EventType.OnPlayerDead, DisableInput);
+        this.inventoryBtn.onClick.RemoveListener(OnInventoryBtnClick);
+        EventCenter.RemoveListener(EventType.OnChangeToNormal, HidePowerInput);
+        EventCenter.RemoveListener(EventType.OnChangeToPower, HideNormalInput);
+
+        this.joystickBtns.Clear();
+        this.longPressBtns.Clear();
+    }
 
     public void AddBtn(JoystickBtn btn)
     {
@@ -26,17 +48,10 @@ public class JoystickInput : MonoBehaviour
         //  Debug.Log(this.joystickBtns.Count);
     }
 
+
     public void AddLongPressBtn(LongPressBtn btn)
     {
         this.longPressBtns.Add(btn);
-    }
-    private void OnDestroy()
-    {
-
-        EventCenter.RemoveListener(EventType.OnPlayerDead, DisableInput);
-        this.inventoryBtn.onClick.RemoveListener(OnInventoryBtnClick);
-        this.joystickBtns.Clear();
-        this.longPressBtns.Clear();
     }
 
     private void DisableInput()
@@ -87,6 +102,20 @@ public class JoystickInput : MonoBehaviour
         UIManager.Instance.PopPanel(GameDefine.inventoryPanel);
     }
 
+    private void HidePowerInput()
+    {
+        this.leftBtnGo.SetActive(true);
+        this.rightBtnGo.SetActive(true);
+        this.killBtnGo.SetActive(true);
+        this.jumpBtnGo.SetActive(true);
+    }
 
+    private void HideNormalInput()
+    {
+        this.leftBtnGo.SetActive(false);
+        this.rightBtnGo.SetActive(false);
+        this.killBtnGo.SetActive(false);
+        this.jumpBtnGo.SetActive(false);
+    }
 
 }

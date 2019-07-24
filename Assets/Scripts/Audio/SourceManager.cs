@@ -45,7 +45,6 @@ public class SourceManager
         {
             if (audioSources[i].clip != null && audioSources[i].clip.name == sourcename)
             {
-                Debug.Log(audioSources[i].enabled);
                 return audioSources[i];
             }  
         }

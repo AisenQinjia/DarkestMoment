@@ -118,10 +118,8 @@ public class PlayerController : BaseRoleController
             }
         }
 
-        if (this.canMove && this.velocity.x != 0)
-        {
-            this.transform.position += velocity * Time.deltaTime;
-        }
+
+        this.transform.position += velocity * Time.deltaTime;
 
     }
 
@@ -179,8 +177,10 @@ public class PlayerController : BaseRoleController
     }
     private void MoveLeft()
     {
-
+        if (!this.canMove)
+            return;
         TurnSprite(false);
+
         this.velocity.x = -1 * this.stateDatas[(int)this.state].walkSpeed;
         if (this.stateAnims[(int)this.state] != null)
             this.stateAnims[(int)this.state].SetBool("walk", true);
@@ -189,7 +189,8 @@ public class PlayerController : BaseRoleController
 
     private void MoveRight()
     {
-
+        if (!this.canMove)
+            return;
         TurnSprite(true);
         this.velocity.x = 1 * this.stateDatas[(int)this.state].walkSpeed;
         if (this.stateAnims[(int)this.state] != null)
@@ -200,7 +201,6 @@ public class PlayerController : BaseRoleController
     {
         if (this.grounded)
         {
-            this.velocity.x = 0;
             this.GetComponent<Rigidbody2D>().AddForce(new Vector2(0, this.stateDatas[(int)this.state].jumpForce));
             this.grounded = false;
         }
@@ -211,9 +211,9 @@ public class PlayerController : BaseRoleController
     {
         if (!this.grounded)
             return;
+        this.canMove = false;
         if (this.stateAnims[(int)this.state] != null)
             this.stateAnims[(int)this.state].SetTrigger("eat");
-        this.canMove = false;
     }
 
     public bool EatJudge()  //吞噬判定帧对应回调
@@ -274,6 +274,11 @@ public class PlayerController : BaseRoleController
 
     private void Interactive(GameObject go)
     {
+        if (this.state == (int)PlayerState.Normal)
+        {
+            UIManager.Instance.PopHint("要切换状态才能互动哦~");
+            return;
+        }
         if (Vector3.Distance(go.transform.position, this.transform.position) <= this.stateDatas[(int)this.state].interativeRange)
         {
             go.GetComponent<BaseInteractive>().InteractiveLogic(this.transform);

@@ -52,7 +52,7 @@ public class UIManager : MonoBehaviour
 
     }
 
-    
+
     public void EnabaleBloodSprite()
     {
         bloodSprite.SetActive(true);
@@ -83,7 +83,6 @@ public class UIManager : MonoBehaviour
     //打字机打一段话(有个s...)
     public void PopTypewriterSentences(string[] str, float wordTime, float sentenceTime, Transform trans = null)
     {
-
         if (typeWriter == null)
         {
             typeWriter = Instantiate(this.typeWriterPf);
@@ -98,7 +97,8 @@ public class UIManager : MonoBehaviour
                 Vector3 offset = new Vector3(trans.position.x, trans.position.y + 1, trans.position.z);
                 var playerScreenPos = mainCam.WorldToScreenPoint(offset);
                 Vector2 localPoint;
-                RectTransformUtility.ScreenPointToLocalPointInRectangle(typeWriter.GetComponentInParent<RectTransform>(), playerScreenPos, null, out localPoint);
+  
+                RectTransformUtility.ScreenPointToLocalPointInRectangle(this.transform.GetComponent<RectTransform>(), playerScreenPos, null, out localPoint);
                 typeWriter.GetComponent<RectTransform>().localPosition = localPoint;
             }
         }
@@ -115,27 +115,30 @@ public class UIManager : MonoBehaviour
         {
             typeWriter = Instantiate(this.typeWriterPf);
             typeWriter.transform.SetParent(this.transform, false);
+            Debug.Log(typeWriter.transform.position);
         }
         if (trans != null)
         {
             //Debug.Log("trans != null");
-            Camera mainCam = GameObject.Find("Main Camera").GetComponent<Camera>();
+            Camera mainCam = Camera.main;
             if (mainCam == null) Debug.Log("no Main Camera");
             else
             {
-                var playerScreenPos = mainCam.WorldToScreenPoint(trans.position);
+                Vector3 offset = new Vector3(trans.position.x, trans.position.y + 1, trans.position.z);
+                var playerScreenPos = mainCam.WorldToScreenPoint(offset);
                 Vector2 localPoint;
+               
                 RectTransformUtility.ScreenPointToLocalPointInRectangle(typeWriter.GetComponentInParent<RectTransform>(), playerScreenPos, null, out localPoint);
-                //Debug.Log("Screen: " + playerScreenPos.x + "   " + playerScreenPos.y);
-                //Debug.Log("local: " + localPoint.x + "   " + localPoint.y );
-
+                Debug.Log("Screen: " + playerScreenPos.x + "   " + playerScreenPos.y);
+                Debug.Log("local: " + localPoint.x + "   " + localPoint.y);
+                Debug.LogError("  ");
                 typeWriter.GetComponent<RectTransform>().localPosition = localPoint;
             }
         }
         else typeWriter.GetComponent<RectTransform>().anchoredPosition = new Vector2(640f, 700f);
         typeWriter.SetActive(true);
         coroutine = TypeString(str, typeWriter.GetComponent<Text>(), wordTime);
-        StartCoroutine(coroutine); 
+        StartCoroutine(coroutine);
     }
 
     IEnumerator TypeString(string str, Text textReference, float wordTime, Transform trans = null)
