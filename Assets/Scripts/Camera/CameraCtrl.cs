@@ -77,8 +77,9 @@ public class CameraCtrl : MonoBehaviour
 
     private void HightLight()
     {
-        this.SpotLight.intensity = 50;
+        this.SpotLight.intensity = hightLighIntensity;
         this.blood.gameObject.SetActive(true);
+        UIManager.Instance.EnabaleBloodSprite();
         StartCoroutine(ResumeIntensity());
     }
 
@@ -87,6 +88,7 @@ public class CameraCtrl : MonoBehaviour
         yield return new WaitForSeconds(resumeIntensityTime);
         this.SpotLight.intensity = this.originIntensity;
         this.blood.gameObject.SetActive(false);
+        UIManager.Instance.DisableBloodSprite();
 
     }
 }

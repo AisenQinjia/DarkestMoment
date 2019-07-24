@@ -35,9 +35,12 @@ public class PlayerController : BaseRoleController
     public int State { get { return state; } }
 
     private int dir;  //1 right -1 left
+
+    private bool canMove;
     public override void Awake()
     {
         base.Awake();
+        this.canMove = true;
         this.state = (int)PlayerState.Normal;
 
         RoleManager.Instance.AddPlayer(this.transform);
@@ -95,23 +98,27 @@ public class PlayerController : BaseRoleController
 
     private void Update()
     {
-        if (Input.GetKey(KeyCode.A))
-        {
-            TurnSprite(false);
-            this.transform.position += new Vector3(-1 * this.stateDatas[(int)this.state].walkSpeed, 0, 0) * Time.deltaTime;
-        }
-        if (Input.GetKey(KeyCode.D))
-        {
-            TurnSprite(true);
-            this.transform.position += new Vector3(1 * this.stateDatas[(int)this.state].walkSpeed, 0, 0) * Time.deltaTime;
-        }
+
         if (Input.GetKeyDown(KeyCode.Space))
         {
             Jump();
         }
 
+        if (this.canMove)
+        {
+            if (Input.GetKey(KeyCode.A))
+            {
+                TurnSprite(false);
+                this.transform.position += new Vector3(-1 * this.stateDatas[(int)this.state].walkSpeed, 0, 0) * Time.deltaTime;
+            }
+            if (Input.GetKey(KeyCode.D))
+            {
+                TurnSprite(true);
+                this.transform.position += new Vector3(1 * this.stateDatas[(int)this.state].walkSpeed, 0, 0) * Time.deltaTime;
+            }
+        }
 
-        if (this.velocity.x != 0)
+        if (this.canMove && this.velocity.x != 0)
         {
             this.transform.position += velocity * Time.deltaTime;
         }
@@ -204,10 +211,10 @@ public class PlayerController : BaseRoleController
     {
         if (this.stateAnims[(int)this.state] != null)
             this.stateAnims[(int)this.state].SetTrigger("eat");
-
+        this.canMove = false;
     }
 
-    public bool EatJudge()  //吞噬判定
+    public bool EatJudge()  //吞噬判定帧对应回调
     {
         //  Debug.Log(this.transform.position);
 
@@ -225,6 +232,7 @@ public class PlayerController : BaseRoleController
 
         RaycastHit2D hitInfo = Physics2D.BoxCast(origin, this.attackBoxSize, 0, new Vector2(this.dir * this.transform.right.x, this.transform.position.y), this.stateDatas[(int)this.state].eatLong, LayerMask.GetMask("Enemy"));
         // public static RaycastHit2D BoxCast(Vector2 origin, Vector2 size, float angle, Vector2 direction, float distance, int layerMask);
+        this.canMove = true;
 
         if (hitInfo)
         {

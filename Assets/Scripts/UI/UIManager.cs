@@ -35,6 +35,8 @@ public class UIManager : MonoBehaviour
 
     private Vector3 hintPos = new Vector2(0, -100);
 
+    private GameObject bloodSprite;
+
     private void Awake()
     {
 
@@ -45,6 +47,8 @@ public class UIManager : MonoBehaviour
         Canvas = this.gameObject;
 
         hintPf = Resources.Load("Prefabs/UiHint") as GameObject;
+
+        this.bloodSprite = this.transform.Find("bloodSprite").gameObject;
 
         DontDestroyOnLoad(this.gameObject);
 
@@ -66,6 +70,16 @@ public class UIManager : MonoBehaviour
         hintGo.transform.SetParent(this.transform, false);
 
         Destroy(hintGo, 2);
+    }
+
+    public void EnabaleBloodSprite()
+    {
+        bloodSprite.SetActive(true);
+    }
+
+    public void DisableBloodSprite()
+    {
+        bloodSprite.SetActive(false);
     }
 
 
