@@ -21,7 +21,7 @@ public class LosePanel : BasePanel
     private void OnRestartClick()
     {
         UIManager.Instance.ClosePanel(GameDefine.losePanel);
-        GameManager.Instance.StartGame();
+        GameManager.Instance.RestartGame();
     }
 
     private void OnQuitClick()

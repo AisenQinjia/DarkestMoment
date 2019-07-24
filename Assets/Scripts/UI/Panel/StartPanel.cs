@@ -6,23 +6,42 @@ using UnityEngine.SceneManagement;
 
 public class StartPanel : BasePanel
 {
-    private Button StartBtn;
+    private Button lv1Btn;
+    private Button lv2Btn;
+    private Button bossLevelBtn;
     private Button QuitBtn;
 
     public override void Awake()
     {
-        StartBtn = this.transform.Find("StartBtn").GetComponent<Button>();
+        lv1Btn = this.transform.Find("lv1Btn").GetComponent<Button>();
+        lv2Btn = this.transform.Find("lv2Btn").GetComponent<Button>();
+        bossLevelBtn = this.transform.Find("bossLevelBtn").GetComponent<Button>();
         QuitBtn = this.transform.Find("QuitBtn").GetComponent<Button>();
 
-        StartBtn.onClick.AddListener(OnStartBtnClick);
+        lv1Btn.onClick.AddListener(OnLevelOneBtnClick);
+        lv2Btn.onClick.AddListener(OnLevelTwoBtnClick);
+        bossLevelBtn.onClick.AddListener(OnBossLevelClick);
         QuitBtn.onClick.AddListener(OnQuitBtnClick);
     }
 
-    private void OnStartBtnClick()
+    private void OnLevelOneBtnClick()
     {
-        GameManager.Instance.StartGame();
+        GameManager.level = 1;
+        GameManager.Instance.ReloadScene(GameDefine.LevelOne);
     }
 
+    private void OnLevelTwoBtnClick()
+    {
+        GameManager.level = 2;
+        GameManager.Instance.ReloadScene(GameDefine.LevelTwo);
+    }
+
+    private void OnBossLevelClick()
+    {
+        GameManager.level = 3;
+        GameManager.Instance.ReloadScene(GameDefine.BossLevel);
+
+    }
     private void OnQuitBtnClick()
     {
         Application.Quit();
@@ -30,7 +49,8 @@ public class StartPanel : BasePanel
 
     public override void OnDestroy()
     {
-        StartBtn.onClick.RemoveAllListeners();
+        lv1Btn.onClick.RemoveAllListeners();
+        lv2Btn.onClick.RemoveAllListeners();
         QuitBtn.onClick.RemoveAllListeners();
     }
 

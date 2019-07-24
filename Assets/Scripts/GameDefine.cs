@@ -22,6 +22,10 @@ public static class GameDefine
 
     public const string LevelOne = "level1";
 
+    public const string LevelTwo = "level2";
+
+    public const string BossLevel = "BossLevel";
+
     public const string InterativeTag = "Interactive";
 
     public const string PlayerTag = "Player";
