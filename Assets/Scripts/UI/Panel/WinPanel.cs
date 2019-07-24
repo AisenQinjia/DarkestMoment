@@ -20,7 +20,7 @@ public class WinPanel : BasePanel
 
     private void OnRestartClick()
     {
-        GameManager.Instance.StartGame();
+        GameManager.Instance.RestartGame();
         UIManager.Instance.ClosePanel(GameDefine.winPanel);
     }
 

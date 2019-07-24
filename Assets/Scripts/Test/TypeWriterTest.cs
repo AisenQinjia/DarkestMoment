@@ -15,10 +15,10 @@ public class TypeWriterTest : MonoBehaviour
         if (other.gameObject.CompareTag(GameDefine.PlayerTag))
         {
 
-            UIManager.Instance.PopTypewriterSentence("这是什么？", 0.1f, player.transform);
-            //UIManager.Instance.PopTypewriterSentences(strs, 0.1f, 1f, player.transform);
+            //UIManager.Instance.PopTypewriterSentence("这是什么？", 0.1f, player.transform);
+            UIManager.Instance.PopTypewriterSentences(strs, 0.1f, 1f, player.transform);
             
-            //gameObject.SetActive(false);
+            gameObject.SetActive(false);
         }
     }
 }

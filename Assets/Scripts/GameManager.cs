@@ -21,6 +21,7 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    public static int level = 1;
     private void Awake()
     {
         instance = this;
@@ -32,6 +33,22 @@ public class GameManager : MonoBehaviour
         AudioManager.Instance.ReleaseSource();
         SceneManager.LoadScene(sceneName);
         Time.timeScale = 1;
+    }
+
+    public void RestartGame()
+    {
+        if (GameManager.level == 1)
+        {
+            SceneManager.LoadScene(GameDefine.LevelOne);
+        }
+        else if (GameManager.level == 2)
+        {
+            SceneManager.LoadScene(GameDefine.LevelTwo);
+        }
+        else if (GameManager.level == 3)
+        {
+            SceneManager.LoadScene(GameDefine.BossLevel);
+        }
     }
 
     public void StartGame()
