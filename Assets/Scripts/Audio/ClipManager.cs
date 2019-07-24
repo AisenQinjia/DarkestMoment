@@ -21,6 +21,7 @@ public class ClipManager
         "wall_break",
         "ceiling_lamp_break",
         "EnemyChase",
+        "pipe_delivery",
     };
 
     public ClipManager()
