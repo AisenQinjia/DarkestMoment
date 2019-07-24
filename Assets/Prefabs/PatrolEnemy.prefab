@@ -136,9 +136,9 @@ MonoBehaviour:
   player: {fileID: 0}
   walkSpeed: 0.5
   chaseSpeed: 4
-  chaseRange: 1000
+  chaseRange: 5
   attackRange: 0.2
-  checkRange: 200
+  checkRange: 25
   retreatSpeed: 1.5
   retreatInitialSpeed: 0.1
   retreatInitialSpeedLastTime: 1
@@ -146,7 +146,7 @@ MonoBehaviour:
   stareAngle: 30
   checkAngle: 0
   stareTime: 2
-  stareRange: 10
+  stareRange: 5
   checkSpeed: 2
   barrierValidDistance: 3
   path:
