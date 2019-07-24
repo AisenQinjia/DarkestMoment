@@ -8,9 +8,9 @@ public class UIManager : MonoBehaviour
 {
     private IEnumerator coroutine;
     private static UIManager instance;
-
     private Dictionary<string, Dictionary<string, GameObject>> allWidgets; //保存对所有控件的引用
-
+    public static float offsetX = 0;
+    public static float offsetY = 3;
     public static UIManager Instance
     {
         get
@@ -45,7 +45,6 @@ public class UIManager : MonoBehaviour
         allWidgets = new Dictionary<string, Dictionary<string, GameObject>>();
 
         Canvas = this.gameObject;
-
         hintPf = Resources.Load("Prefabs/UiHint") as GameObject;
         this.bloodSprite = this.transform.Find("bloodSprite").gameObject;
         typeWriterPf = Resources.Load("Prefabs/TypeWriter") as GameObject;
@@ -82,7 +81,7 @@ public class UIManager : MonoBehaviour
     }
 
     //打字机打一段话(有个s...)
-    public void PopTypewriterSentences(string[] str, float wordTime, float sentenceTime)
+    public void PopTypewriterSentences(string[] str, float wordTime, float sentenceTime, Transform trans)
     {
         if(typeWriter == null)
         {
@@ -97,19 +96,31 @@ public class UIManager : MonoBehaviour
     }
 
     //打字机打一句话
-    public void PopTypewriterSentence(string str, float wordTime)
+    public void PopTypewriterSentence(string str, float wordTime, Transform trans = null)
     {
         if (typeWriter == null)
         {
             typeWriter = Instantiate(this.typeWriterPf);
-            typeWriter.SetActive(true);
             typeWriter.transform.SetParent(this.transform, false);
         }
+        if (trans != null)
+        {
+            Camera mainCam = GameObject.Find("Main Camera").GetComponent<Camera>();
+            if (mainCam == null) Debug.Log("no Main Camera");
+            else
+            {
+                var playerScreenPos = mainCam.WorldToScreenPoint(trans.position);
+                var anchoredOffset = typeWriter.GetComponent<RectTransform>().localPosition - playerScreenPos;
+                typeWriter.GetComponent<RectTransform>().anchoredPosition = new Vector2(playerScreenPos.x , playerScreenPos.y );
+            }
+        }
+        else typeWriter.GetComponent<RectTransform>().pivot = new Vector2(0.5f, 1f);
+        typeWriter.SetActive(true);
         coroutine = TypeString(str, typeWriter.GetComponent<Text>(), wordTime);
         StartCoroutine(coroutine); 
     }
 
-    IEnumerator TypeString(string str, Text textReference, float wordTime)
+    IEnumerator TypeString(string str, Text textReference, float wordTime, Transform trans = null)
     {
         string tmp = "";
         for (int i = 0; i < str.Length; ++i)
@@ -117,13 +128,14 @@ public class UIManager : MonoBehaviour
             tmp += str[i];
             textReference.text = tmp;
             yield return new WaitForSeconds(wordTime);
-        }          
+        }
+        typeWriter.SetActive(false);
     }
 
     IEnumerator TypeStrings(string str, Text textReference, float senteceTime, float wordTime)
     {
         yield return new WaitForSeconds(senteceTime);
-        PopTypewriterSentence(str, wordTime);
+        //PopTypewriterSentence(str, wordTime);
     }
 
 
@@ -180,7 +192,6 @@ public class UIManager : MonoBehaviour
             p.OnPop();
         }
         return panel;
-
     }
 
     public void DestroyAllPanel()
