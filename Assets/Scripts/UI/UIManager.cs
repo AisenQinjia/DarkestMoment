@@ -81,18 +81,31 @@ public class UIManager : MonoBehaviour
     }
 
     //打字机打一段话(有个s...)
-    public void PopTypewriterSentences(string[] str, float wordTime, float sentenceTime, Transform trans)
+    public void PopTypewriterSentences(string[] str, float wordTime, float sentenceTime, Transform trans = null)
     {
-        if(typeWriter == null)
+
+        if (typeWriter == null)
         {
             typeWriter = Instantiate(this.typeWriterPf);
-            typeWriter.SetActive(true);
             typeWriter.transform.SetParent(this.transform, false);
         }
-        for(int i = 0; i < str.Length; ++i)
+        if (trans != null)
         {
-            
+            Camera mainCam = GameObject.Find("Main Camera").GetComponent<Camera>();
+            if (mainCam == null) Debug.Log("no Main Camera");
+            else
+            {
+                Vector3 offset = new Vector3(trans.position.x, trans.position.y + 1, trans.position.z);
+                var playerScreenPos = mainCam.WorldToScreenPoint(offset);
+                Vector2 localPoint;
+                RectTransformUtility.ScreenPointToLocalPointInRectangle(typeWriter.GetComponentInParent<RectTransform>(), playerScreenPos, null, out localPoint);
+                typeWriter.GetComponent<RectTransform>().localPosition = localPoint;
+            }
         }
+        else typeWriter.GetComponent<RectTransform>().anchoredPosition = new Vector2(640f, 700f);
+        typeWriter.SetActive(true);
+        coroutine = TypeStrings(str, typeWriter.GetComponent<Text>(), sentenceTime, wordTime);
+        StartCoroutine(coroutine);
     }
 
     //打字机打一句话
@@ -105,6 +118,7 @@ public class UIManager : MonoBehaviour
         }
         if (trans != null)
         {
+            //Debug.Log("trans != null");
             Camera mainCam = GameObject.Find("Main Camera").GetComponent<Camera>();
             if (mainCam == null) Debug.Log("no Main Camera");
             else
@@ -112,11 +126,10 @@ public class UIManager : MonoBehaviour
                 var playerScreenPos = mainCam.WorldToScreenPoint(trans.position);
                 Vector2 localPoint;
                 RectTransformUtility.ScreenPointToLocalPointInRectangle(typeWriter.GetComponentInParent<RectTransform>(), playerScreenPos, null, out localPoint);
-                Debug.Log("playerScreenPos: " + playerScreenPos.x + "  " + playerScreenPos.y);
-                Debug.Log("localPoint: " + localPoint.x + "  " + localPoint.y);
+                //Debug.Log("Screen: " + playerScreenPos.x + "   " + playerScreenPos.y);
+                //Debug.Log("local: " + localPoint.x + "   " + localPoint.y );
 
                 typeWriter.GetComponent<RectTransform>().localPosition = localPoint;
-                
             }
         }
         else typeWriter.GetComponent<RectTransform>().anchoredPosition = new Vector2(640f, 700f);
@@ -137,10 +150,23 @@ public class UIManager : MonoBehaviour
         typeWriter.SetActive(false);
     }
 
-    IEnumerator TypeStrings(string str, Text textReference, float senteceTime, float wordTime)
+    IEnumerator TypeStrings(string[] str, Text textReference, float senteceTime, float wordTime)
     {
-        yield return new WaitForSeconds(senteceTime);
-        //PopTypewriterSentence(str, wordTime);
+        string tmps = "";
+        string tmp = "";
+        for (int i = 0; i < str.Length; ++i)
+        {
+            tmps = str[i];
+            tmp = "";
+            for (int j = 0; j < tmps.Length; ++j)
+            {
+                tmp += tmps[j];
+                textReference.text = tmp;
+                yield return new WaitForSeconds(wordTime);
+            }
+            yield return new WaitForSeconds(senteceTime);
+        }
+        typeWriter.SetActive(false);
     }
 
 
