@@ -12,7 +12,7 @@
     {
         "cfgId": 2,
         "name": "念力史莱姆",
-        "walkSpeed": 1.0,
+        "walkSpeed": 0.5,
         "jumpForce": 50,
         "eatLong": 0.0,
         "eatWidth": 0.0,
