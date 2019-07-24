@@ -19,7 +19,7 @@ public class RollingStone : MonoBehaviour
 
     void OnCollisionEnter2D(Collision2D other)
     {
-        if (GetComponent<Rigidbody2D>().angularVelocity != 0)
+        if (GetComponent<Rigidbody2D>().velocity != new Vector2(0, 0))
         {
             check_tag = other.collider.tag;
             if (check_tag == GameDefine.PlayerTag)
