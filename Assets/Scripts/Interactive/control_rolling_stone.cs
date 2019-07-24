@@ -10,6 +10,9 @@ public class control_rolling_stone : BaseInteractive
     bool is_begin, is_begin1, is_interactive;
     public float interval_time;
     float check_time;
+    int i_3;
+    Vector2 zero_velocity;
+    bool is_close_door;
 
     Rigidbody2D[] rigid_of_stone = new Rigidbody2D[3];
     Vector3 start_position;
@@ -48,6 +51,8 @@ public class control_rolling_stone : BaseInteractive
         is_begin1 = false;
         is_interactive = true;
         i = 0;
+        zero_velocity = new Vector2(0, 0);
+        is_close_door = true;
     }
 
     // Update is called once per frame
@@ -57,11 +62,18 @@ public class control_rolling_stone : BaseInteractive
         {
             
             check_time -= Time.deltaTime;
+            if (is_close_door && check_time < 4)
+            {
+                anim.SetFloat("Blend", -0.3f);
+                is_close_door = false;
+            }
             if (check_time < 0)
             {
+                
                 rolling_stone[i + 1].SetActive(true);
                 check_time = interval_time;
                 i += 1;
+                is_close_door = true;
                 if (i == 2)
                 {
                     is_begin = false;
@@ -73,10 +85,19 @@ public class control_rolling_stone : BaseInteractive
         if (is_begin1)
         {
             check_time -= Time.deltaTime;
+            if (is_close_door && check_time < 4)
+            {
+                anim.SetFloat("Blend", -0.3f);
+                is_close_door = false;
+            }
             if (check_time < 0)
             {
-                transform_of_stone[i % 3].position = start_position;
+                i_3 = i % 3;
+                rigid_of_stone[i_3].velocity = zero_velocity;
+                transform_of_stone[i_3].position = start_position;
                 check_time = interval_time;
+                i += 1;
+                is_close_door = true;
             }
         }
     }
