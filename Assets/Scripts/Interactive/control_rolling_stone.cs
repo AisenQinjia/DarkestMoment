@@ -11,9 +11,9 @@ public class control_rolling_stone : BaseInteractive
     public float interval_time;
     float check_time;
 
-    Rigidbody2D[] rigid_of_stone;
+    Rigidbody2D[] rigid_of_stone = new Rigidbody2D[3];
     Vector3 start_position;
-    Transform[] transform_of_stone;
+    Transform[] transform_of_stone = new Transform[3];
     int i;
 
     public override void Awake()
