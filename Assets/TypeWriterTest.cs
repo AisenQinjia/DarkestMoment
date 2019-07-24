@@ -10,7 +10,8 @@ public class TypeWriterTest : MonoBehaviour
         if (other.gameObject.CompareTag(GameDefine.PlayerTag))
         {
             UIManager.Instance.PopTypewriterSentence("我擦！，碰到了什么狗东西？", 0.1f);
-            gameObject.SetActive(false);
+            UIManager.Instance.PopHint("PopHint");
+            //gameObject.SetActive(false);
         }
     }
 }

@@ -110,11 +110,16 @@ public class UIManager : MonoBehaviour
             else
             {
                 var playerScreenPos = mainCam.WorldToScreenPoint(trans.position);
-                var anchoredOffset = typeWriter.GetComponent<RectTransform>().localPosition - playerScreenPos;
-                typeWriter.GetComponent<RectTransform>().anchoredPosition = new Vector2(playerScreenPos.x , playerScreenPos.y );
+                Vector2 localPoint;
+                RectTransformUtility.ScreenPointToLocalPointInRectangle(typeWriter.GetComponentInParent<RectTransform>(), playerScreenPos, null, out localPoint);
+                Debug.Log("playerScreenPos: " + playerScreenPos.x + "  " + playerScreenPos.y);
+                Debug.Log("localPoint: " + localPoint.x + "  " + localPoint.y);
+
+                typeWriter.GetComponent<RectTransform>().localPosition = localPoint;
+                
             }
         }
-        else typeWriter.GetComponent<RectTransform>().pivot = new Vector2(0.5f, 1f);
+        else typeWriter.GetComponent<RectTransform>().anchoredPosition = new Vector2(640f, 700f);
         typeWriter.SetActive(true);
         coroutine = TypeString(str, typeWriter.GetComponent<Text>(), wordTime);
         StartCoroutine(coroutine); 
