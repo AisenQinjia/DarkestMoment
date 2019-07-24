@@ -44,8 +44,8 @@ public class control_rolling_stone : BaseInteractive
         }
 
         rigid_of_stone[0].gravityScale = 0;
-        rigid_of_stone[1].gravityScale = 1;
-        rigid_of_stone[2].gravityScale = 1;
+        rigid_of_stone[1].gravityScale = 0;
+        rigid_of_stone[2].gravityScale = 0;
         check_time = interval_time;
         is_begin = false;
         is_begin1 = false;
@@ -66,11 +66,12 @@ public class control_rolling_stone : BaseInteractive
             {
                 anim.SetFloat("Blend", -0.3f);
                 is_close_door = false;
+                rolling_stone[i + 1].SetActive(true);
             }
             if (check_time < 0)
             {
-                
-                rolling_stone[i + 1].SetActive(true);
+                anim.SetFloat("Blend", 0.3f);
+                rigid_of_stone[i + 1].gravityScale = 1;
                 check_time = interval_time;
                 i += 1;
                 is_close_door = true;
@@ -87,14 +88,17 @@ public class control_rolling_stone : BaseInteractive
             check_time -= Time.deltaTime;
             if (is_close_door && check_time < 4)
             {
+                i_3 = i % 3;
                 anim.SetFloat("Blend", -0.3f);
                 is_close_door = false;
+                rigid_of_stone[i_3].gravityScale = 0;
+                rigid_of_stone[i_3].velocity = zero_velocity;
+                transform_of_stone[i_3].position = start_position;
             }
             if (check_time < 0)
             {
-                i_3 = i % 3;
-                rigid_of_stone[i_3].velocity = zero_velocity;
-                transform_of_stone[i_3].position = start_position;
+                anim.SetFloat("Blend", 0.3f);
+                rigid_of_stone[i_3].gravityScale = 1;
                 check_time = interval_time;
                 i += 1;
                 is_close_door = true;
