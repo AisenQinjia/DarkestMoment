@@ -29,6 +29,7 @@ public class PipeDelivery : BaseInteractive
         if (Vector3.Distance(player.transform.position, this.transform.position) <= canEnterDis)
         {
             Debug.Log(player.name + " pipe delivery");
+            AudioManager.Instance.PlayClip("pipe_delivery");
             player.position = other_pipe.transform.position;
 
         }
