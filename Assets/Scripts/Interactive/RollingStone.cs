@@ -14,14 +14,7 @@ public class RollingStone : MonoBehaviour
 
     void Update()
     {
-        if (is_play_music)
-        {
-            if (GetComponent<Rigidbody2D>().angularVelocity != 0)
-            {
-                AudioManager.Instance.PlayClip("stone_roll");
-                is_play_music = false;
-            }
-        }
+        
     }
 
     void OnCollisionEnter2D(Collision2D other)
