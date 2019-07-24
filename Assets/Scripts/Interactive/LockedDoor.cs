@@ -26,7 +26,11 @@ public class LockedDoor : MonoBehaviour
             AudioManager.Instance.PlayClip("open_door");
             anim.SetFloat("Blend", 0.3f);
             change_pattern.isTrigger = true;
-            
+
+        }
+        else
+        {
+            UIManager.Instance.PopHint("门锁了，需要一把钥匙~");
         }
 
         if (check_tag == GameDefine.EnemyTag)

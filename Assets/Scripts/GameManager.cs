@@ -29,6 +29,7 @@ public class GameManager : MonoBehaviour
 
     public void ReloadScene(string sceneName)
     {
+        AudioManager.Instance.ReleaseSource();
         SceneManager.LoadScene(sceneName);
         Time.timeScale = 1;
     }
@@ -51,6 +52,7 @@ public class GameManager : MonoBehaviour
     {
         UIManager.Instance.PopPanel(GameDefine.winPanel);
         Time.timeScale = 0;
+        AudioManager.Instance.StopClip(GameDefine.bgm);
     }
 
 
