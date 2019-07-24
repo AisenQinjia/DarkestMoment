@@ -209,6 +209,8 @@ public class PlayerController : BaseRoleController
 
     private void Eat()
     {
+        if (!this.grounded)
+            return;
         if (this.stateAnims[(int)this.state] != null)
             this.stateAnims[(int)this.state].SetTrigger("eat");
         this.canMove = false;

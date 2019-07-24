@@ -30,6 +30,12 @@ public class BaseInteractive : MonoBehaviour
 
     protected void ChangeShineMaterial()
     {
+        //int range = ConfigManager.Instance.GetRoleData(2).interativeRange;
+        //if (Vector3.Distance(this.transform.position, RoleManager.Instance.transform.position) > range)
+        //{
+        //    Debug.Log(Vector3.Distance(this.transform.position, RoleManager.Instance.transform.position));
+        //    return;
+        //}
         tween = this.transform.DOScale(this.originScale * 1.2f, 1f);
         tween.SetLoops(-1);
         this.sr.material = this.shineMaterial;
