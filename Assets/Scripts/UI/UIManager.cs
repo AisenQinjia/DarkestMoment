@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -6,7 +6,7 @@ using DG.Tweening;
 
 public class UIManager : MonoBehaviour
 {
-
+    private IEnumerator coroutine;
     private static UIManager instance;
 
     private Dictionary<string, Dictionary<string, GameObject>> allWidgets; //保存对所有控件的引用
@@ -29,13 +29,13 @@ public class UIManager : MonoBehaviour
     }
 
     private GameObject hintPf;
+    private GameObject typeWriterPf;
     private GameObject Canvas;
 
     private static bool hasCreated = false;
+    private GameObject bloodSprite;
 
     private Vector3 hintPos = new Vector2(0, -100);
-
-    private GameObject bloodSprite;
 
     private void Awake()
     {
@@ -47,16 +47,25 @@ public class UIManager : MonoBehaviour
         Canvas = this.gameObject;
 
         hintPf = Resources.Load("Prefabs/UiHint") as GameObject;
-
         this.bloodSprite = this.transform.Find("bloodSprite").gameObject;
-
+        typeWriterPf = Resources.Load("Prefabs/TypeWriter") as GameObject;
         DontDestroyOnLoad(this.gameObject);
 
     }
 
+    
+    public void EnabaleBloodSprite()
+    {
+        bloodSprite.SetActive(true);
+    }
 
+    public void DisableBloodSprite()
+    {
+        bloodSprite.SetActive(false);
+    }
 
     private GameObject hintGo;
+    private GameObject typeWriter;
 
     public void PopHint(string str)
     {
@@ -72,14 +81,49 @@ public class UIManager : MonoBehaviour
         Destroy(hintGo, 2);
     }
 
-    public void EnabaleBloodSprite()
+    //打字机打一段话(有个s...)
+    public void PopTypewriterSentences(string[] str, float wordTime, float sentenceTime)
     {
-        bloodSprite.SetActive(true);
+        if(typeWriter == null)
+        {
+            typeWriter = Instantiate(this.typeWriterPf);
+            typeWriter.SetActive(true);
+            typeWriter.transform.SetParent(this.transform, false);
+        }
+        for(int i = 0; i < str.Length; ++i)
+        {
+            
+        }
     }
 
-    public void DisableBloodSprite()
+    //打字机打一句话
+    public void PopTypewriterSentence(string str, float wordTime)
     {
-        bloodSprite.SetActive(false);
+        if (typeWriter == null)
+        {
+            typeWriter = Instantiate(this.typeWriterPf);
+            typeWriter.SetActive(true);
+            typeWriter.transform.SetParent(this.transform, false);
+        }
+        coroutine = TypeString(str, typeWriter.GetComponent<Text>(), wordTime);
+        StartCoroutine(coroutine); 
+    }
+
+    IEnumerator TypeString(string str, Text textReference, float wordTime)
+    {
+        string tmp = "";
+        for (int i = 0; i < str.Length; ++i)
+        {
+            tmp += str[i];
+            textReference.text = tmp;
+            yield return new WaitForSeconds(wordTime);
+        }          
+    }
+
+    IEnumerator TypeStrings(string str, Text textReference, float senteceTime, float wordTime)
+    {
+        yield return new WaitForSeconds(senteceTime);
+        PopTypewriterSentence(str, wordTime);
     }
 
 
