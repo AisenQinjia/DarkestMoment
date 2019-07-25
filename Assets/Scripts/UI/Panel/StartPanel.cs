@@ -24,6 +24,7 @@ public class StartPanel : BasePanel
         QuitBtn.onClick.AddListener(OnQuitBtnClick);
     }
 
+
     private void OnLevelOneBtnClick()
     {
         GameManager.level = 1;
