@@ -46,6 +46,7 @@ public class AudioManager : MonoBehaviour
             tmpSource.loop = isLoop;
             tmpSource.Play();
         }
+        else Debug.Log(name + "clip doesn't exist!");
     }
 
     public bool IsPlayAudio(string name)

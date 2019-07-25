@@ -22,6 +22,7 @@ public class ClipManager
         "ceiling_lamp_break",
         "EnemyChase",
         "pipe_delivery",
+        "likethelove"
     };
 
     public ClipManager()

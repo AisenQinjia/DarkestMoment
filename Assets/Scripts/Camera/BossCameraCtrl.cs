@@ -91,4 +91,9 @@ public class BossCameraCtrl : MonoBehaviour
         UIManager.Instance.DisableBloodSprite();
 
     }
+
+    void ZoomIn(float ZoomDistance)
+    {
+        this.gameObject.GetComponent<Camera>().orthographicSize = 2.5f;
+    }
 }

@@ -111,14 +111,13 @@ public class Boss : BaseRoleController
 
         DeadState dead = new DeadState();
 
-
+        Statemanager.AddState(stop);
         Statemanager.AddState(walk);
         Statemanager.AddState(turn);
         Statemanager.AddState(chase);
         Statemanager.AddState(attack);
         Statemanager.AddState(retreat);
         Statemanager.AddState(stareAtPlayer);
-        Statemanager.AddState(stop);
         Statemanager.AddState(checkPoint);
         Statemanager.AddState(dead);
 
@@ -234,6 +233,10 @@ public class Boss : BaseRoleController
     //攻击
     public override void Attack()
     {
+        if (Statemanager.currentStateID == StateID.Chase)
+        {
+            PerformTransition(Transition.CanAttack, player, gameObject);
+        }
         animator.SetTrigger("canAttack");
         //player.GetComponent<BaseRoleController>().OnDead();
     }
