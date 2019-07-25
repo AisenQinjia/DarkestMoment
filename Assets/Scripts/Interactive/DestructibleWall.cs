@@ -4,7 +4,8 @@ using UnityEngine;
 
 public class DestructibleWall : BaseInteractive
 {
-    public Rigidbody2D rigid2;
+    public GameObject game2;
+    Rigidbody2D rigid2;
     public override void Awake()
     {
         base.Awake();
@@ -16,6 +17,8 @@ public class DestructibleWall : BaseInteractive
     public override void Start()
     {
         gameObject.tag = GameDefine.InterativeTag;
+        rigid2 = game2.GetComponent<Rigidbody2D>();
+
         base.Start();
     }
 
@@ -26,7 +29,8 @@ public class DestructibleWall : BaseInteractive
         AudioManager.Instance.PlayClip("wall_break");
         AudioManager.Instance.PlayClip("stone_roll");
         rigid2.isKinematic = false;
-        rigid2.is_isk = true;
+        game2.GetComponent<RollingStone>().is_isk = true;
+        
         Destroy(gameObject);
     }
 }
