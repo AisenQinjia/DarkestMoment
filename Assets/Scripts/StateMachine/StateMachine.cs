@@ -339,6 +339,64 @@ public class WalkStateForTrigger : FSMState
 
 }
 
+//boss行走
+public class BossWalkState : FSMState
+{
+    float speed;
+    Transform[] pathPoints;
+    int currentPointIndex;
+    float endPoint;
+    float validTurnDistance;
+    
+
+    public BossWalkState(Transform[] path, float vel, float turnDistance)
+    {
+        speed = vel;
+        pathPoints = path;
+        validTurnDistance = turnDistance;
+        stateID = StateID.Walk;
+    }
+
+    public override void DoBeforeEntering(GameObject player, GameObject enemy)
+    {
+        //Debug.Log("Enter Walk");
+        enemy.gameObject.GetComponent<BaseRoleController>().ShowViewSprite();
+    }
+
+    public override void DoBeforeLeaving(GameObject player, GameObject enemy)
+    {
+        //Debug.Log("Leave Walk");
+        enemy.gameObject.GetComponent<BaseRoleController>().HideViewSprite();
+    }
+
+    public override void ReState(GameObject player, GameObject enemy)
+    {
+
+    }
+
+    public override void Update(GameObject player, GameObject enemy)
+    {
+        Vector3 moveDir = pathPoints[currentPointIndex].position - enemy.transform.position;
+        //Debug.Log("moveDir.magnitude: " + moveDir.magnitude);
+        if (Mathf.Abs(moveDir.x) < validTurnDistance)
+        {
+            currentPointIndex++;
+            if (currentPointIndex >= pathPoints.Length)
+            {
+                currentPointIndex = 0;
+            }
+            // Debug.Log("currentPointIndex: " + pathPoints[currentPointIndex].position.x);
+            enemy.GetComponent<BaseRoleController>().Statemanager.PerformTransition(Transition.ShouldTurn, player, enemy);
+        }
+        else
+        {
+            moveDir = new Vector3(moveDir.x, 0, 0);
+            LookAtDirection(player, enemy, moveDir);
+            Vector3 vel = moveDir.normalized * speed;
+            enemy.GetComponent<Rigidbody2D>().velocity = new Vector2(vel.x, 0);
+        }
+    }
+}
 //转向
 public class TurnState : FSMState
 {
