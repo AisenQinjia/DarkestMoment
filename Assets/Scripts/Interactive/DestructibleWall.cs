@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class DestructibleWall : BaseInteractive
 {
+    public Rigidbody2D rigid2;
     public override void Awake()
     {
         base.Awake();
@@ -24,6 +25,7 @@ public class DestructibleWall : BaseInteractive
         Debug.Log("player destroy the wall");
         AudioManager.Instance.PlayClip("wall_break");
         AudioManager.Instance.PlayClip("stone_roll");
+        rigid2.isKinematic = false;
         Destroy(gameObject);
     }
 }
