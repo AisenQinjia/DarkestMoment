@@ -6380,6 +6380,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a530b925b4a65fb4883f857f0a44293e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  game2: {fileID: 0}
 --- !u!1 &1116760587
 GameObject:
   m_ObjectHideFlags: 0
@@ -9061,6 +9062,21 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Pivot.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2842369637780823284, guid: 81d3dd81ed86f364cb1687197a5bcca1,
+        type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 150
+      objectReference: {fileID: 0}
+    - target: {fileID: 2842369637780823284, guid: 81d3dd81ed86f364cb1687197a5bcca1,
+        type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 150
+      objectReference: {fileID: 0}
+    - target: {fileID: 2842369637780823284, guid: 81d3dd81ed86f364cb1687197a5bcca1,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 91
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 81d3dd81ed86f364cb1687197a5bcca1, type: 3}
