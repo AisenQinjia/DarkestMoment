@@ -43,6 +43,7 @@ public class PlayerController : BaseRoleController
         this.canMove = true;
         this.state = (int)PlayerState.Normal;
 
+
         RoleManager.Instance.AddPlayer(this.transform);
         this.rb = GetComponent<Rigidbody2D>();
 
@@ -79,6 +80,8 @@ public class PlayerController : BaseRoleController
     void Start()
     {
         EventCenter.Broadcast<float>(EventType.ChangeView, this.stateDatas[this.state].viewRadius);
+        this.ChangeState();
+
     }
     public override void OnDestroy()
     {

@@ -25,5 +25,41 @@
         "type": 1,
         "stroyId": -1,
         "usable": false
+    },
+    {
+        "cfgId": 4,
+        "name": "信",
+        "desc": "一封破烂的的信",
+        "icon": "letter",
+        "type": 2,
+        "stroyId": 2,
+        "usable": false
+    },
+    {
+        "cfgId": 5,
+        "name": "信",
+        "desc": "一封破烂的的信",
+        "icon": "letter",
+        "type": 2,
+        "stroyId": 3,
+        "usable": false
+    },
+    {
+        "cfgId": 6,
+        "name": "信",
+        "desc": "一封破烂的的信",
+        "icon": "letter",
+        "type": 2,
+        "stroyId": 4,
+        "usable": false
+    },
+    {
+        "cfgId": 7,
+        "name": "信",
+        "desc": "一封破烂的的信",
+        "icon": "letter",
+        "type": 2,
+        "stroyId": 5,
+        "usable": true
     }
 ]

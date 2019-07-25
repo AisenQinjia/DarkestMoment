@@ -43,10 +43,10 @@ public class SourceManager
     {
         for (int i = 0; i < audioSources.Count; i++)
         {
-            if (audioSources[i].clip != null && audioSources[i].clip.name == sourcename)
+            if (audioSources[i].clip != null && audioSources[i].isPlaying && audioSources[i].clip.name == sourcename)
             {
                 return audioSources[i];
-            }  
+            }
         }
         Debug.Log(sourcename + " source doesn't exist!");
         return null;

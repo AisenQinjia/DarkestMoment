@@ -18,6 +18,8 @@ public static class GameDefine
 
     public const string StartScene = "StartScene";
 
+    public const string StoryOpenScene = "StoryOpenScene";
+
     public const string TestLevel = "TestLevel";
 
     public const string LevelOne = "level1";
@@ -53,4 +55,6 @@ public static class GameDefine
     public const string shineMaterial = "Materials/shineMaterial";
 
     public const string powerLineVfx = "powerLine";
+
+    public const string typewriter = "typewriter";
 }
