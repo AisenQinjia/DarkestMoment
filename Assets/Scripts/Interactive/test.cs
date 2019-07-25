@@ -7,11 +7,11 @@ public class test : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        gameObject.SetActive(false);
+        GetComponent<Rigidbody2D>().isKinematic = true;
     }
 
     void Update()
     {
-        gameObject.SetActive(false);
+        
     }
 }
