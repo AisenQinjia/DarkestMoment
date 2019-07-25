@@ -2759,7 +2759,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2e2a30efac084214988451be2dd8372b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  interval: 2
+  speed: 0.7
   angle: 100
 --- !u!1 &561595889
 GameObject:
@@ -8951,6 +8951,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Pivot.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2842369638687068748, guid: 81d3dd81ed86f364cb1687197a5bcca1,
+        type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 113.09961
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 81d3dd81ed86f364cb1687197a5bcca1, type: 3}
