@@ -23,6 +23,8 @@ public class ItemData : IcfgId
     public ItemType type { get; set; }
     public string icon { get; set; }
 
+    public int stroyId { get; set; }
+
     [JsonIgnore]
     public int count;
 

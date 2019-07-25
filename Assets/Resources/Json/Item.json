@@ -5,6 +5,7 @@
         "desc": "这是通向某地的钥匙",
         "icon": "key",
         "type": 1,
+        "stroyId": -1,
         "usable": false
     },
     {
@@ -13,6 +14,7 @@
         "desc": "一封破烂的的信",
         "icon": "letter",
         "type": 2,
+        "stroyId": 1,
         "usable": false
     },
     {
@@ -21,6 +23,7 @@
         "desc": "制作人的爱心",
         "icon": "life",
         "type": 1,
+        "stroyId": -1,
         "usable": false
     }
 ]
