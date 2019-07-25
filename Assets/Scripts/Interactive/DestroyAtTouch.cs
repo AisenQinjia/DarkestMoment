@@ -25,6 +25,10 @@ public class DestroyAtTouch : MonoBehaviour
             {
                 UIManager.Instance.PopPanel<int>(GameDefine.StoryPanel, temp.stroyId);
             }
+            else
+            {
+                UIManager.Instance.PopTypewriterSentence("你捡到了" + temp.name, 0.2f, other.transform);
+            }
 
         }
     }
