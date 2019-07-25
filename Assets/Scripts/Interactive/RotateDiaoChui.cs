@@ -7,14 +7,12 @@ public class RotateDiaoChui : MonoBehaviour
     public float speed = 1;
     private float timer ;
     float time;
-    private int coeffient;
     public float angle = 100;
     private float dir = -1;
 
     void Start()
     {
         transform.parent.Rotate(new Vector3(0, 0, angle * 0.5f));
-        coeffient = 1;
         time = 1 / speed;
     }
 
@@ -22,10 +20,10 @@ public class RotateDiaoChui : MonoBehaviour
     void Update()
     {
         timer += Time.deltaTime;
-        if(timer > coeffient* time)
+        if(timer > time)
         {
             dir = -dir;
-            coeffient++;
+            timer = 0;
         }
         this.transform.parent.Rotate(new Vector3(0, 0, 1), speed * dir * angle * Time.deltaTime);
     }
