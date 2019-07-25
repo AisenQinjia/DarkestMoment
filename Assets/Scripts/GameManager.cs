@@ -37,6 +37,7 @@ public class GameManager : MonoBehaviour
 
     public void RestartGame()
     {
+        AudioManager.Instance.ReleaseSource();
         Time.timeScale = 1;
         if (GameManager.level == 1)
         {
@@ -50,6 +51,7 @@ public class GameManager : MonoBehaviour
         {
             SceneManager.LoadScene(GameDefine.BossLevel);
         }
+        AudioManager.Instance.PlayClip(GameDefine.bgm, true);
     }
 
     public void StartGame()
