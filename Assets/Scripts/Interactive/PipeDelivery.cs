@@ -6,7 +6,7 @@ public class PipeDelivery : BaseInteractive
 {
     public GameObject other_pipe;
     // Start is called before the first frame update
-    private float canEnterDis = 0.5f;//可进入水管距离
+    private float canEnterDis = 2f;//可进入水管距离
 
     public override void Awake()
     {

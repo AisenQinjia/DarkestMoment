@@ -7,7 +7,7 @@ using DG.Tweening;
 public class LongPressBtn : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, IPointerExitHandler, IPointerEnterHandler
 {
     public int type = 1;  //1 left 2 right
-    private bool pressed = false;
+    public bool pressed = false;
 
     protected JoystickInput joyStickInput;
 

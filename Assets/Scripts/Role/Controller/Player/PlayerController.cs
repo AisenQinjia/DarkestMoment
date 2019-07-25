@@ -104,6 +104,11 @@ public class PlayerController : BaseRoleController
             Jump();
         }
 
+        if (Input.GetKeyDown(KeyCode.Alpha1))
+        {
+            ChangeState();
+        }
+
         if (this.canMove)
         {
             if (Input.GetKey(KeyCode.A))
@@ -118,8 +123,8 @@ public class PlayerController : BaseRoleController
             }
         }
 
-
-        this.transform.position += velocity * Time.deltaTime;
+        if (this.canMove)
+            this.transform.position += velocity * Time.deltaTime;
 
     }
 
@@ -158,6 +163,7 @@ public class PlayerController : BaseRoleController
         else
         {
             EventCenter.Broadcast(EventType.OnChangeToPower);
+
         }
 
         for (int i = 0; i < 2; i++)
@@ -167,7 +173,10 @@ public class PlayerController : BaseRoleController
         this.stateGos[this.state].SetActive(true);
         EventCenter.Broadcast<float>(EventType.ChangeView, this.stateDatas[this.state].viewRadius);
 
+        this.velocity.x = 0;
+
     }
+
 
     private void StopWalk()
     {
@@ -209,7 +218,7 @@ public class PlayerController : BaseRoleController
 
     private void Eat()
     {
-  
+
         this.canMove = false;
         if (this.stateAnims[(int)this.state] != null)
             this.stateAnims[(int)this.state].SetTrigger("eat");
