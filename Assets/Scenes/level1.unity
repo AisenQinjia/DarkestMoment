@@ -1812,6 +1812,17 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2239556796587326216, guid: eacd2a1272da23a4b890a4e8950ddc2d,
+        type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 7245dba66bc4fc14980ba0872c94a7e6,
+        type: 3}
+    - target: {fileID: 2239556796587326216, guid: eacd2a1272da23a4b890a4e8950ddc2d,
+        type: 3}
+      propertyPath: m_FlipX
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2239556796587326217, guid: eacd2a1272da23a4b890a4e8950ddc2d,
         type: 3}
       propertyPath: m_LocalPosition.y
@@ -1841,17 +1852,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_IsActive
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2239556796587326216, guid: eacd2a1272da23a4b890a4e8950ddc2d,
-        type: 3}
-      propertyPath: m_Sprite
-      value: 
-      objectReference: {fileID: 21300000, guid: 7245dba66bc4fc14980ba0872c94a7e6,
-        type: 3}
-    - target: {fileID: 2239556796587326216, guid: eacd2a1272da23a4b890a4e8950ddc2d,
-        type: 3}
-      propertyPath: m_FlipX
-      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: eacd2a1272da23a4b890a4e8950ddc2d, type: 3}
@@ -5933,7 +5933,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1024095127}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fa27e4e5b32e4a04ab74f049e9794db0, type: 3}
+  m_Script: {fileID: 11500000, guid: ea074c2d7d0e3e8409a751c85152fb9f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!58 &1024095133
@@ -6380,6 +6380,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a530b925b4a65fb4883f857f0a44293e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  game2: {fileID: 1024095127}
 --- !u!1 &1116760587
 GameObject:
   m_ObjectHideFlags: 0
@@ -7239,7 +7240,7 @@ BoxCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 0.75, y: 0.5}
+    oldSize: {x: 0.75, y: 0.50390625}
     newSize: {x: 1, y: 1}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
