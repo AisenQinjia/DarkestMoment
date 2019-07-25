@@ -5845,8 +5845,8 @@ GameObject:
   - component: {fileID: 1024095131}
   - component: {fileID: 1024095130}
   - component: {fileID: 1024095129}
-  - component: {fileID: 1024095128}
   - component: {fileID: 1024095132}
+  - component: {fileID: 1024095128}
   - component: {fileID: 1024095133}
   m_Layer: 0
   m_Name: "\u6EDA\u77F3"
@@ -5963,7 +5963,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1024095127}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fa27e4e5b32e4a04ab74f049e9794db0, type: 3}
+  m_Script: {fileID: 11500000, guid: ea074c2d7d0e3e8409a751c85152fb9f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!58 &1024095133
@@ -6410,7 +6410,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a530b925b4a65fb4883f857f0a44293e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  game2: {fileID: 0}
+  game2: {fileID: 1024095127}
 --- !u!1 &1116760587
 GameObject:
   m_ObjectHideFlags: 0
