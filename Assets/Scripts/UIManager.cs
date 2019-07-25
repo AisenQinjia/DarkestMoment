@@ -97,7 +97,7 @@ public class UIManager : MonoBehaviour
                 Vector3 offset = new Vector3(trans.position.x, trans.position.y + 1, trans.position.z);
                 var playerScreenPos = mainCam.WorldToScreenPoint(offset);
                 Vector2 localPoint;
-  
+
                 RectTransformUtility.ScreenPointToLocalPointInRectangle(this.transform.GetComponent<RectTransform>(), playerScreenPos, null, out localPoint);
                 typeWriter.GetComponent<RectTransform>().localPosition = localPoint;
             }
@@ -127,7 +127,7 @@ public class UIManager : MonoBehaviour
                 Vector3 offset = new Vector3(trans.position.x, trans.position.y + 1, trans.position.z);
                 var playerScreenPos = mainCam.WorldToScreenPoint(offset);
                 Vector2 localPoint;
-               
+
                 RectTransformUtility.ScreenPointToLocalPointInRectangle(typeWriter.GetComponentInParent<RectTransform>(), playerScreenPos, null, out localPoint);
                 Debug.Log("Screen: " + playerScreenPos.x + "   " + playerScreenPos.y);
                 Debug.Log("local: " + localPoint.x + "   " + localPoint.y);
@@ -223,6 +223,30 @@ public class UIManager : MonoBehaviour
         if (p)
         {
             p.OnPop();
+        }
+        return panel;
+    }
+
+    public GameObject PopPanel<T>(string name, T t)
+    {
+        GameObject panel = null;
+        panelDict.TryGetValue(name, out panel);
+
+        if (panel == null)
+        {
+            panel = Instantiate(Resources.Load(name)) as GameObject;
+            panel.transform.SetParent(this.Canvas.transform, false);
+            panelDict.Add(name, panel);
+        }
+        else
+        {
+            panel.SetActive(true);
+        }
+        // Tween tween = panel.transform.DOScale(1, 0.5f);
+        BasePanel p = panel.GetComponent<BasePanel>();
+        if (p)
+        {
+            p.OnPop<T>(t);
         }
         return panel;
     }

@@ -38,6 +38,8 @@ public static class GameDefine
 
     public const string inventoryPanel = "Prefabs/Panel/InventoryPanel";
 
+    public const string StoryPanel = "Prefabs/Panel/StoryPanel";
+
     public const string itemInfoUI = "Prefabs/Panel/ItemInfoUI";
 
     public const string playerWalk = "playerWalk";
