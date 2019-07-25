@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using DG.Tweening;
 
 public class StroyPanel : BasePanel
 {
@@ -38,6 +39,8 @@ public class StroyPanel : BasePanel
     {
         Time.timeScale = 1;
     }
+
+  
 
 
 

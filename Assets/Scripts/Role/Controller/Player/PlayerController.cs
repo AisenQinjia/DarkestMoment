@@ -41,7 +41,7 @@ public class PlayerController : BaseRoleController
     {
         base.Awake();
         this.canMove = true;
-        this.state = (int)PlayerState.Normal;
+        this.state = (int)PlayerState.Power;
 
 
         RoleManager.Instance.AddPlayer(this.transform);
