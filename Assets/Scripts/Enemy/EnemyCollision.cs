@@ -21,7 +21,7 @@ public class EnemyCollision : MonoBehaviour
     {
         if (other.gameObject.CompareTag(GameDefine.PlayerTag))
         {
-            Debug.Log("PlayerTag");
+            Debug.Log("PlayerContact!");
             enemy.Attack();
             other.gameObject.GetComponent<BaseRoleController>().OnDead();
         }

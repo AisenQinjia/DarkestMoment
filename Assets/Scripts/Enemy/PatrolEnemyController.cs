@@ -233,6 +233,10 @@ public class PatrolEnemyController : BaseRoleController
     //攻击
     public override void Attack()
     {
+        if(Statemanager.currentStateID == StateID.Chase)
+        {
+            PerformTransition(Transition.CanAttack,player, gameObject);
+        }
         animator.SetTrigger("canAttack");
         //player.GetComponent<BaseRoleController>().OnDead();
     }
