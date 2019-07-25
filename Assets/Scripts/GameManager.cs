@@ -33,6 +33,7 @@ public class GameManager : MonoBehaviour
         AudioManager.Instance.ReleaseSource();
         SceneManager.LoadScene(sceneName);
         Time.timeScale = 1;
+        AudioManager.Instance.PlayClip(GameDefine.bgm, true);
     }
 
     public void RestartGame()
