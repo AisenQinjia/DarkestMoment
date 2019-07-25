@@ -29,7 +29,7 @@ public class DestructibleWall : BaseInteractive
         AudioManager.Instance.PlayClip("wall_break");
         AudioManager.Instance.PlayClip("stone_roll");
         rigid2.isKinematic = false;
-        game2.GetComponent<RollingStone>().is_isk = true;
+        
         rigid2.velocity = new Vector2(0.1f, 0);
         Destroy(gameObject);
     }
