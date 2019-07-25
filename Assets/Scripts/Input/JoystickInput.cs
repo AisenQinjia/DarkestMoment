@@ -108,6 +108,10 @@ public class JoystickInput : MonoBehaviour
         this.rightBtnGo.SetActive(true);
         this.killBtnGo.SetActive(true);
         this.jumpBtnGo.SetActive(true);
+        for (int i = 0; i < this.longPressBtns.Count; i++)
+        {
+            this.longPressBtns[i].pressed = false;
+        }
     }
 
     private void HideNormalInput()

@@ -37,6 +37,7 @@ public class GameManager : MonoBehaviour
 
     public void RestartGame()
     {
+        Time.timeScale = 1;
         if (GameManager.level == 1)
         {
             SceneManager.LoadScene(GameDefine.LevelOne);
