@@ -203,7 +203,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &772695742
 RectTransform:
   m_ObjectHideFlags: 0
@@ -245,7 +245,7 @@ MonoBehaviour:
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_FontData:
     m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
-    m_FontSize: 35
+    m_FontSize: 29
     m_FontStyle: 0
     m_BestFit: 0
     m_MinSize: 2
@@ -256,7 +256,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "\uFF08\u63D0\u793A\uFF1A\u7075\u6D3B\u5207\u6362\u72B6\u6001\u624D\u80FD\u66F4\u597D\u901A\u5173\uFF09"
+  m_Text: "\uFF08\u63D0\u793A\uFF1A\u4F9D\u9760\u8DF3\u8DC3\u7C98\u9644\u548C\u5207\u6362\u72B6\u6001\u624D\u80FD\u66F4\u597D\u901A\u5173\uFF09"
 --- !u!222 &772695744
 CanvasRenderer:
   m_ObjectHideFlags: 0
