@@ -26,6 +26,7 @@ public class DestructibleWall : BaseInteractive
         AudioManager.Instance.PlayClip("wall_break");
         AudioManager.Instance.PlayClip("stone_roll");
         rigid2.isKinematic = false;
+        rigid2.velocity = new Vector2(0.1f, 1);
         Destroy(gameObject);
     }
 }
