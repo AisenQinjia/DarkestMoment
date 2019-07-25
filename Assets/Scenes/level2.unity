@@ -1564,6 +1564,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a530b925b4a65fb4883f857f0a44293e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  rigid2: {fileID: 1411901586}
 --- !u!61 &235864328
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -3276,9 +3277,9 @@ GameObject:
   m_Component:
   - component: {fileID: 411924185}
   - component: {fileID: 411924184}
-  - component: {fileID: 411924183}
   - component: {fileID: 411924182}
   - component: {fileID: 411924181}
+  - component: {fileID: 411924183}
   m_Layer: 9
   m_Name: lamp2_2
   m_TagString: Interactive
@@ -3342,7 +3343,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 411924180}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7e8c0d5fa02d97949850f35a2f119f12, type: 3}
+  m_Script: {fileID: 11500000, guid: e0eee0bc7a0dbf147bea86c7e07e9c6b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!212 &411924184
@@ -12301,7 +12302,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1411901583}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fa27e4e5b32e4a04ab74f049e9794db0, type: 3}
+  m_Script: {fileID: 11500000, guid: ea074c2d7d0e3e8409a751c85152fb9f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!50 &1411901586
