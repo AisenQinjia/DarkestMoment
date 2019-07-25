@@ -93,6 +93,7 @@ public class control_rolling_stone : BaseInteractive
                 is_close_door = false;
                 rigid_of_stone[i_3].gravityScale = 0;
                 rigid_of_stone[i_3].velocity = zero_velocity;
+                rigid_of_stone[i_3].angularVelocity = 0;
                 transform_of_stone[i_3].position = start_position;
             }
             if (check_time < 0)
