@@ -19,7 +19,7 @@ public class MainPanel : BasePanel
         timer += Time.deltaTime;
         if (timer >= loadTime)
         {
-            SceneManager.LoadScene(GameDefine.StartScene);
+            SceneManager.LoadScene(GameDefine.StoryOpenScene);
             return;
         }
     }

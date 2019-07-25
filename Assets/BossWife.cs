@@ -10,9 +10,11 @@ public class BossWife : MonoBehaviour
     float timer = 0;
     void Start()
     {
-        strs = new string[2];
+        strs = new string[4];
         strs[0] = "非礼啊";
         strs[1] = "老公救我";
+        strs[2] = "注意，敌人即将从右侧冲来";
+        strs[3] = "吃掉它的心脏";
     }
 
     void Update()
@@ -32,9 +34,11 @@ public class BossWife : MonoBehaviour
     {
         if (other.gameObject.CompareTag(GameDefine.PlayerTag))
         {
-            other.gameObject.GetComponent<BaseRoleController>().enabled = false;
-            preparePlayMovie = true;
             UIManager.Instance.PopTypewriterSentences(strs, 0.1f, 0.5f, transform);
+            gameObject.GetComponent<Collider2D>().enabled = false;
+            var boss = GameObject.Find("Boss");
+            if (boss == null) Debug.Log("Boss not exist1");
+            else boss.GetComponent<BaseRoleController>().Statemanager.PerformTransition(Transition.LostPlayer, other.gameObject, boss);
         }
     }
 

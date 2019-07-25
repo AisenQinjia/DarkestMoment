@@ -7,7 +7,7 @@
         "eatLong": 1.0,
         "eatWidth": 1.0,
         "interativeRange": 1,
-        "viewRadius": 40
+        "viewRadius": 50
     },
     {
         "cfgId": 2,
@@ -17,6 +17,6 @@
         "eatLong": 0.0,
         "eatWidth": 0.0,
         "interativeRange": 7,
-        "viewRadius": 120
+        "viewRadius": 140
     }
 ]
