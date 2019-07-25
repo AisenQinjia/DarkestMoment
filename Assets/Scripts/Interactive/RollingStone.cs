@@ -8,6 +8,7 @@ public class RollingStone : MonoBehaviour
     bool is_play_music = true;
     Rigidbody2D rigid2;
     Vector2 check_velcity;
+    public bool is_isk;
 
     // Start is called before the first frame update
     void Start()
@@ -15,14 +16,20 @@ public class RollingStone : MonoBehaviour
         rigid2 = GetComponent<Rigidbody2D>();
         rigid2.isKinematic = true;
         check_velcity = new Vector2(0, 0);
+        is_isk = false;
     }
 
     void Update()
     {
-        if (rigid2.velocity == check_velcity)
+        if (is_isk)
         {
-            rigid2.isKinematic = true;
+            if (rigid2.velocity == check_velcity)
+            {
+                rigid2.isKinematic = true;
+            }
+            is_isk = false;
         }
+        
     }
 
     void OnTriggerEnter2D(Collider2D other)
