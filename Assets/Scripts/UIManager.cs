@@ -90,7 +90,7 @@ public class UIManager : MonoBehaviour
         }
         if (trans != null)
         {
-            Camera mainCam = GameObject.Find("Main Camera").GetComponent<Camera>();
+            Camera mainCam = Camera.main;
             if (mainCam == null) Debug.Log("no Main Camera");
             else
             {
