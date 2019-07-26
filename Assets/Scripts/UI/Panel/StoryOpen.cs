@@ -21,7 +21,7 @@ public class StoryOpen : MonoBehaviour
 
     private void Start()
     {
-        AudioManager.Instance.PlayClip(GameDefine.typewriter, true);
+ 
         ShowSentence();
     }
 
@@ -41,7 +41,6 @@ public class StoryOpen : MonoBehaviour
             yield return new WaitForSeconds(wordTime);
         }
 
-        AudioManager.Instance.StopClip(GameDefine.typewriter);
         this.tips.SetActive(true);
         yield return new WaitForSeconds(5);
         StopAllCoroutines();

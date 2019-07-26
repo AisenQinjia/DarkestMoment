@@ -66,6 +66,7 @@ public class AudioManager : MonoBehaviour
         {
             tmpSource.Stop();
         }
+        else Debug.Log(name + "AudioSource doesn't exist");
     }
 
     public void ReleaseSource()

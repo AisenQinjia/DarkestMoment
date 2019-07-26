@@ -14,4 +14,5 @@ public class EndBgm : MonoBehaviour
             gameObject.GetComponent<Collider2D>().enabled = false;
         }
     }
+   
 }

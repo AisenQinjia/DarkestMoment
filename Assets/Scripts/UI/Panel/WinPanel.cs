@@ -24,7 +24,9 @@ public class WinPanel : BasePanel
     private void OnBackBtnClick()
     {
         UIManager.Instance.ClosePanel(GameDefine.winPanel);
+
         GameManager.Instance.ReloadScene(GameDefine.StartScene);
+
     }
 
     private void OnRestartClick()

@@ -33,7 +33,8 @@ public class GameManager : MonoBehaviour
         AudioManager.Instance.ReleaseSource();
         SceneManager.LoadScene(sceneName);
         Time.timeScale = 1;
-        AudioManager.Instance.PlayClip(GameDefine.bgm, true);
+        if (sceneName != GameDefine.StartScene)
+            AudioManager.Instance.PlayClip(GameDefine.bgm, true);
     }
 
     public void RestartGame()
@@ -57,6 +58,7 @@ public class GameManager : MonoBehaviour
 
     public void StartGame()
     {
+        GameManager.level = 1;
         SceneManager.LoadScene(GameDefine.LevelOne);
         Time.timeScale = 1;
         AudioManager.Instance.PlayClip(GameDefine.bgm, true);
