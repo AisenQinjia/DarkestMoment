@@ -299,8 +299,7 @@ public class PlayerController : BaseRoleController
         }
         else
         {
-            if (this.state.Equals(PlayerState.Power))
-                UIManager.Instance.PopHint("你的念力太差了，再差一点点！");
+            UIManager.Instance.PopHint("你的念力太差了，再靠近一点点！");
         }
     }
 

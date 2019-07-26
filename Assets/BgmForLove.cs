@@ -16,7 +16,7 @@ public class BgmForLove : MonoBehaviour
     }
     void Update()
     {
-        if(canZoom)
+        if (canZoom)
         {
             cam.orthographicSize = Mathf.Lerp(cam.orthographicSize, zoomInSize, interpolate);
         }
@@ -28,6 +28,7 @@ public class BgmForLove : MonoBehaviour
         if (other.gameObject.CompareTag(GameDefine.PlayerTag) && enemy == null)
         {
             AudioManager.Instance.StopClip("bgm");
+            AudioManager.Instance.StopAllClips();
             AudioManager.Instance.PlayClip("likethelove");
             canZoom = true;
             gameObject.GetComponent<Collider2D>().enabled = false;
