@@ -31,6 +31,7 @@ public class GameManager : MonoBehaviour
     public void ReloadScene(string sceneName)
     {
         AudioManager.Instance.ReleaseSource();
+        AudioManager.Instance.StopAllClips();
         SceneManager.LoadScene(sceneName);
         Time.timeScale = 1;
         if (sceneName != GameDefine.StartScene)
@@ -40,6 +41,7 @@ public class GameManager : MonoBehaviour
     public void RestartGame()
     {
         AudioManager.Instance.ReleaseSource();
+        AudioManager.Instance.StopAllClips();
         Time.timeScale = 1;
         if (GameManager.level == 1)
         {
@@ -61,6 +63,7 @@ public class GameManager : MonoBehaviour
         GameManager.level = 1;
         SceneManager.LoadScene(GameDefine.LevelOne);
         Time.timeScale = 1;
+        AudioManager.Instance.StopAllClips();
         AudioManager.Instance.PlayClip(GameDefine.bgm, true);
     }
 

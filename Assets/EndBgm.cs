@@ -10,9 +10,10 @@ public class EndBgm : MonoBehaviour
         if (other.gameObject.CompareTag(GameDefine.PlayerTag))
         {
             AudioManager.Instance.StopClip("bgm");
+            AudioManager.Instance.StopAllClips();
             AudioManager.Instance.PlayClip("endbgm");
             gameObject.GetComponent<Collider2D>().enabled = false;
         }
     }
-   
+
 }

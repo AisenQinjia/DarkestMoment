@@ -51,6 +51,17 @@ public class SourceManager
         Debug.Log(sourcename + " source doesn't exist!");
         return null;
     }
+
+    public void StopAllClip()
+    {
+        for (int i = 0; i < audioSources.Count; i++)
+        {
+            if (audioSources[i].isPlaying)
+            {
+                audioSources[i].Stop();
+            }
+        }
+    }
     public void RealseSource()
     {
         int count = 0;
@@ -62,7 +73,7 @@ public class SourceManager
             if (audioSources[i].isPlaying)
             {
                 count++;
-
+ 
                 if (count >= maxSourceCount)
                 {
                     tmpSources.Add(audioSources[i]);

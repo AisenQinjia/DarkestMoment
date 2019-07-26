@@ -73,4 +73,9 @@ public class AudioManager : MonoBehaviour
     {
         this.sourceManager.RealseSource();
     }
+
+    public void StopAllClips()
+    {
+        this.sourceManager.StopAllClip();
+    }
 }
